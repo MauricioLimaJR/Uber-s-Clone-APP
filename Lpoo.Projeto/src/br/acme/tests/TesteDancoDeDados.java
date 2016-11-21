@@ -7,6 +7,7 @@ import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
 import br.acme.location.Lugar;
 import br.acme.storage.Database;
+import br.acme.storage.IRepositorio;
 import br.acme.storage.IRepositorioMotorista;
 import br.acme.storage.IRepositorioSolicitante;
 import br.acme.storage.IRepositorioViagem;
@@ -23,26 +24,26 @@ public class TesteDancoDeDados {
 		
 		IRepositorioMotorista listaMotoristas = new RepositorioMotorista();
 		IRepositorioMotorista lista2;
-		IRepositorioSolicitante placeholder = new RepositorioSolicitante();
-		IRepositorioSolicitante placeholde2 = new RepositorioSolicitante();
+		IRepositorio placeholder = new RepositorioSolicitante();
+		IRepositorio placeholde2 = new RepositorioSolicitante();
 		IRepositorioViagem lugares = new RepositorioViagem();
 		IRepositorioViagem lugares2 = new RepositorioViagem();
 		Lugar placeA = new Lugar("Recife", "Derby");
 		Lugar placeB = new Lugar("Olinda", "Cé");
 		
-		Gerente admin = new Gerente("123", "Paulo", "paulo56", "masc");
+		Gerente admin = new Gerente("113.544.464-10", "Paulo", "paulo56", "masc");
 		Gerente adm;
 		
-		Motorista driver0 = new Motorista("321", "José", "facil", "masc", "driver@estrada.com");
-		Motorista driver1 = new Motorista("331", "Lucas", "facil", "masc", "driver@estrada.com");
+		Motorista driver0 = new Motorista("113.544.464-10", "José", "facil", "masc", "driver@estrada.com");
+		//Motorista driver1 = new Motorista("113.544.464-10", "Lucas", "facil", "masc", "driver@estrada.com");
 		
-		Solicitante cliente0 = new Solicitante("7777", "Bianca", "boa", "fem", "10/06/1985", "teste@legal.com", 345678);
-		Solicitante cliente1 = new Solicitante("8888", "Mario", "boa", "masc", "10/06/1985", "teste@legal.com", 345678);
+		//Solicitante cliente0 = new Solicitante("113.544.464-10", "Bianca", "boa", "fem", "10/06/1985", "teste@legal.com", 345678);
+		Solicitante cliente1 = new Solicitante("113.544.464-10", "Mario", "boa", "masc", "10/06/1985", "teste@legal.com", 345678);
 		
 		//Salvamos motoristas e solicitantes nos seus repositórios
 		listaMotoristas.adicionar(driver0);
-		listaMotoristas.adicionar(driver1);
-		placeholder.adicionar(cliente0);
+		//listaMotoristas.adicionar(driver1);
+		//placeholder.adicionar(cliente0);
 		placeholder.adicionar(cliente1);
 		
 		//Solicitamos carona 
@@ -52,7 +53,7 @@ public class TesteDancoDeDados {
 		//Salvamos todos os envolvidos no banco de dados
 		Database.salvarEstado(listaMotoristas,"1");
 		System.out.println("Base de motoristas ok");
-		Database.salvarEstado(placeholder,"1");
+		Database.salvarEstado(placeholder, "1");
 		System.out.println("Base de solicitantes ok");
 		Database.salvarEstado(lugares,"1");
 		System.out.println("Base de viagens ok");
@@ -74,9 +75,9 @@ public class TesteDancoDeDados {
 		System.out.println("\nOutros Detalhes\n");
 		
 		//Outras operações com os objetos recuperados
-		placeholde2.buscar(1).historico();
+		((Motorista) placeholde2.buscar(1)).historico();
 		System.out.println(placeholde2.buscar(1).toString());
 		System.out.println(lista2.buscar(1).getViagens());
-		System.out.println(placeholde2.buscar(2).getViagens());
+		System.out.println(((Motorista) placeholde2.buscar(2)).getViagens());
 	}
 }

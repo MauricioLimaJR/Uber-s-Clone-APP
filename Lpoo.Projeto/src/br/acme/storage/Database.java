@@ -50,7 +50,7 @@ public class Database {
 		salvarDados("Database/repositorio motoristas"+posicao, ".txt", listaDeMotoristas);
 	}
 
-	public static void salvarEstado(IRepositorioSolicitante listaDeSolicitantes, String posicao){
+	public static void salvarEstado(IRepositorio listaDeSolicitantes, String posicao){
 		salvarDados("Database/repositorio solicitantes"+posicao, ".txt", listaDeSolicitantes);
 	}
 
@@ -63,6 +63,7 @@ public class Database {
 	}
 	
 	//Método para ler um arquivo
+	@SuppressWarnings("unchecked")
 	public static <T> T lerDados(String nomeArq, String extensao){
 		T lista = null;
 		
@@ -102,8 +103,8 @@ public class Database {
 		return lista;
 	}
 
-	public static IRepositorioSolicitante LerBaseSolicitantes(String posicao){
-		return (IRepositorioSolicitante)lerDados("Database/repositorio solicitantes"+posicao, ".txt");
+	public static IRepositorio LerBaseSolicitantes(String posicao){
+		return (IRepositorio)lerDados("Database/repositorio solicitantes"+posicao, ".txt");
 	}
 	
 	public static IRepositorioMotorista LerBaseMotoristas(String posicao){

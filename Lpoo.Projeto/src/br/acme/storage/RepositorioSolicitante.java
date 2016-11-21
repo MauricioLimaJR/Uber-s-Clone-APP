@@ -11,7 +11,7 @@ import br.acme.exception.UnableCpfExecption;
 import br.acme.users.Solicitante;
 
 @SuppressWarnings({ "unused", "serial" })
-public class RepositorioSolicitante implements IRepositorioSolicitante, Serializable{
+public class RepositorioSolicitante implements IRepositorio, Serializable{
 
 	private long nextId=0;
 	private int quantiaArray=0;
@@ -22,6 +22,7 @@ public class RepositorioSolicitante implements IRepositorioSolicitante, Serializ
 	}
 	
 	public void adicionar(Solicitante novo) throws RepositorioException{
+	//public void adicionar(Solicitante novo) throws RepositorioException{
 		if(quantiaArray < solicitantes.length){
 			if(!verificarExistencia(novo.getCpf())){
 				novo.setId(++nextId);
@@ -84,51 +85,62 @@ public class RepositorioSolicitante implements IRepositorioSolicitante, Serializ
 		
 		 int numberOfChooses=entradas.size(), doIt=0;
 		
-		while(numberOfChooses>0){
-		  
-			
-			switch(entradas.get(doIt)){
-			case 1: 
-				System.out.println("Digite o novo CPF:");
-				elementoString = input.nextLine();
-				atual.setCpf(elementoString);
-				break;
-			case 2: 
-				System.out.println("Digite o novo email:");
-				elementoString = input.nextLine();
-				atual.setEmail(elementoString);
-				break;
-			case 3:
-				System.out.println("Digite sua nova senha:");
-				elementoString = input.nextLine();
-				atual.setSenha(elementoString);
-				break;
-			case 4:
-				System.out.println("Digite seu novo nome:");
-				elementoString = input.nextLine();
-				atual.setNome(elementoString);
-				break;
-			case 5:
-				System.out.println("Digite seu sexo:");
-				elementoString = input.nextLine();
-				atual.setSexo(elementoString);
-				break;
-			case 6:
-				System.out.println("Digite sua data de nascimento:");
-				elementoString = input.nextLine();
-				atual.setDataNascimento(elementoString);//Digitar a data com "/" (ex: "01/02/2003")
-				break;
-			case 7:
-				System.out.println("Digite seu número de telefone:");
-				elementoNumerico = input.nextInt();
-				atual.setNumeroCelular(elementoNumerico);
-				System.out.println(atual.getNumeroCelular());
-				limpaBuffer =input.nextLine();
-				break;
+		while(numberOfChooses>0)
+			try {
+				{
+				  
+					
+					try {
+						switch(entradas.get(doIt)){
+						case 1: 
+							System.out.println("Digite o novo CPF:");
+							elementoString = input.nextLine();
+							atual.setCpf(elementoString);
+							break;
+						case 2: 
+							System.out.println("Digite o novo email:");
+							elementoString = input.nextLine();
+							atual.setEmail(elementoString);
+							break;
+						case 3:
+							System.out.println("Digite sua nova senha:");
+							elementoString = input.nextLine();
+							atual.setSenha(elementoString);
+							break;
+						case 4:
+							System.out.println("Digite seu novo nome:");
+							elementoString = input.nextLine();
+							atual.setNome(elementoString);
+							break;
+						case 5:
+							System.out.println("Digite seu sexo:");
+							elementoString = input.nextLine();
+							atual.setSexo(elementoString);
+							break;
+						case 6:
+							System.out.println("Digite sua data de nascimento:");
+							elementoString = input.nextLine();
+							atual.setDataNascimento(elementoString);//Digitar a data com "/" (ex: "01/02/2003")
+							break;
+						case 7:
+							System.out.println("Digite seu número de telefone:");
+							elementoNumerico = input.nextInt();
+							atual.setNumeroCelular(elementoNumerico);
+							System.out.println(atual.getNumeroCelular());
+							limpaBuffer =input.nextLine();
+							break;
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					numberOfChooses--;
+					doIt++;
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			numberOfChooses--;
-			doIt++;
-		}
 		input.close();
 		if(doIt>0){ System.out.println("Alterações enviadas!"); }
 	}
@@ -136,6 +148,7 @@ public class RepositorioSolicitante implements IRepositorioSolicitante, Serializ
 	// OS MÉTODOS "BUSCAR" E "BUSCARTODOS", NO MOMENTO, IMPRIMEM E RETONAR OS RESULTADOS
 	// POIS A DUPLA ACHOU CONVINIETE ATÉ QUE TENHAMOS MAIS INFORMAÇÕES SOBRE ESSES MÉTODOS
 	
+	@SuppressWarnings("unchecked")
 	public Solicitante buscar(long chaveId) throws RepositorioException{
 		if(quantiaArray==0)throw new RepositorioException("Repositório vazio.");
 		boolean findIt=false;
@@ -152,11 +165,42 @@ public class RepositorioSolicitante implements IRepositorioSolicitante, Serializ
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public Solicitante[] buscarTodos() throws RepositorioException{
 		if(quantiaArray==0)throw new RepositorioException("Repositório vazio.");
 		for(int i = 0; i < this.quantiaArray; i++){
 				System.out.println(this.solicitantes[i].getId());
 		}
 		return this.solicitantes;
+	}
+
+	//@Override
+	//public <T> void adicionar(T novo) throws RepositorioException {
+		// TODO Auto-generated method stub
+		//this.adicionar(novo);
+	//}
+
+	@Override
+	public <T> Boolean verificarExistencia(T t) throws RepositorioException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> void alterar(T atual) throws RepositorioException, NullStringException, UnableCpfExecption {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Boolean verificarExistencia(Object t) throws RepositorioException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void alterar(Object atual) throws RepositorioException, NullStringException, UnableCpfExecption {
+		// TODO Auto-generated method stub
+		
 	}
 }
