@@ -20,11 +20,11 @@ public class TemplateWindow extends Application {
 			//Hold the three main elements
 			VBox bodyHolder = new VBox();
 			//Then, create the header, body and footer
-			HBox header = new HBox(25);
+			HBox header = new HBox();
 			
 			HBox body = new HBox();
 			
-			HBox footer = new HBox(25);
+			HBox footer = new HBox();
 			
 			/////////////////////////   Making the HEADER   /////////////////////////
 			
@@ -35,7 +35,7 @@ public class TemplateWindow extends Application {
 			
 			Button userSettings = new Button("User Profile");
 			userSettings.getStyleClass().add("headerBtn");
-			userSettings.setAlignment(Pos.CENTER);
+			userSettings.setAlignment(Pos.CENTER_RIGHT);
 			//Add function while clicking 
 			Button userLogout = new Button("Logout");
 			userLogout.getStyleClass().add("headerBtn");
@@ -86,13 +86,13 @@ public class TemplateWindow extends Application {
 			HBox acoes = new HBox();
 			
 			Button remover = new Button("Remover");
-			remover.setId("acoesBtn");
+			remover.getStyleClass().add("removerBtn");
 			remover.setAlignment(Pos.CENTER_LEFT);
 			//Add function while clicking 
 			
 			acoes.getChildren().addAll(remover);
 			acoes.getStyleClass().add("acoes");
-			acoes.setAlignment(Pos.BOTTOM_CENTER);
+			acoes.setAlignment(Pos.BOTTOM_LEFT);
 			acoes.getStyleClass().add("acoes");
 			rightSideContent.getChildren().addAll(acoes);
 			
@@ -103,11 +103,12 @@ public class TemplateWindow extends Application {
 			
 			/////////////////////////   Making the FOOTER   /////////////////////////
 		
-			Label criador = new Label("Desenvolvido por ...");
+			Label criador = new Label("Desenvolvido por Maurício de Lima e Pedro Gabriel");
+			criador.setAlignment(Pos.CENTER);
 			
 			footer.getChildren().addAll(criador);
 			footer.setSpacing(100);
-			footer.setAlignment(Pos.BOTTOM_CENTER);
+			footer.setAlignment(Pos.CENTER);
 			footer.setId("footer");
 
 			/////////////////////////   Making the final settings   /////////////////////////
@@ -116,7 +117,7 @@ public class TemplateWindow extends Application {
 			bodyHolder.setId("mainContent");
 			
 			//BorderPane root = new BorderPane();
-			Scene scene = new Scene(bodyHolder,900,540);
+			Scene scene = new Scene(bodyHolder,900,640);
 			scene.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -130,4 +131,9 @@ public class TemplateWindow extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	//////////////  METHODS //////////////
+	
+	
 }
+

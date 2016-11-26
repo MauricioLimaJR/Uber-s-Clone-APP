@@ -47,8 +47,10 @@ public class UserWindow extends Application {
 			header.setAlignment(Pos.CENTER);
 			header.setId("header");
 			
+			
 			/////////////////////////   Making the BODY   /////////////////////////
 			
+			//Vertical Box to put all buttons of menu
 			VBox menuNav = new VBox();
 			//Left Side
 			Button adicionar = new Button("Adicionar");
@@ -64,8 +66,7 @@ public class UserWindow extends Application {
 			listarMotoristas.getStyleClass().add("menuNavBtn");
 			//Add function while clicking 
 			Button relatorio = new Button("Relatório de Viagens");
-			relatorio.getStyleClass().add("menuNavBtn");
-		
+			relatorio.getStyleClass().add("menuNavBtn");		
 			//Add function while clicking 
 			
 			menuNav.getChildren().addAll(adicionar, aceitarCadastro, listarMotoristas, listarSolicitantes, relatorio);
@@ -79,6 +80,9 @@ public class UserWindow extends Application {
 			//  show a table with the objects
 			//  (Solicitantes / Motoristas) 
 			//  and your details
+			
+			
+			
 			
 			rightSideContent.setAlignment(Pos.BOTTOM_CENTER);
 			rightSideContent.getStyleClass().add("right_side_boby");
@@ -100,6 +104,7 @@ public class UserWindow extends Application {
 			body.setSpacing(0);
 			body.setAlignment(Pos.CENTER_LEFT);
 			body.setId("body");
+			
 			
 			/////////////////////////   Making the FOOTER   /////////////////////////
 		

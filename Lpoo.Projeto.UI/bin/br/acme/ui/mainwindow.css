@@ -1,7 +1,19 @@
-/*Main Content */
+/* ////////   MAIN WINDOW   //////// */
 
-#mainContent{
-	-fx-background-color: linear-gradient(#87CEEB,#00BFFF);
+.titleText{
+	-fx-background-color: #1E90FF;
+	-fx-min-height: 80px;
+    -fx-max-height: 80px;	
+}
+
+.titleText:hover{
+	-fx-background-color: linear-gradient(#4169E1,#1E90FF,#00BFFF);
+}
+
+.mainBody{
+	-fx-background-color: #87CEFA;
+    -fx-min-height: 300px;
+    -fx-max-height: 300px;
 }
 
 /* ////////   HEADER   //////// */
@@ -11,6 +23,16 @@
     -fx-min-height: 80px;
     -fx-max-height: 80px;
 }
+
+.horizontalBox{
+	-fx-min-height: 274px;
+    -fx-max-height: 274px;
+}
+
+
+
+/* ////////   TEMPLATE WINDOW   //////// */
+
 
 /* ////////   BODY   //////// */
 
@@ -52,8 +74,8 @@
     -fx-font-size: 12px;
     -fx-min-width: 220px;
     -fx-max-width: 220px;
-    -fx-min-height: 80px;
-    -fx-max-height: 80px;    
+    -fx-min-height: 100px;
+    -fx-max-height: 100px;    
 }
 .menuNavBtn:hover{	
     -fx-background-color: #00BFFF;
@@ -78,4 +100,19 @@
 	-fx-background-color: #1E90FF;
     -fx-border-color: #1E90FF;
     -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);
+}
+
+.removerBtn{
+	-fx-background-color: #B22222;
+    -fx-text-fill: #FFFAFA;
+    -fx-font-size: 12px;
+    -fx-min-width: 120px;
+    -fx-max-width: 120px;
+    -fx-min-height: 80px;
+    -fx-max-height: 80px;
+}
+.removerBtn:hover{
+	-fx-background-color: #CD5C5C;
+	-fx-border-color: #8B0000;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 1 , 3 );
 }
