@@ -1,9 +1,14 @@
 package br.acme.ui;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import br.acme.exception.NullStringException;
+import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
+import br.acme.storage.Database;
+import br.acme.storage.RepositorioSolicitante;
+import br.acme.storage.SolicitationDB;
 import br.acme.users.Solicitante;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -15,9 +20,15 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class AccountWindow extends VBox{
+	
+	private ArrayList<TextField> dataOld = new ArrayList<TextField>();
+	private ArrayList<TextField> dataFields = new ArrayList<TextField>();
+	
+	private static RepositorioSolicitante accountsSolicitations;
 	
 	//public void start(Stage primaryStage) throws Exception {
 	public AccountWindow(){
@@ -110,10 +121,18 @@ public class AccountWindow extends VBox{
 		        @Override
 		        public void handle(ActionEvent t) {
 		        	//
-		        	
+		        	try {
+						makeAnUser(cpfField.getText(), nameField.getText(), passField.getText(),
+								sexField.getText(), bdField.getText(), emailField.getText(),
+								Integer.valueOf(numberField.getText()));
+					} catch (NumberFormatException | ParseException | NullStringException | UnableCpfExecption e) {
+						e.printStackTrace();
+						Label msg = new Label(e.getMessage());
+						msg.setTextFill(Color.RED);
+						addStatus(msg);
+					}
 		        }
 		    });
-			
 			
 			this.getChildren().addAll(userName, userCpf, userPass, userPassConfirm, userSex, userBD, userNumber, userEmail, btnSend);
 			
@@ -123,18 +142,36 @@ public class AccountWindow extends VBox{
 		}		
 	}
 	
+	public void backup(TextField[] data){
+		for(TextField field : data){
+			dataOld.add(field);
+		}
+		
+	}
+	
 	public void addStatus(Label label){
+		//Delete preview label
+		this.getChildren().remove(label);
+		//Add the new label
 		this.getChildren().addAll(label);
 	}
 	
 	public void makeAnUser(String cpf, String name, String password, String sex, String date, String email, int number) throws ParseException, NullStringException, UnableCpfExecption{
 		Solicitante solicitante = new Solicitante(cpf, name, password, sex, date, email, number);
-		//Add in repository
+		sendNewAccount(solicitante);
 		Label m = new Label("Enviado");
 		addStatus(m);
 	}
 	
-	public void sendNewAccount(Solicitante solicitatne){
-		
+	public void sendNewAccount(Solicitante solicitante){
+		try {
+			//Save in a local repository
+			accountsSolicitations.adicionar(solicitante);
+		} catch (RepositorioException e) {
+			e.printStackTrace();
+		}
+		//After, save in an database
+		SolicitationDB.salvarEstado(accountsSolicitations,"1");
 	}
 }
+ 
