@@ -9,7 +9,6 @@ import br.acme.location.Lugar;
 import br.acme.storage.Database;
 import br.acme.storage.IRepositorio;
 import br.acme.storage.IRepositorioMotorista;
-import br.acme.storage.IRepositorioSolicitante;
 import br.acme.storage.IRepositorioViagem;
 import br.acme.storage.RepositorioMotorista;
 import br.acme.storage.RepositorioSolicitante;
@@ -24,8 +23,8 @@ public class TesteDancoDeDados {
 		
 		IRepositorioMotorista listaMotoristas = new RepositorioMotorista();
 		IRepositorioMotorista lista2;
-		IRepositorio placeholder = new RepositorioSolicitante();
-		IRepositorio placeholde2 = new RepositorioSolicitante();
+		IRepositorio<Solicitante> placeholder = new RepositorioSolicitante();
+		IRepositorio<Solicitante> placeholde2 = new RepositorioSolicitante();
 		IRepositorioViagem lugares = new RepositorioViagem();
 		IRepositorioViagem lugares2 = new RepositorioViagem();
 		Lugar placeA = new Lugar("Recife", "Derby");
@@ -51,20 +50,27 @@ public class TesteDancoDeDados {
 		cliente1.solicitarCarona(listaMotoristas, lugares, placeB, placeA, 23.69, "dinheiro");
 		
 		//Salvamos todos os envolvidos no banco de dados
-		Database.salvarEstado(listaMotoristas,"1");
+		Database.saveStatus(listaMotoristas,"DataBase/Motoristas.txt");
 		System.out.println("Base de motoristas ok");
-		Database.salvarEstado(placeholder, "1");
+		Database.saveStatus(placeholder, "DataBase/Solicitantes.txt");
 		System.out.println("Base de solicitantes ok");
-		Database.salvarEstado(lugares,"1");
+		Database.saveStatus(lugares, "DataBase/Viagens.txt");
 		System.out.println("Base de viagens ok");
-		Database.salvarEstado(admin);
+		Database.saveStatus(admin, "DataBase/Gerente.txt");
 		System.out.println("Base de gerente ok");
 		
 		//Recuperamos todos eles
-		lista2 = Database.LerBaseMotoristas("1");
-		placeholde2 = Database.LerBaseSolicitantes("1");
-		lugares2 = Database.LerBaseViagens("1");
-		adm = Database.LerBaseGerente();
+		lista2 = Database.readDataBase("DataBase/Motoristas.txt");
+		placeholde2 = Database.readDataBase("DataBase/Solicitantes.txt");
+		lugares2 = Database.readDataBase("DataBase/Viagens.txt");
+		adm = Database.readDataBase("DataBase/Gerente.txt");
+		
+
+		System.out.println("");
+		IRepositorio<Solicitante> lista = new RepositorioSolicitante();
+		lista = Database.readDataBase("DataBase/NewUsers.txt");
+        //Database<Tipo>.readDataBase("DataBase/NewUsers.txt");
+        lista.buscarTodos();
 		
 		lista2.buscarTodos();
 		System.out.println("");
@@ -75,9 +81,10 @@ public class TesteDancoDeDados {
 		System.out.println("\nOutros Detalhes\n");
 		
 		//Outras operações com os objetos recuperados
-		((Motorista) placeholde2.buscar(1)).historico();
+		//((Motorista) placeholde2.buscar(1)).historico();
 		System.out.println(placeholde2.buscar(1).toString());
 		System.out.println(lista2.buscar(1).getViagens());
-		System.out.println(((Motorista) placeholde2.buscar(2)).getViagens());
+		//System.out.println(((Motorista) placeholde2.buscar(2)).getViagens());
+		
 	}
 }

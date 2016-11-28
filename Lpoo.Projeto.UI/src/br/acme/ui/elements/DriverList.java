@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import br.acme.storage.Database;
-import br.acme.storage.IRepositorio;
-import br.acme.storage.RepositorioSolicitante;
 import br.acme.users.Solicitante;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -17,7 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class UserList extends VBox {
+public class DriverList extends VBox {
 
 	public static VBox userList = new VBox();
 
@@ -25,9 +22,8 @@ public class UserList extends VBox {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	//@Override
-    public UserList(List pessoas){
+    public DriverList(List pessoas){
 	}
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static VBox startTable(List pessoas){
 		
 	try{
@@ -58,15 +54,7 @@ public class UserList extends VBox {
 
         
         userTable.getColumns().addAll(nameColumn, cpfColumn, emailColumn, dateColumn, sexColumn, numberColumn);
-        
-        /*
-         * Load the user in DataBase
-         */
-        RepositorioSolicitante[] lista = Database.readDataBase("DataBase/NewUsers.txt");
-        //Database<Tipo>.readDataBase("DataBase/NewUsers.txt");
-        //lista.buscarTodos();
-        
-        userTable.setItems(FXCollections.observableArrayList(lista));
+        userTable.setItems(FXCollections.observableArrayList(pessoas));
  
         
         if(!userList.getChildren().isEmpty()){

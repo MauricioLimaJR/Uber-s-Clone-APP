@@ -3,7 +3,9 @@ package br.acme.ui.users;
 import java.util.Arrays;
 import java.util.List;
 
-import br.acme.storage.SolicitationDB;
+import javax.swing.text.TabableView;
+
+import br.acme.storage.Database;
 import br.acme.ui.AccountWindow;
 import br.acme.ui.elements.UserList;
 import br.acme.users.Solicitante;
@@ -14,8 +16,11 @@ import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -75,13 +80,32 @@ public class ManageWindow extends Application {
 			Button remover = new Button("Remover");
 			remover.getStyleClass().add("removerBtn");
 			remover.setAlignment(Pos.CENTER_LEFT);
-			//Add function while clicking 
+			remover.setOnAction(new EventHandler<ActionEvent>() {
+		        @Override
+		        public void handle(ActionEvent t) {
+		        	deleteUser(UserList.getTable());
+		        }
+		    });
+			
+			Button add = new Button("Adicionar");
+			add.getStyleClass().add("adicionarBtn");
+			add.setAlignment(Pos.CENTER_LEFT);
+			add.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent t){
+					addUser(UserList.getTable());
+				}
+			});
 						
-			acoes.getChildren().addAll(remover);
+			acoes.getChildren().addAll(add, remover);
 			acoes.getStyleClass().add("acoes");
 			acoes.setAlignment(Pos.BOTTOM_LEFT);
 			acoes.getStyleClass().add("acoes");
 			rightSideContent.getChildren().addAll(acoes);
+			
+		//	getSelectionModel().selectedItemProperty().addListener(
+		//            (observable, oldValue, newValue) -> showPersonDetails(newValue));
+		//}
 			
 			/// Left Side
 			
@@ -102,8 +126,8 @@ public class ManageWindow extends Application {
 			
 			///////
 			List pessoas = Arrays.asList(
-					new Solicitante("113.544.464.10", "Seu Zé", "boa", "masc", "10/06/1985", "teste@legal.com", 345678)
-					//new Solicitante("113.544.464.64", "Doca", "boa", "masc", "10/06/1985", "teste@legal.com", 345678)
+					new Solicitante("113.544.464.10", "Seu Zé", "boa", "masc", "10/06/1985", "teste@legal.com", 345678),
+					new Solicitante("338.804.515-16", "Doca", "boa", "masc", "10/06/1985", "teste@legal.com", 345678)
 					);
 			
 			//Solicitante[] pessoas = (Solicitante[]) SolicitationDB.LerBaseSolicitantes("1").buscarTodos();
@@ -112,13 +136,13 @@ public class ManageWindow extends Application {
 			Button aceitarCadastro = new Button("Aceitar Cadastro");
 			aceitarCadastro.getStyleClass().add("menuNavBtn");
 			aceitarCadastro.setOnAction(new EventHandler<ActionEvent>() {
-
 		        @Override
 		        public void handle(ActionEvent t) {
-		        	UserList list = new UserList(pessoas);
+		        	/*UserList list = new UserList(pessoas);
 		        	list.setAlignment(Pos.TOP_LEFT);
-		        	loadView(list, rightSideContent, acoes);
-		        	
+		        	loadView(list, rightSideContent, acoes);*/
+		        	loadView(UserList.startTable(pessoas), rightSideContent, acoes);
+		        			        	
 		        }
 		    });
 			Button listarSolicitantes = new Button("Listar Solicitantes");
@@ -161,6 +185,7 @@ public class ManageWindow extends Application {
 			Scene scene = new Scene(bodyHolder,900,640);
 			scene.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
 			primaryStage.setScene(scene);
+			primaryStage.setResizable(false);
 			primaryStage.show();
 			
 			
@@ -182,6 +207,37 @@ public class ManageWindow extends Application {
 	
 	public void clearView(VBox content){
 		content.getChildren().removeAll(content.getChildren());
+	}
+	
+	private void deleteUser(TableView table) {
+	    int selectedIndex = table.getSelectionModel().getSelectedIndex();
+	    if (selectedIndex >= 0) {
+	    	table.getItems().remove(selectedIndex);
+	    } 
+	    else {
+	        // Nothing selected
+	    	Alert alert = new Alert(AlertType.WARNING);
+	    	alert.setTitle("Nenhuma seleção");
+	        alert.setHeaderText("Nenhuma Pessoa Selecionada");
+	        alert.setContentText("Por favor, selecione uma pessoa na tabela.");
+	        alert.showAndWait();
+	    }
+	}
+	
+	private void addUser(TableView table){
+		int selectedIndex = table.getSelectionModel().getSelectedIndex();
+		if(selectedIndex >= 0){
+			//Put user in default repository
+			table.getItems().remove(selectedIndex);
+		}
+		else{
+			 // Nothing selected
+			 Alert alert = new Alert(AlertType.WARNING);
+	         alert.setTitle("Nenhuma seleção");
+	         alert.setHeaderText("Nenhuma Pessoa Selecionada");
+	         alert.setContentText("Por favor, selecione uma pessoa na tabela.");
+	         alert.showAndWait();
+		}
 	}
 	
 }

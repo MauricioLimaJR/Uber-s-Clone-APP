@@ -6,17 +6,19 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import br.acme.users.Gerente;
-
-public class Database {
+public class Database<Tipo>{
 
 	private static ObjectOutputStream output;
 	private static ObjectInputStream input;
 	
-	//Método para salvar um arquivo
-	public static void salvarDados(String nomeArq, String extensao, Object objeto){		
+	/*
+	 * Method to save data
+	 */
+	
+	public static void saveStatus(Object object, String directory){		
+		//@PrintString
 		try{
-			output = new ObjectOutputStream(new FileOutputStream(nomeArq+extensao));
+			output = new ObjectOutputStream(new FileOutputStream(directory));
 		}
 		catch(IOException e){
 			System.out.println("Erro em abrir o arquivo");
@@ -26,7 +28,7 @@ public class Database {
 		}
 		
 		try {
-			output.writeObject(objeto);
+			output.writeObject(object);
 			System.out.println("Salvo com sucesso!");
 		} 
 		catch (IOException e) {
@@ -44,42 +46,31 @@ public class Database {
 			}
 		}
 	}
+
+	/*
+	 * Methods to read data
+	 */
 	
-	//Métodos que utilizam o "salvarDados"
-	public static void salvarEstado(IRepositorioMotorista listaDeMotoristas, String posicao){
-		salvarDados("Database/repositorio motoristas"+posicao, ".txt", listaDeMotoristas);
-	}
-
-	public static void salvarEstado(IRepositorio listaDeSolicitantes, String posicao){
-		salvarDados("Database/repositorio solicitantes"+posicao, ".txt", listaDeSolicitantes);
-	}
-
-	public static void salvarEstado(IRepositorioViagem listaDeViagens, String posicao){
-		salvarDados("Database/repositorio viagens"+posicao, ".txt", listaDeViagens);
-	}
-
-	public static void salvarEstado(Gerente admin){
-		salvarDados("Database/gerente", ".txt", admin);
-	}
-	
-	//Método para ler um arquivo
 	@SuppressWarnings("unchecked")
-	public static <T> T lerDados(String nomeArq, String extensao){
-		T lista = null;
+	public static <Tipo> Tipo readDataBase(String directory){
 		
-		//Abrir o arquivo
+		Tipo lista = null;
+		
+		//Open the directory
+		//@PrintString
 		try{
-			input = new ObjectInputStream(new FileInputStream(nomeArq+extensao));
+			input = new ObjectInputStream(new FileInputStream(directory));
 		}
 		catch(IOException e){
 			System.out.println("Erro ao abrir o arquivo");
 			e.getMessage();
 		}
 		
-		//Ler o arquivo
+		//Read the file
+		//@PrintString
 		
 		try {
-			lista =  (T) input.readObject();
+			lista =  (Tipo) input.readObject();
 			System.out.println("Objeto lido com sucesso");
 		} 
 		catch (ClassNotFoundException e) {
@@ -103,20 +94,4 @@ public class Database {
 		return lista;
 	}
 
-	public static IRepositorio LerBaseSolicitantes(String posicao){
-		return (IRepositorio)lerDados("Database/repositorio solicitantes"+posicao, ".txt");
-	}
-	
-	public static IRepositorioMotorista LerBaseMotoristas(String posicao){
-		return (IRepositorioMotorista)lerDados("Database/repositorio motoristas"+posicao, ".txt");		
-	}
-
-	public static IRepositorioViagem LerBaseViagens(String posicao){
-		return (IRepositorioViagem)lerDados("Database/repositorio viagens"+posicao, ".txt");
-	}
-
-	public static Gerente LerBaseGerente(){
-		return (Gerente)lerDados("Database/gerente", ".txt");
-	}
-	
 }

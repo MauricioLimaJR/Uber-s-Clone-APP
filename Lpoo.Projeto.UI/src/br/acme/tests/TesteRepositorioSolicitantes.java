@@ -30,8 +30,7 @@ public class TesteRepositorioSolicitantes {
 		placeholder.adicionar(cliente3);
 		placeholder.adicionar(cliente4);
 		System.out.println("");
-		placeholder.alterar(cliente1); // aqui, altere o nome do cliente para o método abaixo mostrar a alteração 
-		placeholder.remover(cliente4.getId());
+		placeholder.alterar(cliente1);
 		
 		long teste = 9;
 		
@@ -39,7 +38,7 @@ public class TesteRepositorioSolicitantes {
 		admin.listarClientes(placeholder);//ou pelo método do gerente
 		admin.listarClientes(cliente3.getId(),placeholder);
 		
-		placeholder.remover(9);
+		//placeholder.remover(9);
 		
 		System.out.println(cliente1.getDataNascimento()); 
 		

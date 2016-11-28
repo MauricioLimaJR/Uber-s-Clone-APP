@@ -7,8 +7,10 @@ import br.acme.exception.NullStringException;
 import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
 import br.acme.storage.Database;
+import br.acme.storage.IRepositorio;
+import br.acme.storage.IRepositorioSolicitante;
 import br.acme.storage.RepositorioSolicitante;
-import br.acme.storage.SolicitationDB;
+import br.acme.storage.Database;
 import br.acme.users.Solicitante;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -28,7 +30,7 @@ public class AccountWindow extends VBox{
 	private ArrayList<TextField> dataOld = new ArrayList<TextField>();
 	private ArrayList<TextField> dataFields = new ArrayList<TextField>();
 	
-	private static RepositorioSolicitante accountsSolicitations;
+	private static IRepositorio<Solicitante> accountsSolicitations = new RepositorioSolicitante();
 	
 	//public void start(Stage primaryStage) throws Exception {
 	public AccountWindow(){
@@ -167,11 +169,11 @@ public class AccountWindow extends VBox{
 		try {
 			//Save in a local repository
 			accountsSolicitations.adicionar(solicitante);
+			//After, save in an database
+			Database.saveStatus(accountsSolicitations, "DataBase/NewUsers.txt");
 		} catch (RepositorioException e) {
 			e.printStackTrace();
 		}
-		//After, save in an database
-		SolicitationDB.salvarEstado(accountsSolicitations,"1");
 	}
 }
  

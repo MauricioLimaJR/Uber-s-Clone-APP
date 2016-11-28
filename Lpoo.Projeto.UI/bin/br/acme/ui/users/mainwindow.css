@@ -117,3 +117,19 @@
 	-fx-border-color: #8B0000;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 1 , 3 );
 }
+
+.adicionarBtn{
+	-fx-background-color: #4169E1;
+    -fx-text-fill: #FFFAFA;
+    -fx-font-size: 12px;
+    -fx-min-width: 120px;
+    -fx-max-width: 120px;
+    -fx-min-height: 80px;
+    -fx-max-height: 80px;
+}
+
+.adicionarBtn:hover{
+	-fx-background-color: #00BFFF;
+	-fx-border-color: #8B0000;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 1 , 3 );
+}

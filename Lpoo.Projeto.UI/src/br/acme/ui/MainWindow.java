@@ -1,5 +1,6 @@
 package br.acme.ui;
 
+import br.acme.ui.users.ManageWindow;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -52,8 +53,8 @@ public class MainWindow extends Application{
 			leftSideVerticalBox.setSpacing(9);
 			leftSideVerticalBox.getStyleClass().add("leftSideVerticalBox");
 			
-			Image image = new Image(img);
-			ImageView imagemView = new ImageView(image);
+			//Image image = new Image(getClass().getResource("../Lpoo.Projeto.UI/extra files/images.jpg").toExternalForm());
+			ImageView imagemView = new ImageView(getClass().getResource("files/imgInit.jpg").toString());
 			imagemView.setTranslateX(80);
 			imagemView.setTranslateY(5);
 			
@@ -111,15 +112,15 @@ public class MainWindow extends Application{
 			btnSignIn.setAlignment(Pos.CENTER_LEFT);
 			btnSignIn.getStyleClass().add("mainBtn");
 			
-			/*btnSignIn.setOnAction(new EventHandler<ActionEvent>() {
+			btnSignIn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				//((Button) e.getSource()).getScene().getWindow().hide();
-				TemplateWindow janela = new TemplateWindow();
-				janela.start(mainStage);
+				ManageWindow adm = new ManageWindow();
+				adm.start(mainStage);
 			}
 			});
-			*/
+			
 			
 			Button btnSignUp = new Button("Sign up");
 			btnSignUp.setAlignment(Pos.CENTER_LEFT);
@@ -144,7 +145,9 @@ public class MainWindow extends Application{
 			Scene scene = new Scene(firstPlace,620,400);
 			scene.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
 			mainStage.setTitle("Nome do Progama");
-			//mainStage.getIcons().add(new Image(getClass().getResourceAsStream("../images/title.png")));  
+			
+			Image icon = new Image(getClass().getResource("title.png").toExternalForm());
+			mainStage.getIcons().add(icon);  
 			mainStage.setScene(scene);
 			mainStage.show();
 			
