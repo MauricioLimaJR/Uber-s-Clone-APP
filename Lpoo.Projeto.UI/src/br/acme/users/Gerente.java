@@ -3,6 +3,7 @@ package br.acme.users;
 import br.acme.exception.NullStringException;
 import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
+import br.acme.storage.IRepositorio;
 import br.acme.storage.RepositorioMotorista;
 import br.acme.storage.RepositorioSolicitante;
 
@@ -23,8 +24,8 @@ public class Gerente extends Usuario {
 
 	/////////////  METHODS  /////////////
 	
-	public void cadastrarMotorista(Motorista novo, RepositorioMotorista listaMotoristas) throws RepositorioException{
-        listaMotoristas.adicionar(novo);
+	public void cadastrarMotorista(Motorista novo, IRepositorio<Motorista> motoristas) throws RepositorioException{
+        motoristas.adicionar(novo);
 	}
 	
 	public void removerMotorista(long idToDelete, RepositorioMotorista listaMotoristas) throws RepositorioException{

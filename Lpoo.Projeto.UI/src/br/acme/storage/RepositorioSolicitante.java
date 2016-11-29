@@ -39,7 +39,7 @@ public class RepositorioSolicitante implements IRepositorio<Solicitante>, Serial
 		public Boolean verificarExistencia(Solicitante obj) throws RepositorioException {
 			for(int i = 0; i < quantiaArray; i++){
 				if(solicitantes[i].getCpf().equals(obj.getCpf())){
-					throw new RepositorioException("Motorista já cadastrado.");
+					throw new RepositorioException("Usuário já cadastrado.");
 				}
 			}
 			return false;
@@ -103,6 +103,7 @@ public class RepositorioSolicitante implements IRepositorio<Solicitante>, Serial
 				System.out.println(this.solicitantes[i].getId());
 		}
 		*/
+		
 		return this.solicitantes;
 	}
 

@@ -6,10 +6,9 @@ import br.acme.exception.NullStringException;
 import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
 import br.acme.location.Lugar;
+import br.acme.location.Viagem;
 import br.acme.storage.Database;
 import br.acme.storage.IRepositorio;
-import br.acme.storage.IRepositorioMotorista;
-import br.acme.storage.IRepositorioViagem;
 import br.acme.storage.RepositorioMotorista;
 import br.acme.storage.RepositorioSolicitante;
 import br.acme.storage.RepositorioViagem;
@@ -21,12 +20,12 @@ public class TesteDancoDeDados {
 
 	public static void main(String[] args) throws ParseException, RepositorioException, NullStringException, UnableCpfExecption {
 		
-		IRepositorioMotorista listaMotoristas = new RepositorioMotorista();
-		IRepositorioMotorista lista2;
+		IRepositorio<Motorista> listaMotoristas = new RepositorioMotorista();
+		IRepositorio<Motorista> lista2;
 		IRepositorio<Solicitante> placeholder = new RepositorioSolicitante();
 		IRepositorio<Solicitante> placeholde2 = new RepositorioSolicitante();
-		IRepositorioViagem lugares = new RepositorioViagem();
-		IRepositorioViagem lugares2 = new RepositorioViagem();
+		IRepositorio<Viagem> lugares = new RepositorioViagem();
+		IRepositorio<Viagem> lugares2 = new RepositorioViagem();
 		Lugar placeA = new Lugar("Recife", "Derby");
 		Lugar placeB = new Lugar("Olinda", "Cé");
 		

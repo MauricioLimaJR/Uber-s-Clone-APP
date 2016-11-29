@@ -9,7 +9,7 @@ import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
 import br.acme.users.Motorista;
 
-public class RepositorioMotorista implements IRepositorioMotorista, Serializable{
+public class RepositorioMotorista implements IRepositorio<Motorista>, Serializable{
 
 	/**
 	 * 
@@ -25,7 +25,7 @@ public class RepositorioMotorista implements IRepositorioMotorista, Serializable
 		
 	public void adicionar(Motorista novo)throws RepositorioException{
 		if(quantiaArray < motoristas.length){
-			if(!verificarExistencia(novo.getCpf())){
+			if(!verificarExistencia(novo)){
 				novo.setId(++nextId);
 				motoristas[quantiaArray] = novo;
 				quantiaArray++;
@@ -36,7 +36,9 @@ public class RepositorioMotorista implements IRepositorioMotorista, Serializable
 			throw new RepositorioException("Repositório de motoristas cheio.");
 	}
 	
-	public Boolean verificarExistencia(String cpf)throws RepositorioException{
+
+	public Boolean verificarExistencia(Motorista obj) throws RepositorioException {
+		String cpf = obj.getCpf();
 		for(int i = 0; i < quantiaArray; i++){
 			if(motoristas[i].getCpf().equals(cpf)){
 				throw new RepositorioException("Motorista já cadastrado.");
@@ -64,7 +66,7 @@ public class RepositorioMotorista implements IRepositorioMotorista, Serializable
 	
 	public void alterar(Motorista atual) throws RepositorioException, NullStringException, UnableCpfExecption{
 		if(quantiaArray==0)throw new RepositorioException("Repositório vazio.");
-		verificarExistencia(atual.getCpf());
+		verificarExistencia(atual);
 		System.out.println(atual.getNome()+", quais parâmetros você deseja alterar?");
 		System.out.print(" 1. CPF \n 2. Email \n 3. senha \n 4. nome \n 5. sexo \n 0. Finalizar!\n");
 		Scanner input = new Scanner(System.in);
@@ -150,6 +152,13 @@ public class RepositorioMotorista implements IRepositorioMotorista, Serializable
 				System.out.println(this.motoristas[i].getId()+" - "+this.motoristas[i].getNome()+" - "+this.motoristas[i].getDisponivel());
 		}
 		return this.motoristas;
+	}
+
+
+	@Override
+	public void remover(Motorista obj) throws RepositorioException {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

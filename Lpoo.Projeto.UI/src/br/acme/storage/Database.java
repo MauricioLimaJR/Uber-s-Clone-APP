@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class Database<Tipo>{
+public class Database{
 
 	private static ObjectOutputStream output;
 	private static ObjectInputStream input;
@@ -15,7 +15,7 @@ public class Database<Tipo>{
 	 * Method to save data
 	 */
 	
-	public static void saveStatus(Object object, String directory){		
+	public static <Tipo> void saveStatus(Tipo object, String directory){		
 		//@PrintString
 		try{
 			output = new ObjectOutputStream(new FileOutputStream(directory));

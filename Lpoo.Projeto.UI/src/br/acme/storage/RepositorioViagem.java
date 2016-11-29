@@ -2,19 +2,26 @@ package br.acme.storage;
 
 import java.io.Serializable;
 
+import br.acme.exception.NullStringException;
 import br.acme.exception.RepositorioException;
+import br.acme.exception.UnableCpfExecption;
 import br.acme.location.Viagem;
 
 @SuppressWarnings("serial")
-public class RepositorioViagem implements IRepositorioViagem, Serializable{
+public class RepositorioViagem implements IRepositorio<Viagem>, Serializable{
 
 	private int nextId=0;
 	private int quantiaArray=0;
 	private Viagem[] viagens = new Viagem[50];
 	
+	public int getQuantiaArray() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 	public void adicionar(Viagem nova) throws RepositorioException{
 		if(quantiaArray < viagens.length){
-			if(!verificarExistencia(nova.getId())){
+			if(!verificarExistencia(nova)){
 				nova.setId(++nextId);
 				viagens[quantiaArray] = nova;
 				quantiaArray++;
@@ -25,7 +32,8 @@ public class RepositorioViagem implements IRepositorioViagem, Serializable{
 			throw new RepositorioException("Repositório de viagens cheio.");
 	}
 	
-	public Boolean verificarExistencia(long id) throws RepositorioException{
+	public Boolean verificarExistencia(Viagem obj) throws RepositorioException {
+		long id = obj.getId();
 		for(int i = 0; i < quantiaArray; i++){
 			if(viagens[i].getId()==id){
 				throw new RepositorioException("Viagem já cadastrada.");
@@ -34,7 +42,8 @@ public class RepositorioViagem implements IRepositorioViagem, Serializable{
 		return false;
 	}
 	
-	public void remover(long id) throws RepositorioException{
+	public void remover(Viagem obj) throws RepositorioException{
+		long id = obj.getId();
 		if(quantiaArray==0)throw new RepositorioException("Repositório vazio.");
 		Boolean status=true;
 		for(int i=0; i<quantiaArray; i++){
@@ -72,5 +81,13 @@ public class RepositorioViagem implements IRepositorioViagem, Serializable{
         	System.out.println("Viagem de id: " + this.viagens[i].getId() + "/ De: "+this.viagens[i].getOrigem().getEndereco()+" - Para: "+this.viagens[i].getDestino().getEndereco()+".");                      
 		}
 		return this.viagens;
+	}
+
+	
+
+	@Override
+	public void alterar(Viagem obj) throws RepositorioException, NullStringException, UnableCpfExecption {
+		// TODO Auto-generated method stub
+		
 	}	
 }

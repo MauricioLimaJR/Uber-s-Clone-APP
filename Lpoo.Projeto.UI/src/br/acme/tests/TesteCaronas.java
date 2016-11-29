@@ -6,6 +6,8 @@ import br.acme.exception.NullStringException;
 import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
 import br.acme.location.Lugar;
+import br.acme.location.Viagem;
+import br.acme.storage.IRepositorio;
 import br.acme.storage.RepositorioMotorista;
 import br.acme.storage.RepositorioSolicitante;
 import br.acme.storage.RepositorioViagem;
@@ -18,8 +20,8 @@ public class TesteCaronas {
 	public static void main(String[] args) throws ParseException, RepositorioException, NullStringException, UnableCpfExecption {
 		
 		RepositorioSolicitante placeholder = new RepositorioSolicitante();
-		RepositorioMotorista motoristas = new RepositorioMotorista();
-		RepositorioViagem lugares = new RepositorioViagem();
+		IRepositorio<Motorista> motoristas = new RepositorioMotorista();
+		IRepositorio<Viagem> lugares = new RepositorioViagem();
 		Lugar place = new Lugar("Recife", "Derby");
 		Lugar place1 = new Lugar("Olinda", "Cé");
 		

@@ -7,7 +7,7 @@ import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
 import br.acme.location.Lugar;
 import br.acme.location.Viagem;
-import br.acme.storage.IRepositorioViagem;
+import br.acme.storage.IRepositorio;
 //import br.acme.storage.RepositorioViagem;
 
 public class Motorista extends Usuario implements Serializable{
@@ -72,11 +72,11 @@ public class Motorista extends Usuario implements Serializable{
 		//this.viagensFeitas.adicionar(ultima);
 	}
 	
-	public Boolean responderPedido(IRepositorioViagem viagens, Solicitante cliente, Motorista atual, Lugar origem, Lugar destino, Double pagamento, String formaPagamento) throws RepositorioException{
+	public Boolean responderPedido(IRepositorio<Viagem> lugares, Solicitante cliente, Motorista atual, Lugar origem, Lugar destino, Double pagamento, String formaPagamento) throws RepositorioException{
 		if(getDisponivel()){
 			Viagem viagem = new Viagem(cliente, atual, origem, destino, pagamento, formaPagamento);
 			setDisponivel(false);
-			viagens.adicionar(viagem);
+			lugares.adicionar(viagem);
 			cliente.adicionarViagemFeita(viagem);
 			atual.adicionarViagemFeita(viagem);
 			System.out.println("Viagem requerida com sucesso!");

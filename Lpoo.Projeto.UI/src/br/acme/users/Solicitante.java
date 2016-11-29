@@ -10,8 +10,7 @@ import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
 import br.acme.location.Lugar;
 import br.acme.location.Viagem;
-import br.acme.storage.IRepositorioMotorista;
-import br.acme.storage.IRepositorioViagem;
+import br.acme.storage.IRepositorio;
 import br.acme.storage.RepositorioMotorista;
 import br.acme.storage.RepositorioViagem;
 
@@ -28,7 +27,7 @@ public class Solicitante extends Usuario {
     private Lugar[] lugaresFavoritos = new Lugar[50];
 	private int numeroCelular;
 	private double saldo=0.0;
-	private IRepositorioViagem viagensFeitas = new RepositorioViagem();
+	private IRepositorio<Viagem> viagensFeitas = new RepositorioViagem();
 	
 
 	public Solicitante(String cpf, String nome, String senha, String sexo, String data, String email, int numeroCelular) throws ParseException, NullStringException, UnableCpfExecption {
@@ -88,11 +87,11 @@ public class Solicitante extends Usuario {
 		saldo += valor;
 	}
 	
-	public IRepositorioViagem getViagens() {
+	public IRepositorio<Viagem> getViagens() {
 		return viagensFeitas;
 	}
 
-	public void setViagemFeita(IRepositorioViagem nova) {
+	public void setViagemFeita(IRepositorio<Viagem> nova) {
 		viagensFeitas = nova;
 	}
 	
@@ -115,11 +114,11 @@ public class Solicitante extends Usuario {
 		this.saldo = saldo;
 	}
 
-	public void solicitarCarona(IRepositorioMotorista lista, IRepositorioViagem viagens, Lugar origem, Lugar destino, Double pagamento, String formaPagamento) throws RepositorioException{
+	public void solicitarCarona(IRepositorio<Motorista> motoristas, IRepositorio<Viagem> lugares, Lugar origem, Lugar destino, Double pagamento, String formaPagamento) throws RepositorioException{
 		Boolean status = true;
-		Motorista[] relacaoMotoristas = lista.buscarTodos();
-		for(int i=0; i < lista.getQuantiaArray(); i++){
-			if(relacaoMotoristas[i].responderPedido(viagens, this, relacaoMotoristas[i], origem, destino, pagamento, formaPagamento)){				
+		Motorista[] relacaoMotoristas = motoristas.buscarTodos();
+		for(int i=0; i < motoristas.getQuantiaArray(); i++){
+			if(relacaoMotoristas[i].responderPedido(lugares, this, relacaoMotoristas[i], origem, destino, pagamento, formaPagamento)){				
 				
 				status = false;
 				break;
