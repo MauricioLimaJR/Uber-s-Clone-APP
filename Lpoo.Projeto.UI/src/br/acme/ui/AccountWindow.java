@@ -14,12 +14,14 @@ import br.acme.storage.Database;
 import br.acme.users.Solicitante;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -51,6 +53,23 @@ public class AccountWindow extends VBox{
 			cpf.setAlignment(Pos.CENTER_LEFT);			
 			TextField cpfField = new TextField();
 			cpfField.setPromptText("Enter your CPF");
+			
+			cpfField.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			
+				@Override
+				public void handle(KeyEvent event) {
+					// TODO Auto-generated method stub
+					String cpf = cpfField.getText();
+					System.out.println(cpf);
+					int local = cpf.length();
+					if( local == 3 || local == 7){
+						cpfField.appendText(".");
+					}else if (local == 11) {
+						cpfField.appendText("-");
+					}
+				}
+			});
+			
 			cpfField.setAlignment(Pos.CENTER_LEFT);
 			userCpf.getChildren().addAll(cpf, cpfField);
 			userCpf.setAlignment(Pos.CENTER_LEFT);

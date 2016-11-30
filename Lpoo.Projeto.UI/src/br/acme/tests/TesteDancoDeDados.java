@@ -67,9 +67,9 @@ public class TesteDancoDeDados {
 
 		System.out.println("");
 		IRepositorio<Solicitante> lista = new RepositorioSolicitante();
-		lista = Database.readDataBase("DataBase/NewUsers.txt");
+		lista = Database.readDataBase("DataBase/Solicitantes.txt");
         //Database<Tipo>.readDataBase("DataBase/NewUsers.txt");
-        lista.buscarTodos();
+        lista.buscar(1);
 		
 		lista2.buscarTodos();
 		System.out.println("");

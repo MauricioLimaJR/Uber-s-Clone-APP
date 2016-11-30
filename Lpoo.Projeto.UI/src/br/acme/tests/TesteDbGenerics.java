@@ -28,6 +28,6 @@ public class TesteDbGenerics {
 		
 		placeholde2.buscarTodos();
 		placeholde2.buscar(1);
-		placeholde2.verificarExistencia(cliente1);
+		placeholde2.buscar(2);
 	}
 }

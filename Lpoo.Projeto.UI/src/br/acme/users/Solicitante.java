@@ -3,6 +3,7 @@ package br.acme.users;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import br.acme.exception.NullStringException;
@@ -116,9 +117,9 @@ public class Solicitante extends Usuario {
 
 	public void solicitarCarona(IRepositorio<Motorista> motoristas, IRepositorio<Viagem> lugares, Lugar origem, Lugar destino, Double pagamento, String formaPagamento) throws RepositorioException{
 		Boolean status = true;
-		Motorista[] relacaoMotoristas = motoristas.buscarTodos();
-		for(int i=0; i < motoristas.getQuantiaArray(); i++){
-			if(relacaoMotoristas[i].responderPedido(lugares, this, relacaoMotoristas[i], origem, destino, pagamento, formaPagamento)){				
+		ArrayList<Motorista> relacaoMotoristas = motoristas.buscarTodos();
+		for(Motorista driver : relacaoMotoristas){
+			if(driver.responderPedido(lugares, this, driver, origem, destino, pagamento, formaPagamento)){				
 				
 				status = false;
 				break;

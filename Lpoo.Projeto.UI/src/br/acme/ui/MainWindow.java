@@ -149,6 +149,7 @@ public class MainWindow extends Application{
 			Image icon = new Image(getClass().getResource("title.png").toExternalForm());
 			mainStage.getIcons().add(icon);  
 			mainStage.setScene(scene);
+			mainStage.setResizable(false);
 			mainStage.show();
 			
 		} catch(Exception e) {

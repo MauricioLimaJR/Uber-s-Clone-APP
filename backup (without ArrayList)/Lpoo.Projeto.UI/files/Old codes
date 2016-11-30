@@ -1,0 +1,85 @@
+/*
+		 * Old code for change and update an user
+		 * 
+		System.out.println(atual.getNome()+", quais parâmetros você deseja alterar?");
+		System.out.print(" 1. CPF \n 2. Email \n 3. senha \n 4. nome \n 5. sexo \n 6. data nascimento \n 7. fone\n 0. Finalizar!\n");
+		Scanner input = new Scanner(System.in);
+		int entrada, elementoNumerico;
+		String elementoString;
+		ArrayList<Integer> entradas = new ArrayList<Integer>();
+		do{
+			entrada = input.nextInt(); 
+			if(entrada >= 1 && entrada <= 7){
+				entradas.add(entrada);
+			}
+			else if(entrada == 0) break;
+			else {System.out.println("Entrada inválida!"); break;}
+		}
+		while(true);
+		
+		String limpaBuffer =input.nextLine(); //Limpamos o buffer após utilizar o nextInt()
+		
+		// abaixo, realizamos as alterações desejadas
+		
+		 int numberOfChooses=entradas.size(), doIt=0;
+		
+		while(numberOfChooses>0)
+			try {
+				{
+				  
+					
+					try {
+						switch(entradas.get(doIt)){
+						case 1: 
+							System.out.println("Digite o novo CPF:");
+							elementoString = input.nextLine();
+							atual.setCpf(elementoString);
+							break;
+						case 2: 
+							System.out.println("Digite o novo email:");
+							elementoString = input.nextLine();
+							atual.setEmail(elementoString);
+							break;
+						case 3:
+							System.out.println("Digite sua nova senha:");
+							elementoString = input.nextLine();
+							atual.setSenha(elementoString);
+							break;
+						case 4:
+							System.out.println("Digite seu novo nome:");
+							elementoString = input.nextLine();
+							atual.setNome(elementoString);
+							break;
+						case 5:
+							System.out.println("Digite seu sexo:");
+							elementoString = input.nextLine();
+							atual.setSexo(elementoString);
+							break;
+						case 6:
+							System.out.println("Digite sua data de nascimento:");
+							elementoString = input.nextLine();
+							atual.setDataNascimento(elementoString);//Digitar a data com "/" (ex: "01/02/2003")
+							break;
+						case 7:
+							System.out.println("Digite seu número de telefone:");
+							elementoNumerico = input.nextInt();
+							atual.setNumeroCelular(elementoNumerico);
+							System.out.println(atual.getNumeroCelular());
+							limpaBuffer =input.nextLine();
+							break;
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					numberOfChooses--;
+					doIt++;
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		input.close();
+		if(doIt>0){ System.out.println("Alterações enviadas!"); }
+		*
+		*/
