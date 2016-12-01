@@ -45,8 +45,8 @@ public class TesteDancoDeDados {
 		placeholder.adicionar(cliente1);
 		
 		//Solicitamos carona 
-		cliente1.solicitarCarona(listaMotoristas, lugares, placeA, placeB, 23.69, "dinheiro");
-		cliente1.solicitarCarona(listaMotoristas, lugares, placeB, placeA, 23.69, "dinheiro");
+		//cliente1.solicitarCarona(listaMotoristas, lugares, placeA, placeB, 23.69, "dinheiro");
+		//cliente1.solicitarCarona(listaMotoristas, lugares, placeB, placeA, 23.69, "dinheiro");
 		
 		//Salvamos todos os envolvidos no banco de dados
 		Database.saveStatus(listaMotoristas,"DataBase/Motoristas.txt");

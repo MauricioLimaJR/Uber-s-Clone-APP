@@ -1,6 +1,13 @@
 package br.acme.ui;
 
+import br.acme.exception.RepositorioException;
+import br.acme.storage.Database;
+import br.acme.storage.IRepositorio;
+import br.acme.storage.RepositorioMotorista;
+import br.acme.storage.RepositorioSolicitante;
 import br.acme.ui.users.ManageWindow;
+import br.acme.users.Motorista;
+import br.acme.users.Solicitante;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,6 +30,13 @@ public class MainWindow extends Application{
 
 	String img = "http://4.bp.blogspot.com/-gMJxkIC8Y4E/VCS8aMvFlgI/AAAAAAAAHwA/z9RNjIET9RY/s1600/Tripda.png";
 	String img2 = "img.jpeg";
+	public String loginAs;
+
+	AccountWindow newAccount = new AccountWindow();
+	
+	public static IRepositorio<Solicitante> userList = new RepositorioSolicitante();
+	public static IRepositorio<Motorista> driverList = new RepositorioMotorista();
+	
 	@SuppressWarnings("unchecked")
 	public void start(Stage mainStage) {
 		try {
@@ -43,14 +57,15 @@ public class MainWindow extends Application{
 			//Second component in the Vbox
 			//Horizontal organization
 			HBox caixaHorizontal = new HBox(); 
-			caixaHorizontal.setSpacing(120);
+			caixaHorizontal.setSpacing(100);
 			caixaHorizontal.setAlignment(Pos.CENTER_LEFT);
 			caixaHorizontal.getStyleClass().add("horizontalBox");
 			
 			//Our left HBOX space
 			VBox leftSideVerticalBox = new VBox();
+			leftSideVerticalBox.alignmentProperty();
 			leftSideVerticalBox.setAlignment(Pos.CENTER_LEFT);
-			leftSideVerticalBox.setSpacing(9);
+			leftSideVerticalBox.setSpacing(100);
 			leftSideVerticalBox.getStyleClass().add("leftSideVerticalBox");
 			
 			//Image image = new Image(getClass().getResource("../Lpoo.Projeto.UI/extra files/images.jpg").toExternalForm());
@@ -69,7 +84,7 @@ public class MainWindow extends Application{
 			
 			//////////   LoginAs Field   /////////
 			HBox loginAsField = new HBox(6);
-			Label loginAs = new Label("Login As:");
+			Label loginAsCamp = new Label("Login As:");
 			String[] userModel = new String[]{"select", "Gerente", "Motorista", "Solicitante"};
 			@SuppressWarnings("rawtypes")
 			ChoiceBox logarComo = new ChoiceBox(FXCollections.observableArrayList(userModel));
@@ -77,13 +92,13 @@ public class MainWindow extends Application{
 			logarComo.getSelectionModel().selectedIndexProperty().addListener(
 					(ObservableValue<? extends Number> ov,
 							Number oldValue, Number newValue) -> {
-								//label.setText(userModel[newValue.intValue()]);
+								loginAs = userModel[newValue.intValue()];
 							}
 					);
 			logarComo.getSelectionModel().select(0);
 			logarComo.setTooltip(new Tooltip("Do login as.."));
 			
-			loginAsField.getChildren().addAll(loginAs, logarComo);
+			loginAsField.getChildren().addAll(loginAsCamp, logarComo);
 			
 
 			//////////   userEmail Field   /////////
@@ -116,11 +131,18 @@ public class MainWindow extends Application{
 			@Override
 			public void handle(ActionEvent e) {
 				//((Button) e.getSource()).getScene().getWindow().hide();
-				ManageWindow adm = new ManageWindow();
-				adm.start(mainStage);
+				try {
+					if(doLogin(loginAs, emailField.getText(), passField.getText())){
+
+						ManageWindow adm = new ManageWindow();
+						adm.start(mainStage);
+					}
+				} catch (RepositorioException e1) {
+					e1.printStackTrace();
+				}
 			}
 			});
-			
+	
 			
 			Button btnSignUp = new Button("Sign up");
 			btnSignUp.setAlignment(Pos.CENTER_LEFT);
@@ -131,7 +153,8 @@ public class MainWindow extends Application{
 		        @Override
 		        public void handle(ActionEvent t) {
 		        	leftSideVerticalBox.getChildren().remove(0);
-		        	leftSideVerticalBox.getChildren().add(new AccountWindow());
+		        	//newAccount.setAlignment(Pos.CENTER_RIGHT);
+		        	leftSideVerticalBox.getChildren().add(newAccount);
 		        	
 		        }
 		    });
@@ -160,6 +183,33 @@ public class MainWindow extends Application{
 	public static void main(String[] args) {
 		launch(args);
 	}	
+	
+	public Boolean doLogin(String loginAs, String email, String pass) throws RepositorioException{
+		if(loginAs.equals("select") || loginAs==null){
+			throw new RepositorioException("LoginAs is wrong");
+		}
+		else if(loginAs.equals("Solicitante")){
+			userList = Database.readDataBase("DataBase/Solicitantes.txt");
+			
+			for(Solicitante user : userList.buscarTodos()){
+				if(user.getEmail().equals(email) && user.getSenha().equals(pass)){
+					System.out.println("logando");
+					return true;
+				}
+			}
+		}else if(loginAs.equals("Motorista")){
+			driverList = Database.readDataBase("DataBase/Motoristas.txt");
+			
+			for(Motorista driver : driverList.buscarTodos()){
+				if(driver.getEmail().equals(email) && driver.getSenha().equals(pass)){
+					System.out.println("logando");
+					return true;
+				}
+			}
+		}
+		throw new RepositorioException("Usuário não existente!");
+	}
+	
 }
 
 
