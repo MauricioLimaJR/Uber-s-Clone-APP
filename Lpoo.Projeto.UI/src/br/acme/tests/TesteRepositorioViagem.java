@@ -18,8 +18,8 @@ public class TesteRepositorioViagem {
 		
 		//Gerente admin = new Gerente("123", "Paulo", "paulo56", "masc");
 		
-		Motorista driver1 = new Motorista("321", "driver@estrada.com", "facil", "José", "masc");
-		Motorista driver2 = new Motorista("123", "driver@estrada.com", "facil", "Bianca", "fem");
+		Motorista driver1 = new Motorista(new Solicitante("321", "José", "facil", "masc", "10/06/1985", "driver@estrada.com", "345678"));
+		Motorista driver2 = new Motorista(new Solicitante("321", "José", "facil", "masc", "10/06/1985", "driver@estrada.com", "345678"));
 		
 		Solicitante cliente1 = new Solicitante("5555", "Doca", "boa", "masc", "10/06/1985", "teste@legal.com", "345678");
 		Solicitante cliente2 = new Solicitante("6666", "Maria", "boa", "fem", "10/06/1985", "teste@legal.com", "345678");

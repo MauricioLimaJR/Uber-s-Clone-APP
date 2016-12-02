@@ -22,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -82,46 +83,27 @@ public class MainWindow extends Application{
 			
 			//Elements of rightSideVerticalBox
 			
-			//////////   LoginAs Field   /////////
-			HBox loginAsField = new HBox(6);
-			Label loginAsCamp = new Label("Login As:");
-			String[] userModel = new String[]{"select", "Gerente", "Motorista", "Solicitante"};
-			@SuppressWarnings("rawtypes")
-			ChoiceBox logarComo = new ChoiceBox(FXCollections.observableArrayList(userModel));
-			
-			logarComo.getSelectionModel().selectedIndexProperty().addListener(
-					(ObservableValue<? extends Number> ov,
-							Number oldValue, Number newValue) -> {
-								loginAs = userModel[newValue.intValue()];
-							}
-					);
-			logarComo.getSelectionModel().select(0);
-			logarComo.setTooltip(new Tooltip("Do login as.."));
-			
-			loginAsField.getChildren().addAll(loginAsCamp, logarComo);
-			
+			GridPane righSideGP = new GridPane();
 
 			//////////   userEmail Field   /////////
 			
-			HBox userEmail = new HBox(28);
 			Label email = new Label("Email:");
 			email.setAlignment(Pos.CENTER_LEFT);
 			TextField emailField = new TextField();
 			emailField.setPromptText("Enter your email");
 			emailField.setAlignment(Pos.CENTER_LEFT);
-			userEmail.getChildren().addAll(email, emailField);
-			userEmail.setAlignment(Pos.CENTER_LEFT);
 			
 			//////////   userPass Field   /////////
+
+			//ERROR LABEL
+			Label error = new Label();
+			error.setAlignment(Pos.CENTER);
 			
-			HBox userPass = new HBox(5);
 			Label password = new Label("Password:");
 			password.setAlignment(Pos.CENTER_LEFT);
 			TextField passField = new TextField();
 			passField.setAlignment(Pos.CENTER_LEFT);
 			passField.setPromptText("Enter your password");
-			userPass.getChildren().addAll(password, passField);
-			userPass.setAlignment(Pos.CENTER_LEFT);
 			
 			Button btnSignIn = new Button("Sign in");
 			btnSignIn.setAlignment(Pos.CENTER_LEFT);
@@ -132,20 +114,21 @@ public class MainWindow extends Application{
 			public void handle(ActionEvent e) {
 				//((Button) e.getSource()).getScene().getWindow().hide();
 				try {
-					if(doLogin(loginAs, emailField.getText(), passField.getText())){
+					if(doLogin(emailField.getText(), passField.getText())){
 
 						ManageWindow adm = new ManageWindow();
 						adm.start(mainStage);
 					}
 				} catch (RepositorioException e1) {
 					e1.printStackTrace();
+					error.setText(e1.toString());
 				}
 			}
 			});
 	
 			
 			Button btnSignUp = new Button("Sign up");
-			btnSignUp.setAlignment(Pos.CENTER_LEFT);
+			btnSignUp.setAlignment(Pos.CENTER_RIGHT);
 			btnSignUp.getStyleClass().add("mainBtn");			
 			//Clear the left side to do a new account
 			btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
@@ -158,10 +141,26 @@ public class MainWindow extends Application{
 		        	
 		        }
 		    });
-				
 			
-			//Put elements into layouts
-			rigthSideVerticalBox.getChildren().addAll(loginAsField, userEmail, userPass, btnSignIn, btnSignUp);
+			
+			//Put elements into layouts			
+			//EMAIL FIELD
+			GridPane.setConstraints(email, 1, 1);
+			GridPane.setConstraints(emailField, 2, 1);			
+			//USERPASS
+			GridPane.setConstraints(password, 1, 2);
+			GridPane.setConstraints(passField, 2, 2);
+			//BUTTONS
+			GridPane.setConstraints(btnSignIn, 2, 3);
+			GridPane.setConstraints(btnSignUp, 2, 4);
+			//LABEL
+			GridPane.setConstraints(error, 2, 5);
+			
+			righSideGP.getChildren().addAll(email, emailField, password,
+					passField, btnSignIn, btnSignUp);
+			
+			
+			rigthSideVerticalBox.getChildren().add(righSideGP);
 			caixaHorizontal.getChildren().addAll(leftSideVerticalBox, rigthSideVerticalBox);
 			firstPlace.getChildren().addAll(titleText, caixaHorizontal);
 		
@@ -184,31 +183,28 @@ public class MainWindow extends Application{
 		launch(args);
 	}	
 	
-	public Boolean doLogin(String loginAs, String email, String pass) throws RepositorioException{
-		if(loginAs.equals("select") || loginAs==null){
-			throw new RepositorioException("LoginAs is wrong");
-		}
-		else if(loginAs.equals("Solicitante")){
-			userList = Database.readDataBase("DataBase/Solicitantes.txt");
-			
-			for(Solicitante user : userList.buscarTodos()){
-				if(user.getEmail().equals(email) && user.getSenha().equals(pass)){
-					System.out.println("logando");
-					return true;
-				}
-			}
-		}else if(loginAs.equals("Motorista")){
-			driverList = Database.readDataBase("DataBase/Motoristas.txt");
-			
-			for(Motorista driver : driverList.buscarTodos()){
-				if(driver.getEmail().equals(email) && driver.getSenha().equals(pass)){
-					System.out.println("logando");
-					return true;
-				}
+	public Boolean doLogin(String email, String pass) throws RepositorioException{
+	
+		userList = Database.readDataBase("DataBase/Solicitantes.txt");
+		
+		for(Solicitante user : userList.buscarTodos()){
+			if(user.getEmail().equals(email) && user.getSenha().equals(pass)){
+				System.out.println("logando");
+				return true;
 			}
 		}
-		throw new RepositorioException("Usuário não existente!");
-	}
+	
+		driverList = Database.readDataBase("DataBase/Motoristas.txt");
+		
+		for(Motorista driver : driverList.buscarTodos()){
+			if(driver.getEmail().equals(email) && driver.getSenha().equals(pass)){
+				System.out.println("logando");
+				return true;
+			}
+		}
+		
+	throw new RepositorioException("Usuário não existente!");
+}
 	
 }
 

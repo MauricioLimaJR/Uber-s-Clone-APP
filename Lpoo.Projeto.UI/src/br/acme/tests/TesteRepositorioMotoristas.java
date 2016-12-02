@@ -1,25 +1,28 @@
 package br.acme.tests;
 
+import java.text.ParseException;
+
 import br.acme.exception.NullStringException;
 import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
 import br.acme.storage.RepositorioMotorista;
 import br.acme.users.Gerente;
 import br.acme.users.Motorista;
+import br.acme.users.Solicitante;
 
 public class TesteRepositorioMotoristas {
 
-	public static void main(String[] args) throws RepositorioException, NullStringException, UnableCpfExecption {
+	public static void main(String[] args) throws RepositorioException, NullStringException, UnableCpfExecption, ParseException {
 		
 		RepositorioMotorista placeholder = new RepositorioMotorista();
 		
 		Gerente admin = new Gerente("123", "Paulo", "paulo56", "masc");
 		
-		Motorista driver0 = new Motorista("321", "José", "facil", "masc", "driver@estrada.com");
-		Motorista driver1 = new Motorista("321", "Lucas", "facil", "masc", "driver@estrada.com");
-		Motorista driver2 = new Motorista("341", "Marcos", "facil", "masc", "driver@estrada.com");
-		Motorista driver3 = new Motorista("361", "Sonia", "facil", "fem", "driver@estrada.com");
-		Motorista driver4 = new Motorista("821", "Antônio", "facil", "masc", "driver@estrada.com");
+		Motorista driver0 = new Motorista(new Solicitante("321", "José", "facil", "masc", "10/06/1985", "driver@estrada.com", "345678"));
+		Motorista driver1 = new Motorista(new Solicitante("321", "José", "facil", "masc", "10/06/1985", "driver@estrada.com", "345678"));
+		Motorista driver2 = new Motorista(new Solicitante("321", "José", "facil", "masc", "10/06/1985", "driver@estrada.com", "345678"));
+		Motorista driver3 = new Motorista(new Solicitante("321", "José", "facil", "masc", "10/06/1985", "driver@estrada.com", "345678"));
+		Motorista driver4 = new Motorista(new Solicitante("321", "José", "facil", "masc", "10/06/1985", "driver@estrada.com", "345678"));
 		
 		//Utilizamos o gerente para manipular os mostoristas
 		

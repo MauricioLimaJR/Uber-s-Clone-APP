@@ -32,7 +32,7 @@ public class TesteDancoDeDados {
 		Gerente admin = new Gerente("113.544.464-10", "Paulo", "paulo56", "masc");
 		Gerente adm;
 		
-		Motorista driver0 = new Motorista("113.544.464-10", "José", "facil", "masc", "driver@estrada.com");
+		Motorista driver0 = new Motorista(new Solicitante("113.544.464-10", "José", "facil", "masc", "10/06/1985", "driver@estrada.com", "87596848"));
 		//Motorista driver1 = new Motorista("113.544.464-10", "Lucas", "facil", "masc", "driver@estrada.com");
 		
 		//Solicitante cliente0 = new Solicitante("113.544.464-10", "Bianca", "boa", "fem", "10/06/1985", "teste@legal.com", 345678);

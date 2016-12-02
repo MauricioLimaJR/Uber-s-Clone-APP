@@ -12,7 +12,7 @@ public class TesteDBSQL {
 	public static void main(String[] args) throws ParseException, NullStringException, UnableCpfExecption {
 		
 		//Saving a user into Database MySQL
-		Solicitante cliente1 = new Solicitante("113.544.464-10", "Mario", "boa", "masc", "10/06/1985", "teste@legal.com", "345678");
+		Solicitante cliente1 = new Solicitante("119.205.074-69", "Alyson", "boa", "masc", "10/06/1985", "teste@legal.com", "345678");
 		
 		SolicitanteDAO.insertUser(cliente1);
 		
