@@ -1,0 +1,7 @@
+- Complete the DAO classes
+- Fix fields in the Account Class
+- Implements the Login method (with user like a parameter)
+- Rebuild all CSS 
+- Implements the google maps
+- Rebuild hierarchical structure
+- Implements the workspace window
