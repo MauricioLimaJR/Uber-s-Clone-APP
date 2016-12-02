@@ -173,7 +173,7 @@ public class AccountWindow extends GridPane{
 			Button btnSend = new Button("Send");
 			btnSend.setAlignment(Pos.BOTTOM_RIGHT);
 			btnSend.getStyleClass().add("accountBtn");			
-			//
+			
 			btnSend.setOnAction(new EventHandler<ActionEvent>() {
 		        @Override
 		        public void handle(ActionEvent t) {

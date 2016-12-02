@@ -3,5 +3,6 @@
 - Implements the Login method (with user like a parameter)
 - Rebuild all CSS 
 - Implements the google maps
-- Rebuild hierarchical structure
+- Rebuild hierarchical structure ~~
 - Implements the workspace window
+- Fix the order of solicitante's constructor

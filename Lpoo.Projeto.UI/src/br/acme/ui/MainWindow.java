@@ -5,18 +5,19 @@ import br.acme.storage.Database;
 import br.acme.storage.IRepositorio;
 import br.acme.storage.RepositorioMotorista;
 import br.acme.storage.RepositorioSolicitante;
+import br.acme.ui.users.DriverWindow;
 import br.acme.ui.users.ManageWindow;
+import br.acme.ui.users.UserWindow;
+import br.acme.users.Gerente;
 import br.acme.users.Motorista;
 import br.acme.users.Solicitante;
+import br.acme.users.Usuario;
 import javafx.application.Application;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -35,10 +36,13 @@ public class MainWindow extends Application{
 
 	AccountWindow newAccount = new AccountWindow();
 	
+	ManageWindow adm = new ManageWindow();
+	UserWindow user = new UserWindow();
+	DriverWindow driver = new DriverWindow();
+	
 	public static IRepositorio<Solicitante> userList = new RepositorioSolicitante();
 	public static IRepositorio<Motorista> driverList = new RepositorioMotorista();
 	
-	@SuppressWarnings("unchecked")
 	public void start(Stage mainStage) {
 		try {
 			//Here, we do a vertical organization
@@ -66,15 +70,24 @@ public class MainWindow extends Application{
 			VBox leftSideVerticalBox = new VBox();
 			leftSideVerticalBox.alignmentProperty();
 			leftSideVerticalBox.setAlignment(Pos.CENTER_LEFT);
-			leftSideVerticalBox.setSpacing(100);
+			leftSideVerticalBox.setSpacing(10);
 			leftSideVerticalBox.getStyleClass().add("leftSideVerticalBox");
 			
 			//Image image = new Image(getClass().getResource("../Lpoo.Projeto.UI/extra files/images.jpg").toExternalForm());
-			ImageView imagemView = new ImageView(getClass().getResource("files/imgInit.jpg").toString());
+			ImageView imagemView = new ImageView(getClass().getResource("files/imgT.png").toString());
 			imagemView.setTranslateX(80);
 			imagemView.setTranslateY(5);
 			
-			leftSideVerticalBox.getChildren().addAll(imagemView);
+			//CANCEL BUTTON
+			Button cancel = new Button("Cancel");
+			cancel.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent t){
+					leftSideVerticalBox.getChildren().remove(0, 2);
+					leftSideVerticalBox.getChildren().add(imagemView);
+				}
+			});
+			
+			leftSideVerticalBox.getChildren().add(imagemView);
 			
 			//Our right Vbox space, with a two elements in other VBox
 			VBox rigthSideVerticalBox = new VBox(); 
@@ -114,9 +127,15 @@ public class MainWindow extends Application{
 			public void handle(ActionEvent e) {
 				//((Button) e.getSource()).getScene().getWindow().hide();
 				try {
-					if(doLogin(emailField.getText(), passField.getText())){
-
-						ManageWindow adm = new ManageWindow();
+					Usuario person = doLogin(emailField.getText(), passField.getText());
+					
+					if(person.getClass() == Solicitante.class){
+						user.start(mainStage);
+					}
+					else if(person.getClass() == Motorista.class){
+						driver.start(mainStage);
+					}
+					else if(person.getClass() == Gerente.class){
 						adm.start(mainStage);
 					}
 				} catch (RepositorioException e1) {
@@ -125,7 +144,6 @@ public class MainWindow extends Application{
 				}
 			}
 			});
-	
 			
 			Button btnSignUp = new Button("Sign up");
 			btnSignUp.setAlignment(Pos.CENTER_RIGHT);
@@ -137,11 +155,10 @@ public class MainWindow extends Application{
 		        public void handle(ActionEvent t) {
 		        	leftSideVerticalBox.getChildren().remove(0);
 		        	//newAccount.setAlignment(Pos.CENTER_RIGHT);
-		        	leftSideVerticalBox.getChildren().add(newAccount);
+		        	leftSideVerticalBox.getChildren().addAll(newAccount, cancel);
 		        	
 		        }
 		    });
-			
 			
 			//Put elements into layouts			
 			//EMAIL FIELD
@@ -183,14 +200,15 @@ public class MainWindow extends Application{
 		launch(args);
 	}	
 	
-	public Boolean doLogin(String email, String pass) throws RepositorioException{
+	public Usuario doLogin(String email, String pass) throws RepositorioException{
 	
 		userList = Database.readDataBase("DataBase/Solicitantes.txt");
 		
 		for(Solicitante user : userList.buscarTodos()){
 			if(user.getEmail().equals(email) && user.getSenha().equals(pass)){
-				System.out.println("logando");
-				return true;
+				//@PrintString
+				//System.out.println("logando");
+				return user;
 			}
 		}
 	
@@ -198,10 +216,12 @@ public class MainWindow extends Application{
 		
 		for(Motorista driver : driverList.buscarTodos()){
 			if(driver.getEmail().equals(email) && driver.getSenha().equals(pass)){
-				System.out.println("logando");
-				return true;
+				//@PrintString
+				//System.out.println("logando");
+				return driver;
 			}
 		}
+		
 		
 	throw new RepositorioException("Usuário não existente!");
 }
