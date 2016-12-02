@@ -17,8 +17,8 @@ public class TesteDbGenerics {
 		IRepositorio<Solicitante> placeholder = new RepositorioSolicitante();
 		IRepositorio<Solicitante> placeholde2 = new RepositorioSolicitante();
 
-		Solicitante cliente0 = new Solicitante("113.544.464-10", "Bianca", "boa", "fem", "10/06/1985", "teste@legal.com", 345678);
-		Solicitante cliente1 = new Solicitante("414.022.235-28", "Mario", "boa", "masc", "10/06/1985", "teste@legal.com", 345678);
+		Solicitante cliente0 = new Solicitante("113.544.464-10", "Bianca", "boa", "fem", "10/06/1985", "teste@legal.com", "345678");
+		Solicitante cliente1 = new Solicitante("414.022.235-28", "Mario", "boa", "masc", "10/06/1985", "teste@legal.com", "345678");
 		
 		placeholder.adicionar(cliente0);
 		placeholder.adicionar(cliente1);

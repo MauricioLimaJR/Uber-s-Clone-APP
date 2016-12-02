@@ -36,7 +36,7 @@ public class TesteDancoDeDados {
 		//Motorista driver1 = new Motorista("113.544.464-10", "Lucas", "facil", "masc", "driver@estrada.com");
 		
 		//Solicitante cliente0 = new Solicitante("113.544.464-10", "Bianca", "boa", "fem", "10/06/1985", "teste@legal.com", 345678);
-		Solicitante cliente1 = new Solicitante("113.544.464-10", "Mario", "boa", "masc", "10/06/1985", "teste@legal.com", 345678);
+		Solicitante cliente1 = new Solicitante("113.544.464-10", "Mario", "boa", "masc", "10/06/1985", "teste@legal.com", "345678");
 		
 		//Salvamos motoristas e solicitantes nos seus repositórios
 		listaMotoristas.adicionar(driver0);

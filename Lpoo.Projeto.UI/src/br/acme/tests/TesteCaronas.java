@@ -27,10 +27,10 @@ public class TesteCaronas {
 		
 		Gerente admin = new Gerente("123", "Paulo", "paulo56", "masc");
 		
-		Solicitante cliente0 = new Solicitante("5555", "Seu Zé", "boa", "masc", "10/06/1985", "teste@legal.com", 345678);
-		Solicitante cliente1 = new Solicitante("6666", "Maria", "boa", "fem", "10/06/1985", "teste@legal.com", 345678);
-		Solicitante cliente2 = new Solicitante("7777", "Zanza", "boa", "fem", "10/06/1985", "teste@legal.com", 345678);
-		Solicitante cliente3 = new Solicitante("8888", "Seu apressado", "boa", "masc", "10/06/1985", "teste@legal.com", 345678);
+		Solicitante cliente0 = new Solicitante("5555", "Seu Zé", "boa", "masc", "10/06/1985", "teste@legal.com", "345678");
+		Solicitante cliente1 = new Solicitante("6666", "Maria", "boa", "fem", "10/06/1985", "teste@legal.com", "345678");
+		Solicitante cliente2 = new Solicitante("7777", "Zanza", "boa", "fem", "10/06/1985", "teste@legal.com", "345678");
+		Solicitante cliente3 = new Solicitante("8888", "Seu apressado", "boa", "masc", "10/06/1985", "teste@legal.com", "345678");
 		
 		Motorista driver0 = new Motorista("321", "José", "facil", "masc", "driver@estrada.com");
 		Motorista driver1 = new Motorista("341", "Marcos", "facil", "masc", "driver@estrada.com");

@@ -126,8 +126,8 @@ public class ManageWindow extends Application {
 			
 			///////
 			List pessoas = Arrays.asList(
-					new Solicitante("113.544.464.10", "Seu Zé", "boa", "masc", "10/06/1985", "teste@legal.com", 345678),
-					new Solicitante("338.804.515-16", "Doca", "boa", "masc", "10/06/1985", "teste@legal.com", 345678)
+					new Solicitante("113.544.464.10", "Seu Zé", "boa", "masc", "10/06/1985", "teste@legal.com", "345678"),
+					new Solicitante("338.804.515-16", "Doca", "boa", "masc", "10/06/1985", "teste@legal.com", "345678")
 					);
 			
 			//Solicitante[] pessoas = (Solicitante[]) SolicitationDB.LerBaseSolicitantes("1").buscarTodos();

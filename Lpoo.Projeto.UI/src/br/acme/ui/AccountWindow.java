@@ -181,7 +181,7 @@ public class AccountWindow extends GridPane{
 		        	try {
 						makeAnUser(cpfField.getText(), nameField.getText(), passField.getText(),
 								sexField, bdField.getText(), emailField.getText(),
-								Integer.valueOf(numberField.getText()));
+								numberField.getText());
 					} catch (NumberFormatException | ParseException | NullStringException | UnableCpfExecption e) {
 						e.printStackTrace();
 						Label msg = new Label(e.getMessage());
@@ -254,7 +254,7 @@ public class AccountWindow extends GridPane{
 		this.getChildren().addAll(label);
 	}
 	
-	public void makeAnUser(String cpf, String name, String password, String sex, String date, String email, int number) throws ParseException, NullStringException, UnableCpfExecption{
+	public void makeAnUser(String cpf, String name, String password, String sex, String date, String email, String number) throws ParseException, NullStringException, UnableCpfExecption{
 		Solicitante solicitante = new Solicitante(cpf, name, password, sex, date, email, number);
 		sendNewAccount(solicitante);
 		Label m = new Label("Enviado");

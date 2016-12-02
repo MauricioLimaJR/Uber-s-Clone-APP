@@ -17,11 +17,11 @@ public class TesteRepositorioSolicitantes {
 		
 		Gerente admin = new Gerente("123", "Paulo", "paulo56", "masc");
 		
-		Solicitante cliente0 = new Solicitante("5555", "Seu Zé", "boa", "masc", "10/06/1985", "teste@legal.com", 345678);
-		Solicitante cliente1 = new Solicitante("5555", "Doca", "boa", "masc", "10/06/1985", "teste@legal.com", 345678);
-		Solicitante cliente2 = new Solicitante("6666", "Maria", "boa", "fem", "10/06/1985", "teste@legal.com", 345678);
-		Solicitante cliente3 = new Solicitante("7777", "Zanza", "boa", "fem", "10/06/1985", "teste@legal.com", 345678);
-		Solicitante cliente4 = new Solicitante("8888", "Seu apressado", "boa", "masc", "10/06/1985", "teste@legal.com", 345678);
+		Solicitante cliente0 = new Solicitante("5555", "Seu Zé", "boa", "masc", "10/06/1985", "teste@legal.com", "345678");
+		Solicitante cliente1 = new Solicitante("5555", "Doca", "boa", "masc", "10/06/1985", "teste@legal.com", "345678");
+		Solicitante cliente2 = new Solicitante("6666", "Maria", "boa", "fem", "10/06/1985", "teste@legal.com", "345678");
+		Solicitante cliente3 = new Solicitante("7777", "Zanza", "boa", "fem", "10/06/1985", "teste@legal.com", "345678");
+		Solicitante cliente4 = new Solicitante("8888", "Seu apressado", "boa", "masc", "10/06/1985", "teste@legal.com", "345678");
 		
 		placeholder.adicionar(cliente0);
 		placeholder.adicionar(cliente1);
