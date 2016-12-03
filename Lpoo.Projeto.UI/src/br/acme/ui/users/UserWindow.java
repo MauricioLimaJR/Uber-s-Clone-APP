@@ -3,7 +3,9 @@ package br.acme.ui.users;
 import br.acme.exception.RepositorioException;
 import br.acme.storage.Repositorio;
 import br.acme.storage.RepositorioViagem;
+import br.acme.ui.MainWindow;
 import br.acme.ui.elements.TravelList;
+import br.acme.ui.elements.UserEdit;
 import br.acme.users.Solicitante;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -72,7 +74,7 @@ public class UserWindow extends Application {
 			//Add function while clicking 				
 			
 			header.getChildren().addAll(titleImg, nomeUser, userSettings, userLogout);
-			header.setSpacing(200);
+			header.setSpacing(100);
 			header.setAlignment(Pos.CENTER_LEFT);
 			header.setId("header");
 			//header.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
@@ -155,6 +157,32 @@ public class UserWindow extends Application {
 			footer.setId("footer");
 			//footer.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
 
+			
+			//////////////////////// HEADER BUTTONS 
+			
+			userSettings.setOnAction( new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					
+				//clearView(workSpace);
+					UserEdit edit = new UserEdit(user);
+					edit.setAlignment(Pos.CENTER);
+				loadView(edit, workSpace);
+				}
+			});
+			
+			userLogout.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					MainWindow mainMenu = new MainWindow();
+					mainMenu.setOldEmail(user.getEmail());
+					mainMenu.start(primaryStage);
+					
+				}
+			});
+			
 			/////////////////////////   Making the final settings   /////////////////////////
 					
 			bodyHolder.getChildren().addAll(header, body, footer);

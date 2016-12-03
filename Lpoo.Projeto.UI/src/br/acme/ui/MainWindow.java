@@ -32,6 +32,7 @@ public class MainWindow extends Application{
 
 	String img = "http://4.bp.blogspot.com/-gMJxkIC8Y4E/VCS8aMvFlgI/AAAAAAAAHwA/z9RNjIET9RY/s1600/Tripda.png";
 	String img2 = "img.jpeg";
+	private String oldEmail = null;
 	public String loginAs;
 
 	AccountWindow newAccount = new AccountWindow();
@@ -100,9 +101,10 @@ public class MainWindow extends Application{
 
 			//////////   userEmail Field   /////////
 			
-			Label email = new Label("Email:");
+			Label email = new Label("Email");
 			email.setAlignment(Pos.CENTER_LEFT);
 			TextField emailField = new TextField();
+			if(oldEmail != null) emailField.setText(oldEmail);
 			emailField.setPromptText("Enter your email");
 			emailField.setAlignment(Pos.CENTER_LEFT);
 			
@@ -213,6 +215,7 @@ public class MainWindow extends Application{
 			}
 		}
 	
+		/*
 		driverList = Database.readDataBase("DataBase/Motoristas.txt");
 		
 		for(Motorista driver : driverList.buscarTodos()){
@@ -222,10 +225,14 @@ public class MainWindow extends Application{
 				return driver;
 			}
 		}
-		
+		*/
 		
 	throw new RepositorioException("Usuário não existente!");
 }
+	
+	public void setOldEmail(String email){
+		oldEmail = email;
+	}
 	
 }
 

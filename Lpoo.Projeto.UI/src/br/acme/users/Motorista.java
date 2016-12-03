@@ -20,8 +20,7 @@ public class Motorista extends Solicitante implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Boolean disponivel=true;
-    
-	private IRepositorio<Viagem> viagensFeitas = new RepositorioViagem();
+  
    
 	//TESTAR NO LUGAR DO VETOR DE VIAGENSFEITAS
 	//private IRepositorioViagem viagensFeitas = new RepositorioViagem();
@@ -42,20 +41,12 @@ public class Motorista extends Solicitante implements Serializable{
 	public void setDisponivel(Boolean disponivel) {
 		this.disponivel = disponivel;
 	}
-
-	public IRepositorio<Viagem> getViagensFeitas() {
-		return viagensFeitas;
-	}
-
-	public void setViagensFeitas(IRepositorio<Viagem> nova){
-		this.viagensFeitas = nova;
-	}
 		
 	/////////////  METHODS  /////////////
 	
 
 	public void adicionarViagemFeita(Viagem ultima) throws RepositorioException {
-		this.viagensFeitas.adicionar(ultima);
+		//this.viagensFeitas.adicionar(ultima);
 	}
 	
 	public Boolean responderPedido(IRepositorio<Viagem> lugares, Solicitante cliente, Motorista atual, Lugar origem, Lugar destino, Double pagamento, String formaPagamento) throws RepositorioException{
@@ -63,7 +54,7 @@ public class Motorista extends Solicitante implements Serializable{
 			Viagem viagem = new Viagem(cliente, atual, origem, destino, pagamento, formaPagamento);
 			setDisponivel(false);
 			lugares.adicionar(viagem);
-			cliente.adicionarViagemFeita(viagem);
+			//cliente.adicionarViagemFeita(viagem);
 			atual.adicionarViagemFeita(viagem);
 			System.out.println("Viagem requerida com sucesso!");
 			return true;
@@ -73,7 +64,7 @@ public class Motorista extends Solicitante implements Serializable{
 	
 	public void historico() throws RepositorioException{
 		System.out.println(this.getNome()+" fez:");
-		this.viagensFeitas.buscarTodos();
+		//this.viagensFeitas.buscarTodos();
 	}
 	
 	public String toString(){

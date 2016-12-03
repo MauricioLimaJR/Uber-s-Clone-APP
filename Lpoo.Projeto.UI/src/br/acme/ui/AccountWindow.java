@@ -3,12 +3,14 @@ package br.acme.ui;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import application.MaskTextField;
 import br.acme.exception.NullStringException;
 import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
 import br.acme.storage.Database;
 import br.acme.storage.IRepositorio;
 import br.acme.storage.IRepositorioSolicitante;
+import br.acme.storage.Repositorio;
 import br.acme.storage.RepositorioSolicitante;
 import br.acme.ui.elements.UserList;
 import br.acme.storage.Database;
@@ -55,7 +57,8 @@ public class AccountWindow extends GridPane{
 			HBox userName = new HBox(28);
 			Label name = new Label("Name:");
 			name.setAlignment(Pos.CENTER_LEFT);			
-			TextField nameField = new TextField();
+			MaskTextField nameField = new MaskTextField();
+			nameField.setMask("*!");
 			nameField.setPromptText("Enter your name");
 			nameField.setAlignment(Pos.CENTER_LEFT);
 			userName.getChildren().addAll(name, nameField);
@@ -64,7 +67,8 @@ public class AccountWindow extends GridPane{
 			//VBox userCpf
 			Label cpf = new Label("CPF:");
 			cpf.setAlignment(Pos.CENTER_LEFT);			
-			TextField cpfField = new TextField();
+			MaskTextField cpfField = new MaskTextField();
+			cpfField.setMask("NNN.NNN.NNN-NN");
 			cpfField.setPromptText("Enter your CPF");
 			
 			cpfField.setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -86,7 +90,8 @@ public class AccountWindow extends GridPane{
 			//VBox userEmail
 			Label email = new Label("Email:");
 			email.setAlignment(Pos.CENTER_LEFT);			
-			TextField emailField = new TextField();
+			MaskTextField emailField = new MaskTextField();
+			emailField.setMask("L!@L!.L!.L!");
 			emailField.setPromptText("Enter your name");
 			emailField.setAlignment(Pos.CENTER_LEFT);
 			
@@ -109,7 +114,8 @@ public class AccountWindow extends GridPane{
 			//VBox userBirthday
 			Label birthDay = new Label("BirthDay:");
 			birthDay.setAlignment(Pos.CENTER_LEFT);			
-			TextField bdField = new TextField();
+			MaskTextField bdField = new MaskTextField();
+			bdField.setMask("NN/NN/NNNN");
 			bdField.setPromptText("dd/mm/aaaa");
 			bdField.setAlignment(Pos.CENTER_LEFT);
 			
@@ -129,26 +135,28 @@ public class AccountWindow extends GridPane{
 					bdLastPos = bdPos;
 				}
 			});
-
+			 
 			//VBox userNumber
 			Label number = new Label("Phone:");
 			number.setAlignment(Pos.CENTER_LEFT);			
-			TextField numberField = new TextField();
+			MaskTextField numberField = new MaskTextField();
+			numberField.setMask("NN*NNNNNNNNN");
+			//numberField.setMask("ANNAN!-NNNN");
 			numberField.setPromptText("(xx) xxxxx xxxx");
 			numberField.setAlignment(Pos.CENTER_LEFT);
 			
-			setOnKeyReleased( new EventHandler<KeyEvent>() {
+			numberField.setOnKeyReleased( new EventHandler<KeyEvent>() {
 				public void handle(KeyEvent event){
 					String number = numberField.getText();
 					System.out.println(number);
 					int position = number.length();
-					if( position==0){
-						numberField.appendText("(");
-					}else if(position==3){
+					if( position==2){
+						numberField.appendText(" ");
+					}/*else if(position==3){
 						numberField.appendText(")");						
 					}else if(position==4){
 						numberField.appendText(" ");
-					}
+					}*/
 				}
 			});
 			
@@ -282,9 +290,9 @@ public class AccountWindow extends GridPane{
 	public void sendNewAccount(Solicitante solicitante){
 		try {
 			//Save in a local repository
-			userList.adicionar(solicitante);
+			Repositorio.rpSolicitantes.adicionar(solicitante);
 			//After, save in an database
-			Database.saveStatus(userList, "DataBase/Solicitantes.txt");
+			Database.saveStatus(Repositorio.rpSolicitantes, "DataBase/Solicitantes.txt");
 		} catch (RepositorioException e) {
 			e.printStackTrace();
 			printError(e.getMessage());
