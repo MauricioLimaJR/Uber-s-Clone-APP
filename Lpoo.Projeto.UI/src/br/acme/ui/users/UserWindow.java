@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -20,107 +22,109 @@ public class UserWindow extends Application {
 			//Hold the three main elements
 			VBox bodyHolder = new VBox();
 			//Then, create the header, body and footer
-			HBox header = new HBox(25);
+			HBox header = new HBox();
 			
 			HBox body = new HBox();
 			
-			HBox footer = new HBox(25);
+			HBox footer = new HBox();
 			
 			/////////////////////////   Making the HEADER   /////////////////////////
 			
+			Image timg = new Image(getClass().getResource("../files/imgT.png").toString());
+			ImageView titleImg = new ImageView(timg);
+			
+			//Label is need to show some text
 			Label nomePrograma = new Label("Nome do Programa");
 			nomePrograma.setTooltip(new Tooltip("Descrição curta do programa"));
 			nomePrograma.setAlignment(Pos.CENTER_LEFT);
-			nomePrograma.getStyleClass().add("label_header");
+			nomePrograma.getStyleClass().addAll("labelHeader", "lbHeader");
 			
-			Button userSettings = new Button("User Profile");
-			userSettings.getStyleClass().add("headerBtn");
-			userSettings.setAlignment(Pos.CENTER);
+			//Image user button
+			Button userImg = new Button("change");
+			userImg.getStyleClass().addAll("btnImg", "btnHeader");
+			//userImg.setAlignment(Pos.CENTER);
 			//Add function while clicking 
+			
+			//Profile button
+			Button userSettings = new Button("Profile");
+			userSettings.getStyleClass().addAll("btnPf", "btnHeader");
+			//userSettings.setAlignment(Pos.CENTER);
+			//Add function while clicking 
+			
+			//Logout button
 			Button userLogout = new Button("Logout");
-			userLogout.getStyleClass().add("headerBtn");
-			userLogout.setAlignment(Pos.CENTER_RIGHT);
+			userLogout.getStyleClass().addAll("btnLg", "btnHeader");
+			//userLogout.setAlignment(Pos.CENTER_RIGHT);
 			//Add function while clicking 				
 			
-			header.getChildren().addAll(nomePrograma, userSettings, userLogout);; 
+			header.getChildren().addAll(titleImg, userSettings, userLogout);
 			header.setSpacing(200);
 			header.setAlignment(Pos.CENTER);
 			header.setId("header");
+			//header.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
 			
 			
 			/////////////////////////   Making the BODY   /////////////////////////
 			
+			/*
+			 * LEFT SIDE
+			 */
+			
 			//Vertical Box to put all buttons of menu
 			VBox menuNav = new VBox();
-			//Left Side
-			Button adicionar = new Button("Adicionar");
-			adicionar.getStyleClass().add("menuNavBtn");
-			//Add function while clicking 
-			Button aceitarCadastro = new Button("Aceitar Cadastro");
-			aceitarCadastro.getStyleClass().add("menuNavBtn");
-			//Add function while clicking 
-			Button listarSolicitantes = new Button("Listar Solicitantes");
-			listarSolicitantes.getStyleClass().add("menuNavBtn");
-			//Add function while clicking 
-			Button listarMotoristas = new Button("Listar Motoristas");
-			listarMotoristas.getStyleClass().add("menuNavBtn");
-			//Add function while clicking 
-			Button relatorio = new Button("Relatório de Viagens");
-			relatorio.getStyleClass().add("menuNavBtn");		
+			
+			Button doTravel = new Button("Take a run");
+			doTravel.getStyleClass().add("btnMenuNav");
 			//Add function while clicking 
 			
-			menuNav.getChildren().addAll(adicionar, aceitarCadastro, listarMotoristas, listarSolicitantes, relatorio);
-			menuNav.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
-			menuNav.setAlignment(Pos.CENTER_LEFT);
-			
-			//Right Side
-			VBox rightSideContent = new VBox();
-			
-			//  Here, should create a window that
-			//  show a table with the objects
-			//  (Solicitantes / Motoristas) 
-			//  and your details
-			
-			
-			
-			
-			rightSideContent.setAlignment(Pos.BOTTOM_CENTER);
-			rightSideContent.getStyleClass().add("right_side_boby");
-			
-			HBox acoes = new HBox();
-			
-			Button remover = new Button("Remover");
-			remover.setId("acoesBtn");
-			remover.setAlignment(Pos.CENTER_LEFT);
+			Button showTravels = new Button("Show travels");
+			showTravels.getStyleClass().add("btnMenuNav");
 			//Add function while clicking 
 			
-			acoes.getChildren().addAll(remover);
-			acoes.getStyleClass().add("acoes");
-			acoes.setAlignment(Pos.BOTTOM_CENTER);
-			acoes.getStyleClass().add("acoes");
-			rightSideContent.getChildren().addAll(acoes);
 			
-			body.getChildren().addAll(menuNav, rightSideContent); 
+			menuNav.getChildren().addAll(doTravel, showTravels);
+			menuNav.setAlignment(Pos.TOP_CENTER);
+			menuNav.getStyleClass().add("menuNav");
+			//menuNav.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
+			
+			
+			/*
+			 * RIGTH SIDE
+			 */
+			
+			VBox workSpace = new VBox();
+			
+			/*
+			 * Here, should be a space to holder
+			 * the work windows
+			 */
+						
+			workSpace.setAlignment(Pos.BOTTOM_CENTER);
+			workSpace.getStyleClass().add("right_side_boby");
+			
+			
+			body.getChildren().addAll(menuNav, workSpace); 
 			body.setSpacing(0);
 			body.setAlignment(Pos.CENTER_LEFT);
 			body.setId("body");
+			//body.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
 			
 			
 			/////////////////////////   Making the FOOTER   /////////////////////////
 		
-			Label criador = new Label("Desenvolvido por ...");
+			Label by = new Label("© Maurício de Lima & Pedro Gabriel");
 			
-			footer.getChildren().addAll(criador);
-			footer.setSpacing(100);
+			footer.getChildren().addAll(by);
+			footer.setSpacing(0);
 			footer.setAlignment(Pos.BOTTOM_CENTER);
 			footer.setId("footer");
+			//footer.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
 
 			/////////////////////////   Making the final settings   /////////////////////////
 					
 			bodyHolder.getChildren().addAll(header, body, footer);
 			bodyHolder.setId("mainContent");
 			
-			//BorderPane root = new BorderPane();
 			Scene scene = new Scene(bodyHolder,900,540);
 			scene.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
 			primaryStage.setScene(scene);
