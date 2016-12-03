@@ -12,8 +12,8 @@ public class Viagem implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private long id;
-	private Solicitante cliente;
-	private Motorista motorista;
+	private long clienteID;
+	private long motoristaID;
 	private Lugar origem;
 	private Lugar destino;
 	private double valorViagem;
@@ -21,8 +21,8 @@ public class Viagem implements Serializable{
 	
 	public Viagem(Solicitante cliente, Motorista motorista, Lugar origem, Lugar destino, double valorViagem,
 			String formaPagamento) {
-		this.cliente = cliente;
-		this.motorista = motorista;
+		this.clienteID = cliente.getId();
+		this.motoristaID = motorista.getId();
 		this.origem = origem;
 		this.destino = destino;
 		this.valorViagem = valorViagem;
@@ -37,20 +37,20 @@ public class Viagem implements Serializable{
 		this.id = id;
 	}
 
-	public Solicitante getCliente() {
-		return cliente;
+	public long getClienteId() {
+		return clienteID;
 	}
 
-	public void setCliente(Solicitante cliente) {
-		this.cliente = cliente;
+	public void setClienteId(Solicitante cliente) {
+		this.clienteID = cliente.getId();
 	}
 
-	public Motorista getMotorista() {
-		return motorista;
+	public long getMotorista() {
+		return motoristaID;
 	}
 
 	public void setMotorista(Motorista motorista) {
-		this.motorista = motorista;
+		this.motoristaID = motorista.getId();
 	}
 
 	public Lugar getOrigem() {

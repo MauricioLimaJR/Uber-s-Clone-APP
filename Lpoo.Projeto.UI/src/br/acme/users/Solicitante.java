@@ -28,7 +28,7 @@ public class Solicitante extends Usuario {
     private Lugar[] lugaresFavoritos = new Lugar[50];
 	private String numeroCelular;
 	private double saldo=0.0;
-	private IRepositorio<Viagem> viagens = new RepositorioViagem();
+
 	
 
 	public Solicitante(String cpf, String nome, String senha, String sexo, String data, String email, String numeroCelular) throws ParseException, NullStringException, UnableCpfExecption {
@@ -91,13 +91,7 @@ public class Solicitante extends Usuario {
 		saldo += valor;
 	}
 	
-	public IRepositorio<Viagem> getViagens() {
-		return viagens;
-	}
-
-	public void setViagens(IRepositorio<Viagem> nova) {
-		viagens = nova;
-	}
+	
 	
 	/////////////  METHODS  /////////////
 	
@@ -110,9 +104,6 @@ public class Solicitante extends Usuario {
                 }
 	}
 	
-	public void adicionarViagemFeita(Viagem ultima) throws RepositorioException {
-		this.viagens.adicionar(ultima);
-	}
 	
 	public void setSaldo(double saldo) {
 		this.saldo = saldo;
@@ -139,8 +130,7 @@ public class Solicitante extends Usuario {
 	}
 	
 	public void historico() throws RepositorioException{
-		System.out.println(this.getNome()+" fez:");
-		this.viagens.buscarTodos();
+		
 	}
 	
 	public String toString(){

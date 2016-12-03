@@ -19,4 +19,4 @@ D - Delete account
   1. delete user from repository and database
 
 E - Logout
-  1. return to main menu
+  1. return to main menuT

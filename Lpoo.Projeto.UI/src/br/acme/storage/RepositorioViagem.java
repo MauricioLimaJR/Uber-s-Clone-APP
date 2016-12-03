@@ -15,8 +15,7 @@ public class RepositorioViagem implements IRepositorio<Viagem>, Serializable{
 	private ArrayList<Viagem> viagens = new ArrayList<Viagem>();
 	
 	public int getQuantiaArray() {
-		// TODO Auto-generated method stub
-		return 0;
+		return nextId;
 	}
 	
 	public void adicionar(Viagem obj) throws RepositorioException{
@@ -27,7 +26,7 @@ public class RepositorioViagem implements IRepositorio<Viagem>, Serializable{
 			System.out.println("A viagem de id:"+obj.getId()+ ", foi adicionada na lista de viagens!");
 		}
 		else
-			throw new RepositorioException("Solicitante já cadastrado!");
+			throw new RepositorioException("Viagem já cadastrado!");
 	}
 	
 	public Boolean verificarExistencia(Viagem obj) throws RepositorioException {
@@ -75,6 +74,22 @@ public class RepositorioViagem implements IRepositorio<Viagem>, Serializable{
 		}
 		throw new RepositorioException("Viagem não encontrada.");
 	}
+	
+	public ArrayList<Viagem> buscarPorId(long id) throws RepositorioException{
+	
+		ArrayList<Viagem> list = new ArrayList<Viagem>();
+		
+		for(Viagem travel : viagens){
+			if(travel.getClienteId() == id){
+				list.add(travel);
+			}
+		}
+		if(list.isEmpty()){
+		throw new RepositorioException("Viagem não encontrada.");
+		}
+		
+		return list;
+	}
 
 	public ArrayList<Viagem> buscarTodos() throws RepositorioException{
 		//@PrintString
@@ -90,15 +105,13 @@ public class RepositorioViagem implements IRepositorio<Viagem>, Serializable{
 		}
 		*/
 		
-		return this.viagens;
+		return viagens;
 	}
-
-
-	
 
 	@Override
 	public void alterar(Viagem obj) throws RepositorioException, NullStringException, UnableCpfExecption {
 		// TODO Auto-generated method stub
 		
-	}	
+	}
+
 }

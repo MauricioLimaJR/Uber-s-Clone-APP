@@ -130,6 +130,7 @@ public class MainWindow extends Application{
 					Usuario person = doLogin(emailField.getText(), passField.getText());
 					
 					if(person.getClass() == Solicitante.class){
+						user.setUser((Solicitante) person);
 						user.start(mainStage);
 					}
 					else if(person.getClass() == Motorista.class){

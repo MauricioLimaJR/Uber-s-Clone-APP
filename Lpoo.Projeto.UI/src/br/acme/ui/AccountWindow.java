@@ -20,12 +20,14 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -178,16 +180,24 @@ public class AccountWindow extends GridPane{
 		        @Override
 		        public void handle(ActionEvent t) {
 		        	//
-		        	try {
-						makeAnUser(cpfField.getText(), nameField.getText(), passField.getText(),
-								sexField, bdField.getText(), emailField.getText(),
-								numberField.getText());
-					} catch (NumberFormatException | ParseException | NullStringException | UnableCpfExecption e) {
-						e.printStackTrace();
-						Label msg = new Label(e.getMessage());
-						msg.setTextFill(Color.RED);
-						addStatus(msg);
-					}
+		        	
+						try {
+							makeAnUser(cpfField.getText(), nameField.getText(), passField.getText(),
+									sexField, bdField.getText(), emailField.getText(),
+									numberField.getText());
+						} catch (ParseException | NullStringException | UnableCpfExecption e) {
+							
+							e.printStackTrace();
+							printError(e.getMessage());
+							//Label msg = new Label(e.getMessage());
+							//msg.setTextFill(Color.RED);
+							//addStatus(msg);
+						} catch (StringIndexOutOfBoundsException  e) {
+							
+							printError("Campo muito curto");
+						}
+						
+				
 		        }
 		    });
 			
@@ -254,11 +264,19 @@ public class AccountWindow extends GridPane{
 		this.getChildren().addAll(label);
 	}
 	
-	public void makeAnUser(String cpf, String name, String password, String sex, String date, String email, String number) throws ParseException, NullStringException, UnableCpfExecption{
-		Solicitante solicitante = new Solicitante(cpf, name, password, sex, date, email, number);
-		sendNewAccount(solicitante);
-		Label m = new Label("Enviado");
-		addStatus(m);
+	public void makeAnUser(String cpf, String name, String password, String sex, String date, String email, String number) throws ParseException, NullStringException, UnableCpfExecption {
+		Solicitante solicitante = null;
+		//try {
+			solicitante = new Solicitante(cpf, name, password, sex, date, email, number);
+			sendNewAccount(solicitante);
+			Label m = new Label("Enviado");
+			addStatus(m);
+			
+	//	} catch (ParseException | NullStringException | UnableCpfExecption e) {
+		//	e.printStackTrace();
+		//	Label error = new Label(e.getMessage());
+		//	addStatus(error);
+		//}
 	}
 	
 	public void sendNewAccount(Solicitante solicitante){
@@ -269,7 +287,16 @@ public class AccountWindow extends GridPane{
 			Database.saveStatus(userList, "DataBase/Solicitantes.txt");
 		} catch (RepositorioException e) {
 			e.printStackTrace();
+			printError(e.getMessage());
 		}
+	}
+	
+	public void printError(String error){
+		 Alert alert = new Alert(AlertType.WARNING);
+         alert.setTitle("Erro");
+         alert.setHeaderText(error);
+        // alert.setContentText("Nehuma viagem realizada.");
+         alert.showAndWait();
 	}
 }
  

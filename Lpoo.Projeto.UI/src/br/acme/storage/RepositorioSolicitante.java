@@ -9,9 +9,9 @@ import br.acme.users.Solicitante;
 public class RepositorioSolicitante implements IRepositorio<Solicitante>, Serializable{
 
 	private long nextId=0;
-	private ArrayList<Solicitante> solicitantes = new ArrayList<Solicitante>();
+	private static ArrayList<Solicitante> solicitantes = new ArrayList<Solicitante>();
 	
-	public void adicionar(Solicitante obj) throws RepositorioException{
+	public  void adicionar(Solicitante obj) throws RepositorioException{
 		if(!verificarExistencia(obj)){
 			obj.setId(++nextId);
 			solicitantes.add(obj);

@@ -2,9 +2,9 @@ package br.acme.tests;
 
 import java.text.ParseException;
 
+import br.acme.database.SolicitanteDAO;
 import br.acme.exception.NullStringException;
 import br.acme.exception.UnableCpfExecption;
-import br.acme.storage.SolicitanteDAO;
 import br.acme.users.Solicitante;
 
 public class TesteDBSQL {
