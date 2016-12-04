@@ -71,6 +71,7 @@ public class SolicitanteDAO {
     	
 			if(data.next()){ 
 			user = new Solicitante(
+					data.getLong("id"),
 					data.getString("cpf"),
 					data.getString("name"),
 					data.getString("password"),
@@ -113,6 +114,7 @@ public class SolicitanteDAO {
         	Solicitante user;
 			
 				user = new Solicitante(
+						data.getLong("id"),
 						data.getString("cpf"),
 						data.getString("name"),
 						data.getString("password"),

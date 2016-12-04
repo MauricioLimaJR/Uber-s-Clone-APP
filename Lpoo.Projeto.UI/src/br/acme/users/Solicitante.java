@@ -36,11 +36,12 @@ public class Solicitante extends Usuario {
 		setEmail(email);
 		setNumeroCelular(numeroCelular);
 	}
-	public Solicitante(String cpf, String nome, String senha, String sexo, java.sql.Date data, String email, String numeroCelular) throws ParseException, NullStringException, UnableCpfExecption {
+	public Solicitante(long id, String cpf, String nome, String senha, String sexo, java.sql.Date data, String email, String numeroCelular) throws ParseException, NullStringException, UnableCpfExecption {
 		super(cpf, nome, senha, sexo);
 		setDataNascimento(data);
 		setEmail(email);
 		setNumeroCelular(numeroCelular);
+		setId(id);
 	}
 	
 	///////////// GETTERS AND SETTERS /////////////

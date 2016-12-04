@@ -71,6 +71,7 @@ public class MotoristaDAO {
     	
 			if(data.next()){ 
 			driver = new Motorista(
+					data.getLong("id"),
 					data.getString("cpf"),
 					data.getString("name"),
 					data.getString("password"),
@@ -113,6 +114,7 @@ public class MotoristaDAO {
         	Motorista driver;
 			
 				driver = new Motorista(
+						data.getLong("id"),
 						data.getString("cpf"),
 						data.getString("name"),
 						data.getString("password"),

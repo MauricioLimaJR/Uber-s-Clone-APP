@@ -19,8 +19,8 @@ public class BeDriver {
 		PreparedStatement stmt = null;
 		
 	String query = "insert into beDriver"+
-			" (name,cpf,birthDay,sex,number,email,password)"+
-			"values(?,?,?,?,?,?,?)";
+			" (name,cpf,birthDay,sex,number,email,password,id)"+
+			"values(?,?,?,?,?,?,?,?)";
 	
 	try {
         // prepared statement to insert
@@ -37,6 +37,7 @@ public class BeDriver {
         stmt.setString(5, user.getNumeroCelular());
         stmt.setString(6, user.getEmail());
         stmt.setString(7, user.getSenha());
+        stmt.setLong(8, user.getId());
 
         // execute 
         stmt.execute();
@@ -71,6 +72,7 @@ public class BeDriver {
     	
 			if(data.next()){ 
 			user = new Solicitante(
+					data.getLong("id"),
 					data.getString("cpf"),
 					data.getString("name"),
 					data.getString("password"),
@@ -113,6 +115,7 @@ public class BeDriver {
         	Solicitante user;
 			
 				user = new Solicitante(
+						data.getLong("id"),
 						data.getString("cpf"),
 						data.getString("name"),
 						data.getString("password"),

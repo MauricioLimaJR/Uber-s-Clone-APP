@@ -10,6 +10,7 @@ import br.acme.database.SolicitanteDAO;
 import br.acme.exception.NullStringException;
 import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
+import br.acme.exception.UserInterfaceException;
 import br.acme.storage.Repositorio;
 import br.acme.ui.MainWindow;
 import br.acme.ui.elements.TravelList;
@@ -52,6 +53,8 @@ public class ManageWindow extends Application {
 			HBox body = new HBox();
 			
 			HBox footer = new HBox();
+			
+			UserList.initTable();
 			
 			/////////////////////////   Making the HEADER   /////////////////////////
 			
@@ -139,6 +142,12 @@ public class ManageWindow extends Application {
 				}
 			});
 			
+			/*
+			 * Buttons to accept a driver :: START
+			 */
+			HBox buttons = new HBox();
+			buttons.setAlignment(Pos.CENTER);		
+			
 			Button acceptDriver = new Button("Accept Drivers");
 			acceptDriver.getStyleClass().add("btnMenuNav");
 			acceptDriver.setOnAction(new EventHandler<ActionEvent>() {
@@ -148,6 +157,22 @@ public class ManageWindow extends Application {
 					acceptDriver(UserList.getTable());
 				}
 			});
+			
+			Button negateDriver = new Button("Negate Drivers");
+			negateDriver.getStyleClass().addAll("btnMenuNav", "btnDelete");
+			negateDriver.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					try {
+						negateDriver(UserList.getTable());
+					} catch (UserInterfaceException e) {
+						
+					}
+				}
+			});
+			
+			buttons.getChildren().addAll(acceptDriver, negateDriver);
 			
 			Button allowDriver = new Button("Accept Drivers");
 			allowDriver.getStyleClass().add("btnMenuNav");
@@ -161,7 +186,7 @@ public class ManageWindow extends Application {
 						users = BeDriver.readUsers();
 						UserList.startTable(users);
 						clearView(workSpace);
-						workSpace.getChildren().addAll(UserList.getTable(), acceptDriver);
+						workSpace.getChildren().addAll(UserList.getTable(), buttons);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -170,6 +195,9 @@ public class ManageWindow extends Application {
 				}
 			
 			});
+			/*
+			 * Buttons to accept a driver :: END
+			 */
 			
 			Button showUsers = new Button("See Users");
 			showUsers.getStyleClass().add("btnMenuNav");
@@ -220,7 +248,18 @@ public class ManageWindow extends Application {
 				
 			});
 			
-			menuNav.getChildren().addAll(showUsers, allowDriver);
+			Button clear = new Button("Clear");
+			clear.getStyleClass().add("btnMenuNav");
+			clear.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					// TODO Auto-generated method stub
+					clearView(workSpace);
+				}
+			});
+			
+			menuNav.getChildren().addAll(showUsers, allowDriver, clear);
 			menuNav.setAlignment(Pos.TOP_CENTER);
 			menuNav.getStyleClass().add("menuNav");
 			//menuNav.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
@@ -327,7 +366,9 @@ public class ManageWindow extends Application {
 				Solicitante user = (Solicitante) table.getItems().get(selectedIndex);
 				Motorista driver = new Motorista(user);
 				MotoristaDAO.insertDriver(driver);
+				BeDriver.deleteUser(user);
 				SolicitanteDAO.deleteUser(user);
+				table.getItems().remove(selectedIndex);
 				
 			} catch (NullStringException | UnableCpfExecption | ParseException | SQLException e) {
 				// TODO Auto-generated catch block
@@ -341,6 +382,25 @@ public class ManageWindow extends Application {
 	         alert.setHeaderText("Nenhuma Pessoa Selecionada");
 	         alert.setContentText("Por favor, selecione uma pessoa na tabela.");
 	         alert.showAndWait();
+		}
+	}
+	
+	private void negateDriver(TableView table) throws UserInterfaceException{
+		int selectedIndex = table.getSelectionModel().getSelectedIndex();
+		if(selectedIndex >= 0){
+			//Put user in default repository
+			try {
+				Solicitante user = (Solicitante) table.getItems().get(selectedIndex);
+				BeDriver.deleteUser(user);
+				table.getItems().remove(selectedIndex);
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else{
+			throw new UserInterfaceException("Nenhuma pessoa selecionada");
 		}
 	}
 }

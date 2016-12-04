@@ -64,6 +64,12 @@
 	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 1 , 3 );
 }
 
+.btnDelete:hover{
+	-fx-background-color: #E67F7F;		
+    -fx-font-size: 20px;
+	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 1 , 3 );
+}
+
 #footer{
 	-fx-background-color: #40ACF9;
 	-fx-min-height: 40px;

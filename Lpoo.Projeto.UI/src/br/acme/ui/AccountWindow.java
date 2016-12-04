@@ -93,7 +93,7 @@ public class AccountWindow extends GridPane{
 			Label email = new Label("Email:");
 			email.setAlignment(Pos.CENTER_LEFT);			
 			MaskTextField emailField = new MaskTextField();
-			emailField.setMask("L!@L!.L!.L!");
+			emailField.setMask("M!@L!.L!.L!");
 			emailField.setPromptText("Enter your name");
 			emailField.setAlignment(Pos.CENTER_LEFT);
 			
