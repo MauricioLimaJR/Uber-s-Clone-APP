@@ -56,6 +56,12 @@ public class Solicitante extends Usuario {
 		this.dataNascimento = data;
 	}
 	
+	public void setDataNascimento(java.sql.Date dataNascimento) throws ParseException {		
+		DateFormat formatoData = DateFormat.getDateInstance();
+		Date data = dataNascimento.get
+		this.dataNascimento = data;
+	}
+	
 	public String getEmail() {
 		return email;
 	}

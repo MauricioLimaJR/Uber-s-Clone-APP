@@ -1,6 +1,12 @@
 package br.acme.ui;
 
+import java.sql.SQLException;
+import java.text.ParseException;
+
+import br.acme.database.SolicitanteDAO;
+import br.acme.exception.NullStringException;
 import br.acme.exception.RepositorioException;
+import br.acme.exception.UnableCpfExecption;
 import br.acme.storage.Database;
 import br.acme.storage.IRepositorio;
 import br.acme.storage.RepositorioMotorista;
@@ -204,7 +210,17 @@ public class MainWindow extends Application{
 	}	
 	
 	public Usuario doLogin(String email, String pass) throws RepositorioException{
-	
+		
+		try {
+			Solicitante user = SolicitanteDAO.readUser(email, pass);
+			if(user != null) return user;
+		} catch (SQLException | ParseException | NullStringException | UnableCpfExecption e) {
+		
+			e.printStackTrace();
+			
+		}
+		
+		/*
 		userList = Database.readDataBase("DataBase/Solicitantes.txt");
 		
 		for(Solicitante user : userList.buscarTodos()){
@@ -215,7 +231,7 @@ public class MainWindow extends Application{
 			}
 		}
 	
-		/*
+		
 		driverList = Database.readDataBase("DataBase/Motoristas.txt");
 		
 		for(Motorista driver : driverList.buscarTodos()){

@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import application.MaskTextField;
+import br.acme.database.SolicitanteDAO;
 import br.acme.exception.NullStringException;
 import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
@@ -288,15 +289,7 @@ public class AccountWindow extends GridPane{
 	}
 	
 	public void sendNewAccount(Solicitante solicitante){
-		try {
-			//Save in a local repository
-			Repositorio.rpSolicitantes.adicionar(solicitante);
-			//After, save in an database
-			Database.saveStatus(Repositorio.rpSolicitantes, "DataBase/Solicitantes.txt");
-		} catch (RepositorioException e) {
-			e.printStackTrace();
-			printError(e.getMessage());
-		}
+		SolicitanteDAO.insertUser(solicitante);
 	}
 	
 	public void printError(String error){
