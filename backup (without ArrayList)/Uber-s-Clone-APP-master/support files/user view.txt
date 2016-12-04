@@ -1,0 +1,22 @@
+A - Take a run
+  1. show available drivers
+  2. to choose a driver
+  3. build travel data
+  4. to save tha travel data
+  5. to finish travel
+
+B - Show travels
+  1. to charge travels
+  2. Show the travels
+  
+C - Change profile
+  1. Show user proflie
+  2. allow user mofidy the fields (Confirm old pass for change it)
+  3. to save de new data
+  4. to save in the repository and int the database
+
+D - Delete account
+  1. delete user from repository and database
+
+E - Logout
+  1. return to main menuT

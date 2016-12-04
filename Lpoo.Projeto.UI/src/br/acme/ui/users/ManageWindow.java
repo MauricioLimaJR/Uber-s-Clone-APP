@@ -59,7 +59,7 @@ public class ManageWindow extends Application {
 			
 			/////////////////////////   Making the HEADER   /////////////////////////
 			
-			Image timg = new Image(getClass().getResource("../files/imgT.png").toString());
+			Image timg = new Image(getClass().getResource("../files/logo.png").toString());
 			ImageView titleImg = new ImageView(timg);
 			titleImg.getStyleClass().add("titleImg");
 			
@@ -155,7 +155,12 @@ public class ManageWindow extends Application {
 				
 				@Override
 				public void handle(ActionEvent event) {
-					acceptDriver(UserList.getTable());
+					try {
+						acceptDriver(UserList.getTable());
+					} catch (UserInterfaceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			});
 			
@@ -212,7 +217,7 @@ public class ManageWindow extends Application {
 				public void handle(ActionEvent event) {
 					try {
 						deleteUser(UserList.getTable());
-					} catch (UserInterfaceException e) {
+					} catch (UserInterfaceException | SQLException e) {
 						
 					}
 				}
@@ -254,7 +259,7 @@ public class ManageWindow extends Application {
 				public void handle(ActionEvent event) {
 					try {
 						deleteDriver(UserList.getTable());
-					} catch (UserInterfaceException e) {
+					} catch (UserInterfaceException | SQLException e) {
 						
 					}
 				}
@@ -393,22 +398,31 @@ public class ManageWindow extends Application {
 		content.getChildren().addAll(view);
 	}
 	
-	private void deleteUser(TableView table) {
+	private void deleteUser(TableView table) throws UserInterfaceException, SQLException {
 	    int selectedIndex = table.getSelectionModel().getSelectedIndex();
 	    if (selectedIndex >= 0) {
+	    	Solicitante user = (Solicitante) table.getItems().get(selectedIndex);
 	    	table.getItems().remove(selectedIndex);
+	    	SolicitanteDAO.deleteUser(user);
 	    } 
 	    else {
-	        // Nothing selected
-	    	Alert alert = new Alert(AlertType.WARNING);
-	    	alert.setTitle("Nenhuma seleção");
-	        alert.setHeaderText("Nenhuma Pessoa Selecionada");
-	        alert.setContentText("Por favor, selecione uma pessoa na tabela.");
-	        alert.showAndWait();
+	    	throw new UserInterfaceException("Nenhuma pessoa selecionada");
 	    }
 	}
 	
-	private void acceptDriver(TableView table){
+	private void deleteDriver(TableView table) throws UserInterfaceException, SQLException {
+	    int selectedIndex = table.getSelectionModel().getSelectedIndex();
+	    if (selectedIndex >= 0) {
+	    	Motorista driver = (Motorista) table.getItems().get(selectedIndex);
+	    	table.getItems().remove(selectedIndex);
+	    	MotoristaDAO.deleteDriver(driver);
+	    } 
+	    else {
+	    	throw new UserInterfaceException("Nenhuma pessoa selecionada");
+	    }
+	}
+	
+	private void acceptDriver(TableView table) throws UserInterfaceException{
 		int selectedIndex = table.getSelectionModel().getSelectedIndex();
 		if(selectedIndex >= 0){
 			//Put user in default repository
@@ -426,12 +440,7 @@ public class ManageWindow extends Application {
 			}
 		}
 		else{
-			 // Nothing selected
-			 Alert alert = new Alert(AlertType.WARNING);
-	         alert.setTitle("Nenhuma seleção");
-	         alert.setHeaderText("Nenhuma Pessoa Selecionada");
-	         alert.setContentText("Por favor, selecione uma pessoa na tabela.");
-	         alert.showAndWait();
+			throw new UserInterfaceException("Nenhuma pessoa selecionada");
 		}
 	}
 	

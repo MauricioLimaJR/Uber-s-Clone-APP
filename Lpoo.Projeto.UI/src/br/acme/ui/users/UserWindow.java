@@ -47,7 +47,7 @@ public class UserWindow extends Application {
 			
 			/////////////////////////   Making the HEADER   /////////////////////////
 			
-			Image timg = new Image(getClass().getResource("../files/imgT.png").toString());
+			Image timg = new Image(getClass().getResource("../files/logo.png").toString());
 			ImageView titleImg = new ImageView(timg);
 			titleImg.getStyleClass().add("titleImg");
 			

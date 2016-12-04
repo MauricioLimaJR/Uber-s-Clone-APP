@@ -1,0 +1,123 @@
+/*
+ * Main Window :: START
+ */
+ 
+ .title{
+	-fx-background-color: #40ACF9;
+	-fx-min-height: 80px;
+    -fx-max-height: 80px;	
+}
+
+.titleText:hover{
+	
+}
+
+.horizontalBox{
+	-fx-background-color: #DFECF5;
+	-fx-min-height: 330px;
+    -fx-max-height: 330px;
+    
+}
+
+.btnMain{
+	-fx-background-color: #40ACF9;
+	-fx-border-color: white;
+	-fx-border-radius: 7px;
+    -fx-text-fill: #FFFAFA;
+    -fx-font-size: 12px;
+    -fx-min-width: 60px;
+    -fx-max-width: 60px;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px; 
+}
+.btnMain:hover{
+	-fx-background-color: #4D6475;
+}
+ 
+ 
+ /*
+ * Main Window :: END
+ */
+
+
+/*
+ * UserWindow
+ */
+ 
+#header{
+	-fx-background-color: #40ACF9;
+	-fx-min-height: 80px;
+    -fx-max-height: 80px;
+}
+
+.btnHeader{
+	-fx-background-color: #369FE9;	
+    -fx-text-fill: #FFFAFA;
+    -fx-font-size: 12px;
+	-fx-min-width: 80px;
+    -fx-max-width: 80px;
+	-fx-min-height: 80px;
+    -fx-max-height: 80px;
+}
+.btnHeader:hover{
+
+	-fx-background-color: #4D6475;
+	-fx-font-size: 17px;
+	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 1 , 3 );
+}
+
+.titleImg{
+	-fx-padding: 0,0,0,250px;
+}
+.btnPf{
+	-fx-padding: 2;
+}
+
+
+#body{
+	-fx-background-color: #DFECF5;
+	-fx-min-height: 420px;
+    -fx-max-height: 420px;
+}
+
+.menuNav{
+	-fx-background-color: #C4D3DD;
+    -fx-min-width: 220px;
+    -fx-max-width: 220px;
+	-fx-min-height: 420px;
+    -fx-max-height: 420px;   
+}
+
+.btnMenuNav{	
+	-fx-background-color: #40ACF9;
+	-fx-border-color: #1E90FF;
+    -fx-background-insets: 0,1,2,3;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: #FFFAFA;
+    -fx-font-size: 12px;
+    -fx-min-width: 220px;
+    -fx-max-width: 220px;
+    -fx-min-height: 100px;
+    -fx-max-height: 100px; 
+}
+.btnMenuNav:hover{
+	-fx-background-color: #4D6475;		
+    -fx-font-size: 20px;
+	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 1 , 3 );
+}
+
+.btnDelete:hover{
+	-fx-background-color: #E67F7F;		
+    -fx-font-size: 20px;
+	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 1 , 3 );
+}
+
+#footer{
+	-fx-background-color: #40ACF9;
+	-fx-min-height: 40px;
+    -fx-max-height: 40px;
+}
+
+
+
+

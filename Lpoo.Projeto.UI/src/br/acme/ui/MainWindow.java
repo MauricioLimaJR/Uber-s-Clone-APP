@@ -2,6 +2,7 @@ package br.acme.ui;
 
 import java.sql.SQLException;
 
+import application.MaskTextField;
 import br.acme.database.GerenteDAO;
 import br.acme.database.MotoristaDAO;
 import br.acme.database.SolicitanteDAO;
@@ -23,6 +24,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -51,18 +53,19 @@ public class MainWindow extends Application{
 	public void start(Stage mainStage) {
 		try {
 			//Here, we do a vertical organization
-			VBox firstPlace = new VBox(50); 
+			VBox firstPlace = new VBox(); 
 			firstPlace.setAlignment(Pos.CENTER);
 			firstPlace.getStyleClass().add("mainBody");
 			
 			//Title of the program
-			HBox titleText = new HBox();
+			HBox title = new HBox();
+			ImageView titleImg = new ImageView(getClass().getResource("files/mape.png").toString());
+			
 			Label titleLabel = new Label("Nome do Programa"); 
-			titleLabel.setTooltip(new Tooltip("Descrição curta do programa"));
 			titleLabel.setAlignment(Pos.BOTTOM_CENTER);
-			titleText.getChildren().add(titleLabel);
-			titleText.getStyleClass().add("titleText");
-			titleText.setAlignment(Pos.TOP_CENTER);
+			title.getChildren().add(titleImg);
+			title.getStyleClass().add("title");
+			title.setAlignment(Pos.TOP_CENTER);
 			
 			//Second component in the Vbox
 			//Horizontal organization
@@ -79,12 +82,13 @@ public class MainWindow extends Application{
 			leftSideVerticalBox.getStyleClass().add("leftSideVerticalBox");
 			
 			//Image image = new Image(getClass().getResource("../Lpoo.Projeto.UI/extra files/images.jpg").toExternalForm());
-			ImageView imagemView = new ImageView(getClass().getResource("files/imgT.png").toString());
+			ImageView imagemView = new ImageView(getClass().getResource("files/logo.png").toString());
 			imagemView.setTranslateX(80);
 			imagemView.setTranslateY(5);
 			
 			//CANCEL BUTTON
 			Button cancel = new Button("Cancel");
+			cancel.getStyleClass().add("btnMain");
 			cancel.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent t){
 					leftSideVerticalBox.getChildren().remove(0, 2);
@@ -107,7 +111,8 @@ public class MainWindow extends Application{
 			
 			Label email = new Label("Email");
 			email.setAlignment(Pos.CENTER_LEFT);
-			TextField emailField = new TextField();
+			MaskTextField emailField = new MaskTextField();
+			emailField.setMask("M!@L!.L!.L!");
 			if(oldEmail != null) emailField.setText(oldEmail);
 			emailField.setPromptText("Enter your email");
 			emailField.setAlignment(Pos.CENTER_LEFT);
@@ -120,13 +125,13 @@ public class MainWindow extends Application{
 			
 			Label password = new Label("Password:");
 			password.setAlignment(Pos.CENTER_LEFT);
-			TextField passField = new TextField();
+			PasswordField passField = new PasswordField();
 			passField.setAlignment(Pos.CENTER_LEFT);
 			passField.setPromptText("Enter your password");
 			
 			Button btnSignIn = new Button("Sign in");
-			btnSignIn.setAlignment(Pos.CENTER_LEFT);
-			btnSignIn.getStyleClass().add("mainBtn");
+			btnSignIn.setAlignment(Pos.CENTER_RIGHT);
+			btnSignIn.getStyleClass().add("btnMain");
 			
 			btnSignIn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -155,14 +160,14 @@ public class MainWindow extends Application{
 			
 			Button btnSignUp = new Button("Sign up");
 			btnSignUp.setAlignment(Pos.CENTER_RIGHT);
-			btnSignUp.getStyleClass().add("mainBtn");			
+			btnSignUp.getStyleClass().add("btnMain");			
 			//Clear the left side to do a new account
 			btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
 
 		        @Override
 		        public void handle(ActionEvent t) {
 		        	leftSideVerticalBox.getChildren().remove(0);
-		        	//newAccount.setAlignment(Pos.CENTER_RIGHT);
+		        	newAccount.setAlignment(Pos.CENTER);
 		        	leftSideVerticalBox.getChildren().addAll(newAccount, cancel);
 		        	
 		        }
@@ -187,10 +192,10 @@ public class MainWindow extends Application{
 			
 			rigthSideVerticalBox.getChildren().add(righSideGP);
 			caixaHorizontal.getChildren().addAll(leftSideVerticalBox, rigthSideVerticalBox);
-			firstPlace.getChildren().addAll(titleText, caixaHorizontal);
+			firstPlace.getChildren().addAll(title, caixaHorizontal);
 		
 			Scene scene = new Scene(firstPlace,620,400);
-			scene.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("files/mainwindow.css").toExternalForm());
 			mainStage.setTitle("Nome do Progama");
 			
 			Image icon = new Image(getClass().getResource("title.png").toExternalForm());

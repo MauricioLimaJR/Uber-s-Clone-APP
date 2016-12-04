@@ -12,4 +12,13 @@ public class UserInterfaceException extends Exception {
         alert.setHeaderText(msg);
         alert.showAndWait();
 	}
+	
+	public UserInterfaceException(String msg, String desc){
+		super("Erro: "+msg);
+		Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Erro");
+        alert.setHeaderText(msg);
+        alert.setContentText(desc);
+        alert.showAndWait();
+	}
 }
