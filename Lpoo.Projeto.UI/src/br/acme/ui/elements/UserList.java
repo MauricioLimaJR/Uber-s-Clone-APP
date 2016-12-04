@@ -1,47 +1,28 @@
 package br.acme.ui.elements;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import br.acme.storage.Database;
-import br.acme.storage.IRepositorio;
-import br.acme.storage.RepositorioSolicitante;
 import br.acme.users.Solicitante;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class UserList extends VBox {
 
 	public static VBox userList = new VBox();
 
-    private static TableView userTable = new TableView<>();
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings("rawtypes")
+	private static TableView userTable = new TableView<>();
 	//@Override
-    public UserList(List pessoas){
-	}
+  
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static VBox startTable(List pessoas){
+	public static VBox startTable(ArrayList<Solicitante> users){
 		
 	try{
-
-		/*
-		List pessoas = Arrays.asList(
-				new Solicitante("113.544.464.10", "Seu Zé", "boa", "masc", "10/06/1985", "teste@legal.com", 345678)
-				//new Solicitante("113.544.464.64", "Doca", "boa", "masc", "10/06/1985", "teste@legal.com", 345678)
-				//new Solicitante("113.544.464.60", "Maria", "boa", "fem", "10/06/1985", "teste@legal.com", 345678),
-				//new Solicitante("113.544.464.50", "Zanza", "boa", "fem", "10/06/1985", "teste@legal.com", 345678),
-				//new Solicitante("112.545.464.10", "Seu apressado", "boa", "masc", "10/06/1985", "teste@legal.com", 345678)
-				);
-		*/
 		
+		TableColumn idColumn = new TableColumn<>("Id");
         TableColumn nameColumn = new TableColumn<>("Nome");
         TableColumn cpfColumn = new TableColumn<>("CPF");
         TableColumn emailColumn = new TableColumn<>("E-mail");
@@ -49,6 +30,7 @@ public class UserList extends VBox {
         TableColumn sexColumn = new TableColumn<>("Sexo");
         TableColumn numberColumn = new TableColumn<>("Contato");
 
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("nome"));
         cpfColumn.setCellValueFactory(new PropertyValueFactory<>("cpf"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -57,16 +39,11 @@ public class UserList extends VBox {
         numberColumn.setCellValueFactory(new PropertyValueFactory<>("numeroCelular"));
 
         
-        userTable.getColumns().addAll(nameColumn, cpfColumn, emailColumn, dateColumn, sexColumn, numberColumn);
+        userTable.getColumns().addAll(idColumn, nameColumn, cpfColumn, emailColumn, dateColumn, sexColumn, numberColumn);
         
-        /*
-         * Load the user in DataBase
-         */
-        RepositorioSolicitante[] lista = Database.readDataBase("DataBase/NewUsers.txt");
-        //Database<Tipo>.readDataBase("DataBase/NewUsers.txt");
-        //lista.buscarTodos();
+      
         
-        userTable.setItems(FXCollections.observableArrayList(lista));
+        userTable.setItems(FXCollections.observableArrayList(users));
  
         
         if(!userList.getChildren().isEmpty()){

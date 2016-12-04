@@ -1,13 +1,21 @@
 package br.acme.ui.users;
 
-import java.util.Arrays;
-import java.util.List;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
 
-import javax.swing.text.TabableView;
-
-import br.acme.storage.Database;
-import br.acme.ui.AccountWindow;
+import br.acme.database.BeDriver;
+import br.acme.database.MotoristaDAO;
+import br.acme.database.SolicitanteDAO;
+import br.acme.exception.NullStringException;
+import br.acme.exception.RepositorioException;
+import br.acme.exception.UnableCpfExecption;
+import br.acme.storage.Repositorio;
+import br.acme.ui.MainWindow;
+import br.acme.ui.elements.TravelList;
 import br.acme.ui.elements.UserList;
+import br.acme.users.Gerente;
+import br.acme.users.Motorista;
 import br.acme.users.Solicitante;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -17,16 +25,20 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 
 public class ManageWindow extends Application {
+	
+	private Gerente adm;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -43,149 +55,230 @@ public class ManageWindow extends Application {
 			
 			/////////////////////////   Making the HEADER   /////////////////////////
 			
-			Label nomePrograma = new Label("Nome do Programa");
-			nomePrograma.setTooltip(new Tooltip("Descrição curta do programa"));
-			nomePrograma.setAlignment(Pos.CENTER_LEFT);
-			nomePrograma.getStyleClass().add("label_header");
+			Image timg = new Image(getClass().getResource("../files/imgT.png").toString());
+			ImageView titleImg = new ImageView(timg);
+			titleImg.getStyleClass().add("titleImg");
 			
-			Button userSettings = new Button("User Profile");
-			userSettings.getStyleClass().add("headerBtn");
-			userSettings.setAlignment(Pos.CENTER_RIGHT);
+			//Label is need to show some text
+			Label nomeUser = new Label(adm.getNome());
+			//nomeUser.setTooltip(new Tooltip("Descrição curta do programa"));
+			nomeUser.setAlignment(Pos.CENTER_LEFT);
+			nomeUser.getStyleClass().addAll("labelHeader", "lbHeader");
+			
+			//Image user button
+			Button userImg = new Button("change");
+			userImg.getStyleClass().addAll("btnImg", "btnHeader");
+			//userImg.setAlignment(Pos.CENTER);
 			//Add function while clicking 
+			
+			//Profile button
+			Button userSettings = new Button("Profile");
+			userSettings.getStyleClass().addAll("btnPf", "btnHeader");
+			//userSettings.setAlignment(Pos.CENTER);
+			//Add function while clicking 
+			
+			//Logout button
 			Button userLogout = new Button("Logout");
-			userLogout.getStyleClass().add("headerBtn");
-			userLogout.setAlignment(Pos.CENTER_RIGHT);
+			userLogout.getStyleClass().addAll("btnLg", "btnHeader");
+			//userLogout.setAlignment(Pos.CENTER_RIGHT);
 			//Add function while clicking 				
 			
-			header.getChildren().addAll(nomePrograma, userSettings, userLogout);; 
-			header.setSpacing(200);
-			header.setAlignment(Pos.CENTER);
+			header.getChildren().addAll(titleImg, nomeUser, userSettings, userLogout);
+			header.setSpacing(100);
+			header.setAlignment(Pos.CENTER_LEFT);
 			header.setId("header");
+			//header.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
+			
 			
 			/////////////////////////   Making the BODY   /////////////////////////
-			//Right Side WorkSpace
-			VBox rightSideContent = new VBox();
 			
-			//  Here, should create a window that
-			//  show a table with the objects
-			//  (Solicitantes / Motoristas) 
-			//  and your details
+			/*
+			 * RIGTH SIDE
+			 */
 			
-			rightSideContent.setAlignment(Pos.BOTTOM_LEFT);
-			rightSideContent.getStyleClass().add("right_side_body");
+			VBox workSpace = new VBox();
 			
-			// Right - Bottom Side
-			HBox acoes = new HBox();
-					
-			Button remover = new Button("Remover");
-			remover.getStyleClass().add("removerBtn");
-			remover.setAlignment(Pos.CENTER_LEFT);
-			remover.setOnAction(new EventHandler<ActionEvent>() {
-		        @Override
-		        public void handle(ActionEvent t) {
-		        	deleteUser(UserList.getTable());
-		        }
-		    });
+			/*
+			 * Here, should be a space to holder
+			 * the work windows
+			 */
+						
+			workSpace.setAlignment(Pos.BOTTOM_CENTER);
+			workSpace.getStyleClass().add("right_side_boby");
 			
-			Button add = new Button("Adicionar");
-			add.getStyleClass().add("adicionarBtn");
-			add.setAlignment(Pos.CENTER_LEFT);
-			add.setOnAction(new EventHandler<ActionEvent>() {
+			
+			/*
+			 * LEFT SIDE
+			 */
+			
+			//Vertical Box to put all buttons of menu
+			VBox menuNav = new VBox();
+			
+			Button doTravel = new Button("Take a run");
+			doTravel.getStyleClass().add("btnMenuNav");
+			//Add function while clicking 
+			
+			Button showTravels = new Button("Show travels");
+			showTravels.getStyleClass().add("btnMenuNav");
+			
+			showTravels.setOnAction(new EventHandler<ActionEvent>() {
+				
 				@Override
-				public void handle(ActionEvent t){
-					addUser(UserList.getTable());
+				public void handle(ActionEvent event) {
+					try {
+						loadView(TravelList.startTable(Repositorio.rpViagens.buscarPorId(adm.getId())), workSpace);
+					} 
+					catch (RepositorioException e) {
+						e.printStackTrace();
+						 Alert alert = new Alert(AlertType.WARNING);
+				         alert.setTitle("Repositório vazio");
+				         alert.setHeaderText(e.getMessage());
+				         alert.setContentText("Nehuma viagem realizada.");
+				         alert.showAndWait();
+					}
 				}
 			});
-						
-			acoes.getChildren().addAll(add, remover);
-			acoes.getStyleClass().add("acoes");
-			acoes.setAlignment(Pos.BOTTOM_LEFT);
-			acoes.getStyleClass().add("acoes");
-			rightSideContent.getChildren().addAll(acoes);
 			
-		//	getSelectionModel().selectedItemProperty().addListener(
-		//            (observable, oldValue, newValue) -> showPersonDetails(newValue));
-		//}
+			Button acceptDriver = new Button("Accept Drivers");
+			acceptDriver.getStyleClass().add("btnMenuNav");
+			acceptDriver.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					acceptDriver(UserList.getTable());
+				}
+			});
 			
-			/// Left Side
+			Button allowDriver = new Button("Accept Drivers");
+			allowDriver.getStyleClass().add("btnMenuNav");
 			
-			VBox menuNav = new VBox();
-			//Left Side
-			Button adicionar = new Button("Adicionar");
-			adicionar.getStyleClass().add("menuNavBtn");
-			adicionar.setOnAction(new EventHandler<ActionEvent>() {
-
-		        @Override
-		        public void handle(ActionEvent t) {
-		        	AccountWindow account = new AccountWindow();
-		        	account.setAlignment(Pos.TOP_LEFT);
-		        	loadView(account, rightSideContent, acoes);
-		        	
-		        }
-		    });
+			allowDriver.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					ArrayList<Solicitante> users;
+					try {
+						users = BeDriver.readUsers();
+						UserList.startTable(users);
+						clearView(workSpace);
+						workSpace.getChildren().addAll(UserList.getTable(), acceptDriver);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
 			
-			///////
-			List pessoas = Arrays.asList(
-					new Solicitante("113.544.464.10", "Seu Zé", "boa", "masc", "10/06/1985", "teste@legal.com", "345678"),
-					new Solicitante("338.804.515-16", "Doca", "boa", "masc", "10/06/1985", "teste@legal.com", "345678")
-					);
+			});
 			
-			//Solicitante[] pessoas = (Solicitante[]) SolicitationDB.LerBaseSolicitantes("1").buscarTodos();
-			///
+			Button showUsers = new Button("See Users");
+			showUsers.getStyleClass().add("btnMenuNav");
 			
-			Button aceitarCadastro = new Button("Aceitar Cadastro");
-			aceitarCadastro.getStyleClass().add("menuNavBtn");
-			aceitarCadastro.setOnAction(new EventHandler<ActionEvent>() {
-		        @Override
-		        public void handle(ActionEvent t) {
-		        	/*UserList list = new UserList(pessoas);
-		        	list.setAlignment(Pos.TOP_LEFT);
-		        	loadView(list, rightSideContent, acoes);*/
-		        	loadView(UserList.startTable(pessoas), rightSideContent, acoes);
-		        			        	
-		        }
-		    });
-			Button listarSolicitantes = new Button("Listar Solicitantes");
-			listarSolicitantes.getStyleClass().add("menuNavBtn");
-			//Add function while clicking 
-			Button listarMotoristas = new Button("Listar Motoristas");
-			listarMotoristas.getStyleClass().add("menuNavBtn");
-			//Add function while clicking 
-			Button relatorio = new Button("Relatório de Viagens");
-			relatorio.getStyleClass().add("menuNavBtn");
-		
-			//Add function while clicking   
+			showUsers.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					ArrayList<Solicitante> users;
+					try {
+						users = SolicitanteDAO.readUsers();
+						UserList.startTable(users);
+						clearView(workSpace);
+						workSpace.getChildren().add(UserList.getTable());
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+			});
 			
-			menuNav.getChildren().addAll(adicionar, aceitarCadastro, listarMotoristas, listarSolicitantes, relatorio);
-			menuNav.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
-			menuNav.setAlignment(Pos.CENTER_LEFT);
-		
+			Button showDrivers = new Button("See Drivers");
+			showDrivers.getStyleClass().add("btnMenuNav");
 			
-			body.getChildren().addAll(menuNav, rightSideContent); 
+			showDrivers.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					/*
+					 * See and remove Drivers
+					 */
+				}
+				
+			});
+			
+			Button travels = new Button("See Travels");
+			travels.getStyleClass().add("btnMenuNav");
+			
+			travels.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					/*
+					 * See all travels?
+					 */
+				}
+				
+			});
+			
+			menuNav.getChildren().addAll(showUsers, allowDriver);
+			menuNav.setAlignment(Pos.TOP_CENTER);
+			menuNav.getStyleClass().add("menuNav");
+			//menuNav.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
+			
+			
+			/*
+			 * Adding elements
+			 */
+			
+			body.getChildren().addAll(menuNav, workSpace); 
 			body.setSpacing(0);
 			body.setAlignment(Pos.CENTER_LEFT);
 			body.setId("body");
+			//body.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
+			
 			
 			/////////////////////////   Making the FOOTER   /////////////////////////
 		
-			Label criador = new Label("Desenvolvido por Maurício de Lima e Pedro Gabriel");
-			criador.setAlignment(Pos.CENTER);
+			Label by = new Label("© Maurício de Lima & Pedro Gabriel");
 			
-			footer.getChildren().addAll(criador);
-			footer.setSpacing(100);
-			footer.setAlignment(Pos.CENTER);
+			footer.getChildren().addAll(by);
+			footer.setSpacing(0);
+			footer.setAlignment(Pos.BOTTOM_CENTER);
 			footer.setId("footer");
+			//footer.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
 
+			
+			//////////////////////// HEADER BUTTONS 
+			
+			userSettings.setOnAction( new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					
+				//clearView(workSpace);
+			
+				}
+			});
+			
+			userLogout.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					MainWindow mainMenu = new MainWindow();
+					mainMenu.setOldEmail(adm.getEmail());
+					mainMenu.start(primaryStage);
+					
+				}
+			});
+			
 			/////////////////////////   Making the final settings   /////////////////////////
 					
 			bodyHolder.getChildren().addAll(header, body, footer);
 			bodyHolder.setId("mainContent");
 			
-			//BorderPane root = new BorderPane();
-			Scene scene = new Scene(bodyHolder,900,640);
+			Scene scene = new Scene(bodyHolder,900,540);
 			scene.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
 			primaryStage.setScene(scene);
-			primaryStage.setResizable(false);
 			primaryStage.show();
 			
 			
@@ -198,15 +291,17 @@ public class ManageWindow extends Application {
 		launch(args);
 	}
 	
-	//////////////  METHODS //////////////
-	
-	public void loadView(Node view, VBox content, HBox base){
-		clearView(content);
-		content.getChildren().addAll(view,base);
+	public void setAmd(Gerente adm){
+		this.adm = adm;
 	}
 	
 	public void clearView(VBox content){
 		content.getChildren().removeAll(content.getChildren());
+	}
+	
+	public void loadView(Node view, VBox content){
+		clearView(content);
+		content.getChildren().addAll(view);
 	}
 	
 	private void deleteUser(TableView table) {
@@ -224,11 +319,20 @@ public class ManageWindow extends Application {
 	    }
 	}
 	
-	private void addUser(TableView table){
+	private void acceptDriver(TableView table){
 		int selectedIndex = table.getSelectionModel().getSelectedIndex();
 		if(selectedIndex >= 0){
 			//Put user in default repository
-			table.getItems().remove(selectedIndex);
+			try {
+				Solicitante user = (Solicitante) table.getItems().get(selectedIndex);
+				Motorista driver = new Motorista(user);
+				MotoristaDAO.insertDriver(driver);
+				SolicitanteDAO.deleteUser(user);
+				
+			} catch (NullStringException | UnableCpfExecption | ParseException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		else{
 			 // Nothing selected
@@ -239,6 +343,4 @@ public class ManageWindow extends Application {
 	         alert.showAndWait();
 		}
 	}
-	
 }
-

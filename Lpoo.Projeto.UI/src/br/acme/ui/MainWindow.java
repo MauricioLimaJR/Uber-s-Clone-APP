@@ -1,13 +1,11 @@
 package br.acme.ui;
 
 import java.sql.SQLException;
-import java.text.ParseException;
 
+import br.acme.database.GerenteDAO;
+import br.acme.database.MotoristaDAO;
 import br.acme.database.SolicitanteDAO;
-import br.acme.exception.NullStringException;
 import br.acme.exception.RepositorioException;
-import br.acme.exception.UnableCpfExecption;
-import br.acme.storage.Database;
 import br.acme.storage.IRepositorio;
 import br.acme.storage.RepositorioMotorista;
 import br.acme.storage.RepositorioSolicitante;
@@ -145,6 +143,7 @@ public class MainWindow extends Application{
 						driver.start(mainStage);
 					}
 					else if(person.getClass() == Gerente.class){
+						adm.setAmd((Gerente) person);
 						adm.start(mainStage);
 					}
 				} catch (RepositorioException e1) {
@@ -214,34 +213,20 @@ public class MainWindow extends Application{
 		try {
 			Solicitante user = SolicitanteDAO.readUser(email, pass);
 			if(user != null) return user;
-		} catch (SQLException | ParseException | NullStringException | UnableCpfExecption e) {
+			
+			Motorista driver = MotoristaDAO.readDriver(email, pass);
+			if(driver != null) return driver;
+			
+			Gerente adm = GerenteDAO.readADM(email, pass);
+			if(adm != null) return adm;
+		
+			
+		} catch ( SQLException e) {
 		
 			e.printStackTrace();
 			
 		}
 		
-		/*
-		userList = Database.readDataBase("DataBase/Solicitantes.txt");
-		
-		for(Solicitante user : userList.buscarTodos()){
-			if(user.getEmail().equals(email) && user.getSenha().equals(pass)){
-				//@PrintString
-				//System.out.println("logando");
-				return user;
-			}
-		}
-	
-		
-		driverList = Database.readDataBase("DataBase/Motoristas.txt");
-		
-		for(Motorista driver : driverList.buscarTodos()){
-			if(driver.getEmail().equals(email) && driver.getSenha().equals(pass)){
-				//@PrintString
-				//System.out.println("logando");
-				return driver;
-			}
-		}
-		*/
 		
 	throw new RepositorioException("Usuário não existente!");
 }

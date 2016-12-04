@@ -1,5 +1,6 @@
 package br.acme.ui;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -289,7 +290,11 @@ public class AccountWindow extends GridPane{
 	}
 	
 	public void sendNewAccount(Solicitante solicitante){
-		SolicitanteDAO.insertUser(solicitante);
+		try {
+			SolicitanteDAO.insertUser(solicitante);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void printError(String error){

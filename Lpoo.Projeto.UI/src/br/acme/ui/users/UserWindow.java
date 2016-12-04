@@ -1,8 +1,11 @@
 package br.acme.ui.users;
 
+import java.sql.SQLException;
+
+import br.acme.database.BeDriver;
+import br.acme.database.SolicitanteDAO;
 import br.acme.exception.RepositorioException;
 import br.acme.storage.Repositorio;
-import br.acme.storage.RepositorioViagem;
 import br.acme.ui.MainWindow;
 import br.acme.ui.elements.TravelList;
 import br.acme.ui.elements.UserEdit;
@@ -17,7 +20,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -129,8 +131,28 @@ public class UserWindow extends Application {
 				}
 			});
 			
+			Button beDriver = new Button("Be Driver");
+			beDriver.getStyleClass().add("btnMenuNav");
 			
-			menuNav.getChildren().addAll(doTravel, showTravels);
+			beDriver.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					// TODO Auto-generated method stub
+					/*
+					 * Mostramos seus dados
+					 */
+					try {
+						BeDriver.insertUser(user);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			
+			});
+			
+			menuNav.getChildren().addAll(doTravel, showTravels, beDriver);
 			menuNav.setAlignment(Pos.TOP_CENTER);
 			menuNav.getStyleClass().add("menuNav");
 			//menuNav.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());

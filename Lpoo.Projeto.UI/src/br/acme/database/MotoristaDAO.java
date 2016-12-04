@@ -9,16 +9,16 @@ import java.util.ArrayList;
 
 import br.acme.exception.NullStringException;
 import br.acme.exception.UnableCpfExecption;
-import br.acme.users.Solicitante;
+import br.acme.users.Motorista;
 
-public class SolicitanteDAO {
+public class MotoristaDAO {
 
-	public static void insertUser(Solicitante user) throws SQLException{
+	public static void insertDriver(Motorista driver) throws SQLException{
 	
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		
-	String query = "insert into users"+
+	String query = "insert into drivers"+
 			" (name,cpf,birthDay,sex,number,email,password)"+
 			"values(?,?,?,?,?,?,?)";
 	
@@ -30,13 +30,13 @@ public class SolicitanteDAO {
         stmt = connection.prepareStatement(query);
 
         // Put the values
-        stmt.setString(1,user.getNome());
-        stmt.setString(2,user.getCpf());
-        stmt.setDate(3,user.getDataNascimento());
-        stmt.setString(4, user.getSexo());
-        stmt.setString(5, user.getNumeroCelular());
-        stmt.setString(6, user.getEmail());
-        stmt.setString(7, user.getSenha());
+        stmt.setString(1,driver.getNome());
+        stmt.setString(2,driver.getCpf());
+        stmt.setDate(3,driver.getDataNascimento());
+        stmt.setString(4, driver.getSexo());
+        stmt.setString(5, driver.getNumeroCelular());
+        stmt.setString(6, driver.getEmail());
+        stmt.setString(7, driver.getSenha());
 
         // execute 
         stmt.execute();
@@ -51,9 +51,9 @@ public class SolicitanteDAO {
 	}
 	}
 	
-	public static Solicitante readUser(String email, String pass) throws SQLException {
-		String query = "select * from users where email=? AND password=?";
-		Solicitante user = null;
+	public static Motorista readDriver(String email, String pass) throws SQLException {
+		String query = "select * from drivers where email=? AND password=?";
+		Motorista driver = null;
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		
@@ -70,7 +70,7 @@ public class SolicitanteDAO {
         //Get the values
     	
 			if(data.next()){ 
-			user = new Solicitante(
+			driver = new Motorista(
 					data.getString("cpf"),
 					data.getString("name"),
 					data.getString("password"),
@@ -90,12 +90,12 @@ public class SolicitanteDAO {
 	       	System.out.println("Coneção encerrada");
 		}
        	
-       	return user;
+       	return driver;
 	}
 	
-	public static ArrayList<Solicitante> readUsers() throws SQLException{
-		String query = "select * from users";
-        ArrayList<Solicitante> list = new ArrayList<Solicitante>();
+	public static ArrayList<Motorista> readDrivers() throws SQLException{
+		String query = "select * from drivers";
+        ArrayList<Motorista> list = new ArrayList<Motorista>();
         Connection connection = null;
         PreparedStatement stmt = null;
         
@@ -110,9 +110,9 @@ public class SolicitanteDAO {
         
         //Get the values
         while(data.next()){
-        	Solicitante user;
+        	Motorista driver;
 			
-				user = new Solicitante(
+				driver = new Motorista(
 						data.getString("cpf"),
 						data.getString("name"),
 						data.getString("password"),
@@ -121,7 +121,7 @@ public class SolicitanteDAO {
 						data.getString("email"),
 						data.getString("number")
 						);
-			list.add(user);
+			list.add(driver);
 		}
         }catch (ParseException | NullStringException | UnableCpfExecption | SQLException e) {
 				// TODO Auto-generated catch block
@@ -136,8 +136,8 @@ public class SolicitanteDAO {
         return list;
 	}
 	
-	public static Boolean updateUser(Solicitante user) throws SQLException{
-		String query = "update users set cpf=?, name=?,"
+	public static Boolean updateDriver(Motorista driver) throws SQLException{
+		String query = "update drivers set cpf=?, name=?,"
 				+ " password=?, sex=?, birthDay=?,"
 				+ " email=?, number=? where id=?";		
 		
@@ -151,14 +151,14 @@ public class SolicitanteDAO {
     		System.out.println("Coneção aberta");
             stmt = connection.prepareStatement(query);
         	
-			stmt.setString(1,user.getNome());
-	        stmt.setString(2,user.getCpf());
-	        stmt.setDate(3,user.getDataNascimento());
-	        stmt.setString(4, user.getSexo());
-	        stmt.setString(5, user.getNumeroCelular());
-	        stmt.setString(6, user.getEmail());
-	        stmt.setString(7, user.getSenha());
-	        stmt.setFloat(8, user.getId());
+			stmt.setString(1,driver.getNome());
+	        stmt.setString(2,driver.getCpf());
+	        stmt.setDate(3,driver.getDataNascimento());
+	        stmt.setString(4, driver.getSexo());
+	        stmt.setString(5, driver.getNumeroCelular());
+	        stmt.setString(6, driver.getEmail());
+	        stmt.setString(7, driver.getSenha());
+	        stmt.setFloat(8, driver.getId());
 	        
 	        stmt.execute();
 	        
@@ -175,8 +175,8 @@ public class SolicitanteDAO {
       	return true;
 	}
 	
-	public static Boolean deleteUser(Solicitante user) throws SQLException{
-		String query = "delete from users where id=?";
+	public static Boolean deleteUser(Motorista driver) throws SQLException{
+		String query = "delete from drivers where id=?";
 		
 		Connection connection = null;
 		PreparedStatement stmt = null;
@@ -187,7 +187,7 @@ public class SolicitanteDAO {
 			//@PrintString
 			System.out.println("Coneção aberta");       
 			stmt = connection.prepareStatement(query);
-			stmt.setLong(1,user.getId());
+			stmt.setLong(1,driver.getId());
 		        
 		    stmt.execute();
 		    

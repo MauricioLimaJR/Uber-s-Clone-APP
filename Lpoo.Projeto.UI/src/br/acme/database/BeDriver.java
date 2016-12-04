@@ -11,14 +11,14 @@ import br.acme.exception.NullStringException;
 import br.acme.exception.UnableCpfExecption;
 import br.acme.users.Solicitante;
 
-public class SolicitanteDAO {
+public class BeDriver {
 
 	public static void insertUser(Solicitante user) throws SQLException{
 	
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		
-	String query = "insert into users"+
+	String query = "insert into beDriver"+
 			" (name,cpf,birthDay,sex,number,email,password)"+
 			"values(?,?,?,?,?,?,?)";
 	
@@ -52,7 +52,7 @@ public class SolicitanteDAO {
 	}
 	
 	public static Solicitante readUser(String email, String pass) throws SQLException {
-		String query = "select * from users where email=? AND password=?";
+		String query = "select * from beDriver where email=? AND password=?";
 		Solicitante user = null;
 		Connection connection = null;
 		PreparedStatement stmt = null;
@@ -94,7 +94,7 @@ public class SolicitanteDAO {
 	}
 	
 	public static ArrayList<Solicitante> readUsers() throws SQLException{
-		String query = "select * from users";
+		String query = "select * from beDriver";
         ArrayList<Solicitante> list = new ArrayList<Solicitante>();
         Connection connection = null;
         PreparedStatement stmt = null;
@@ -137,7 +137,7 @@ public class SolicitanteDAO {
 	}
 	
 	public static Boolean updateUser(Solicitante user) throws SQLException{
-		String query = "update users set cpf=?, name=?,"
+		String query = "update beDriver set cpf=?, name=?,"
 				+ " password=?, sex=?, birthDay=?,"
 				+ " email=?, number=? where id=?";		
 		
@@ -176,7 +176,7 @@ public class SolicitanteDAO {
 	}
 	
 	public static Boolean deleteUser(Solicitante user) throws SQLException{
-		String query = "delete from users where id=?";
+		String query = "delete from beDriver where id=?";
 		
 		Connection connection = null;
 		PreparedStatement stmt = null;

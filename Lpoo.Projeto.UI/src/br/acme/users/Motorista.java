@@ -32,6 +32,11 @@ public class Motorista extends Solicitante implements Serializable{
 				oldUser.getDataNascimentoString(), oldUser.getEmail(), oldUser.getNumeroCelular());
 	}
     
+    public Motorista(String cpf, String nome, String senha, String sexo, java.sql.Date data, String email, String numeroCelular) throws ParseException, NullStringException, UnableCpfExecption {
+		
+    	super(cpf, nome, senha, sexo, data, email, numeroCelular);
+	}
+    
     ///////////// GETTERS AND SETTERS /////////////
 
 	public Boolean getDisponivel() {

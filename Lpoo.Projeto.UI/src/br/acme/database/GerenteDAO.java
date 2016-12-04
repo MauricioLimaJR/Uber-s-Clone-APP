@@ -9,18 +9,19 @@ import java.util.ArrayList;
 
 import br.acme.exception.NullStringException;
 import br.acme.exception.UnableCpfExecption;
+import br.acme.users.Gerente;
 import br.acme.users.Solicitante;
 
-public class SolicitanteDAO {
+public class GerenteDAO {
 
-	public static void insertUser(Solicitante user) throws SQLException{
+	public static void insertADM(Gerente adm) throws SQLException{
 	
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		
-	String query = "insert into users"+
-			" (name,cpf,birthDay,sex,number,email,password)"+
-			"values(?,?,?,?,?,?,?)";
+	String query = "insert into manager"+
+			" (name,cpf,sex,email,password)"+
+			"values(?,?,?,?,?)";
 	
 	try {
         // prepared statement to insert
@@ -30,13 +31,11 @@ public class SolicitanteDAO {
         stmt = connection.prepareStatement(query);
 
         // Put the values
-        stmt.setString(1,user.getNome());
-        stmt.setString(2,user.getCpf());
-        stmt.setDate(3,user.getDataNascimento());
-        stmt.setString(4, user.getSexo());
-        stmt.setString(5, user.getNumeroCelular());
-        stmt.setString(6, user.getEmail());
-        stmt.setString(7, user.getSenha());
+        stmt.setString(1,adm.getNome());
+        stmt.setString(2,adm.getCpf());
+        stmt.setString(4, adm.getSexo());
+        stmt.setString(6, adm.getEmail());
+        stmt.setString(7, adm.getSenha());
 
         // execute 
         stmt.execute();
@@ -51,9 +50,9 @@ public class SolicitanteDAO {
 	}
 	}
 	
-	public static Solicitante readUser(String email, String pass) throws SQLException {
-		String query = "select * from users where email=? AND password=?";
-		Solicitante user = null;
+	public static Gerente readADM(String email, String pass) throws SQLException {
+		String query = "select * from manager where email=? AND password=?";
+		Gerente adm = null;
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		
@@ -70,17 +69,15 @@ public class SolicitanteDAO {
         //Get the values
     	
 			if(data.next()){ 
-			user = new Solicitante(
+			adm = new Gerente(
 					data.getString("cpf"),
 					data.getString("name"),
 					data.getString("password"),
-					data.getString("sex"),
-					data.getDate("birthDay"),
-					data.getString("email"),
-					data.getString("number")
+					data.getString("sex")
 					);
+			adm.setEmail(data.getString("email"));
 			}
-		} catch (SQLException | ParseException | NullStringException | UnableCpfExecption e) {
+		} catch (SQLException | NullStringException | UnableCpfExecption e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
@@ -90,9 +87,10 @@ public class SolicitanteDAO {
 	       	System.out.println("Coneção encerrada");
 		}
        	
-       	return user;
+       	return adm;
 	}
 	
+	/*
 	public static ArrayList<Solicitante> readUsers() throws SQLException{
 		String query = "select * from users";
         ArrayList<Solicitante> list = new ArrayList<Solicitante>();
@@ -203,4 +201,5 @@ public class SolicitanteDAO {
        
       	return true;
 	}
+	*/
 }

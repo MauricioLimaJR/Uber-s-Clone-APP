@@ -13,7 +13,6 @@ import br.acme.location.Lugar;
 import br.acme.location.Viagem;
 import br.acme.storage.IRepositorio;
 import br.acme.storage.RepositorioMotorista;
-import br.acme.storage.RepositorioViagem;
 
 public class Solicitante extends Usuario {
 
@@ -37,6 +36,12 @@ public class Solicitante extends Usuario {
 		setEmail(email);
 		setNumeroCelular(numeroCelular);
 	}
+	public Solicitante(String cpf, String nome, String senha, String sexo, java.sql.Date data, String email, String numeroCelular) throws ParseException, NullStringException, UnableCpfExecption {
+		super(cpf, nome, senha, sexo);
+		setDataNascimento(data);
+		setEmail(email);
+		setNumeroCelular(numeroCelular);
+	}
 	
 	///////////// GETTERS AND SETTERS /////////////
 	
@@ -50,15 +55,14 @@ public class Solicitante extends Usuario {
 		return dataFormatada.format(this.dataNascimento);
 	}
 
-	public void setDataNascimento(String dataNascimento) throws ParseException {		
+	public void setDataNascimento(String dataNascimento) throws ParseException {	
 		DateFormat formatoData = DateFormat.getDateInstance();
 		Date data = formatoData.parse(dataNascimento);
 		this.dataNascimento = data;
 	}
 	
-	public void setDataNascimento(java.sql.Date dataNascimento) throws ParseException {		
-		DateFormat formatoData = DateFormat.getDateInstance();
-		Date data = dataNascimento.get
+	public void setDataNascimento(java.sql.Date dataNascimento) throws ParseException {
+		Date data = dataNascimento;
 		this.dataNascimento = data;
 	}
 	

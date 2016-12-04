@@ -109,7 +109,7 @@ public class DriverWindow extends Application {
 				@Override
 				public void handle(ActionEvent event) {
 					try {
-						loadView(TravelList.startTable(driver.getViagens().buscarTodos()), workSpace);
+						loadView(h, workSpace);
 					} 
 					catch (RepositorioException e) {
 						e.printStackTrace();
