@@ -177,7 +177,7 @@ public class MotoristaDAO {
       	return true;
 	}
 	
-	public static Boolean deleteUser(Motorista driver) throws SQLException{
+	public static Boolean deleteDriver(Motorista driver) throws SQLException{
 		String query = "delete from drivers where id=?";
 		
 		Connection connection = null;

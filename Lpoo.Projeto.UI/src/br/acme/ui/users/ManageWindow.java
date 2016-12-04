@@ -13,6 +13,7 @@ import br.acme.exception.UnableCpfExecption;
 import br.acme.exception.UserInterfaceException;
 import br.acme.storage.Repositorio;
 import br.acme.ui.MainWindow;
+import br.acme.ui.elements.DriverList;
 import br.acme.ui.elements.TravelList;
 import br.acme.ui.elements.UserList;
 import br.acme.users.Gerente;
@@ -199,8 +200,26 @@ public class ManageWindow extends Application {
 			 * Buttons to accept a driver :: END
 			 */
 			
+			/*
+			 * User's Buttons :: START
+			 */
+			
+			Button deleteUser = new Button("Delete User");
+			deleteUser.getStyleClass().addAll("btnMenuNav", "btnDelete");
+			deleteUser.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					try {
+						deleteUser(UserList.getTable());
+					} catch (UserInterfaceException e) {
+						
+					}
+				}
+			});
+			
 			Button showUsers = new Button("See Users");
-			showUsers.getStyleClass().add("btnMenuNav");
+			showUsers.getStyleClass().add("btnMenuNav");	
 			
 			showUsers.setOnAction(new EventHandler<ActionEvent>() {
 				
@@ -211,13 +230,34 @@ public class ManageWindow extends Application {
 						users = SolicitanteDAO.readUsers();
 						UserList.startTable(users);
 						clearView(workSpace);
-						workSpace.getChildren().add(UserList.getTable());
+						workSpace.getChildren().addAll(UserList.getTable(), deleteUser);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 				
+			});
+			/*
+			 * User's Buttons :: END
+			 */
+			
+			/*
+			 * Driver's Buttons :: START
+			 */
+			
+			Button deleteDriver = new Button("Delete User");
+			deleteDriver.getStyleClass().addAll("btnMenuNav", "btnDelete");
+			deleteDriver.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					try {
+						deleteDriver(UserList.getTable());
+					} catch (UserInterfaceException e) {
+						
+					}
+				}
 			});
 			
 			Button showDrivers = new Button("See Drivers");
@@ -227,12 +267,22 @@ public class ManageWindow extends Application {
 				
 				@Override
 				public void handle(ActionEvent event) {
-					/*
-					 * See and remove Drivers
-					 */
+					ArrayList<Motorista> drivers;
+					try {
+						drivers = MotoristaDAO.readDrivers();
+						DriverList.startTable(drivers);
+						clearView(workSpace);
+						workSpace.getChildren().addAll(DriverList.getTable(), deleteDriver);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 				
 			});
+			/*
+			 * Driver's Buttons :: END
+			 */
 			
 			Button travels = new Button("See Travels");
 			travels.getStyleClass().add("btnMenuNav");
