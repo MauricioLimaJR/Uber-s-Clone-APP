@@ -371,7 +371,7 @@ public class ManageWindow extends Application {
 			bodyHolder.setId("mainContent");
 			
 			Scene scene = new Scene(bodyHolder,900,540);
-			scene.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("../files/mainwindow.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			

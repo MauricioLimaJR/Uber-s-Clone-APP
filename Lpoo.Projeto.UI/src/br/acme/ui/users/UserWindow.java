@@ -3,7 +3,7 @@ package br.acme.ui.users;
 import java.sql.SQLException;
 
 import br.acme.database.BeDriver;
-import br.acme.database.SolicitanteDAO;
+import br.acme.exception.InputException;
 import br.acme.exception.RepositorioException;
 import br.acme.storage.Repositorio;
 import br.acme.ui.MainWindow;
@@ -30,10 +30,13 @@ import javafx.scene.layout.VBox;
 public class UserWindow extends Application {
 	
 	private Solicitante user;
+	UserEdit edit;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			
+			edit = new UserEdit(user);
 			//For put all elements
 			//BorderPane elements = new BorderPane();
 			//Hold the three main elements
@@ -181,16 +184,41 @@ public class UserWindow extends Application {
 
 			
 			//////////////////////// HEADER BUTTONS 
+			HBox buttons = new HBox();
+			Button save = new Button("Salvar");
+			save.getStyleClass().add("btnMenuNav");
+			save.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					
+					try {
+						edit.getFields();
+					} catch (InputException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			
+			Button back = new Button("Cancelar");
+			back.getStyleClass().addAll("btnMenuNav", "btnDelete");
+			back.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					clearView(workSpace);
+				}
+			});
+			buttons.getChildren().addAll(save,back);
 			
 			userSettings.setOnAction( new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
 					
-				//clearView(workSpace);
-					UserEdit edit = new UserEdit(user);
 					edit.setAlignment(Pos.CENTER);
-				loadView(edit, workSpace);
+					clearView(workSpace);
+					workSpace.getChildren().addAll(edit, buttons);
 				}
 			});
 			
@@ -211,7 +239,7 @@ public class UserWindow extends Application {
 			bodyHolder.setId("mainContent");
 			
 			Scene scene = new Scene(bodyHolder,900,540);
-			scene.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("../files/mainwindow.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			

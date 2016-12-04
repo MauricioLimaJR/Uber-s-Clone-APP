@@ -1,75 +1,81 @@
 package br.acme.ui.elements;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
 import application.MaskTextField;
+import br.acme.database.SolicitanteDAO;
+import br.acme.exception.DialogAlert;
+import br.acme.exception.InputException;
 import br.acme.exception.NullStringException;
-import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
-import br.acme.storage.Database;
-import br.acme.storage.IRepositorio;
-import br.acme.storage.IRepositorioSolicitante;
-import br.acme.storage.RepositorioSolicitante;
-import br.acme.ui.elements.UserList;
-import br.acme.storage.Database;
 import br.acme.users.Solicitante;
-import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
 public class UserEdit extends GridPane{
 	
 	private ArrayList<TextField> dataOld = new ArrayList<TextField>();
 	
-	private static Solicitante user;
+	private  Solicitante user;
 	String sexField = null;
 	int bdLastPos = 0;
 	int bdPos=0;
 	
-	private static IRepositorio<Solicitante> userList = new RepositorioSolicitante();
+	//UserName
+	Label name = new Label("Name:");			
+	MaskTextField nameField;
+	//VBox userCpf
+	Label cpf = new Label("CPF:");		
+	MaskTextField cpfField;
+	//UserEmail
+	Label email = new Label("Email:");	
+	MaskTextField emailField;
+	//UserSex
+	Label sex = new Label("Sex:");
 	
-	//public void start(Stage primaryStage) throws Exception {
+	@SuppressWarnings("rawtypes")
+	ChoiceBox sexChoice;
+	//VBox userBirthday
+	Label birthDay = new Label("BirthDay:");		
+	MaskTextField bdField;
+	//VBox userNumber
+	Label number = new Label("Phone:");	
+	MaskTextField numberField;
+	// Old userPass
+	Label oldPass = new Label("Old Password:");
+	PasswordField oldPassField;	
+	//New userPass
+	Label password = new Label("New Password:");
+	PasswordField passField;	
+	//UserPass Confirm
+	Label passwordConfirm = new Label("Confirm:");	
+	PasswordField passFieldConfirm;
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public UserEdit(Solicitante user){
+	public UserEdit(Solicitante userEdit){
 		try{
 			
-			this.user = user;
+			this.user = userEdit;
+			String[] opc = {user.getSexo(), "feminino", "masculino"};
 			
-			//VBox userName
-			HBox userName = new HBox(28);
-			Label name = new Label("Name:");
-			name.setAlignment(Pos.CENTER_LEFT);			
-			MaskTextField nameField = new MaskTextField(user.getNome());
+			//UserName		
+			nameField = new MaskTextField(user.getNome());
 			nameField.setMask("*!");
 			nameField.setPromptText("Enter your name");
 			nameField.setAlignment(Pos.CENTER_LEFT);
-			userName.getChildren().addAll(name, nameField);
-			userName.setAlignment(Pos.CENTER_LEFT);
 			
-			//VBox userCpf
-			Label cpf = new Label("CPF:");
-			cpf.setAlignment(Pos.CENTER_LEFT);			
-			MaskTextField cpfField = new MaskTextField(user.getCpf());
+			
+			//VBox userCpf	
+			cpfField = new MaskTextField(user.getCpf());
 			cpfField.setMask("NNN.NNN.NNN-NN");
 			cpfField.setPromptText("Enter your CPF");
 			
@@ -87,22 +93,14 @@ public class UserEdit extends GridPane{
 				}
 			});
 			
-			cpfField.setAlignment(Pos.CENTER_LEFT);
-			
-			//VBox userEmail
-			Label email = new Label("Email:");
-			email.setAlignment(Pos.CENTER_LEFT);			
-			MaskTextField emailField = new MaskTextField(user.getEmail());
+			//UserEmail	
+			emailField = new MaskTextField(user.getEmail());
 			emailField.setMask("L!@L!.L!.L!");
 			emailField.setPromptText("Enter your name");
-			emailField.setAlignment(Pos.CENTER_LEFT);
 			
 			
 			//UserSex
-			Label sex = new Label("Sex:");
-			sex.setAlignment(Pos.CENTER_LEFT);
-			String[] opc = {user.getSexo(), "feminino", "masculino"};
-			ChoiceBox sexChoice = new ChoiceBox(FXCollections.observableArrayList(opc));
+			sexChoice = new ChoiceBox(FXCollections.observableArrayList(opc));
 			sexChoice.getSelectionModel().selectedIndexProperty().addListener(
 					(ObservableValue<? extends Number> ov,
 							Number oldValue, Number newValue) -> {
@@ -111,12 +109,9 @@ public class UserEdit extends GridPane{
 							}
 					);
 			sexChoice.getSelectionModel().select(0);
-			sexChoice.setTooltip(new Tooltip("Your sex"));
 			
 			//VBox userBirthday
-			Label birthDay = new Label("BirthDay:");
-			birthDay.setAlignment(Pos.CENTER_LEFT);			
-			MaskTextField bdField = new MaskTextField(user.getDataNascimentoString());
+			bdField = new MaskTextField(user.getDataNascimentoString());
 			bdField.setMask("NN/NN/NNNN");
 			bdField.setPromptText("dd/mm/aaaa");
 			bdField.setAlignment(Pos.CENTER_LEFT);
@@ -138,10 +133,8 @@ public class UserEdit extends GridPane{
 				}
 			});
 
-			//VBox userNumber
-			Label number = new Label("Phone:");
-			number.setAlignment(Pos.CENTER_LEFT);			
-			MaskTextField numberField = new MaskTextField(user.getNumeroCelular());
+			//UserNumber
+			numberField = new MaskTextField(user.getNumeroCelular());
 			numberField.setMask("NN*NNNNNNNNN");
 			numberField.setPromptText("(xx) xxxxx xxxx");
 			numberField.setAlignment(Pos.CENTER_LEFT);
@@ -161,54 +154,19 @@ public class UserEdit extends GridPane{
 				}
 			});
 			
-			//VBox userPass
-			HBox userPass = new HBox(28);
-			Label password = new Label("Password:");
-			password.setAlignment(Pos.CENTER_LEFT);	
-			PasswordField passField = new PasswordField();
+			// Old userPass
+			oldPassField = new PasswordField();
+			oldPassField.setText(user.getSenha());
+			oldPassField.setPromptText("Enter your password");
+			
+			//New userPass
+			passField = new PasswordField();
 			passField.setPromptText("Enter your password");
-			passField.setAlignment(Pos.CENTER_LEFT);
-			userPass.getChildren().addAll(password, passField);
-			userPass.setAlignment(Pos.CENTER_LEFT);
 			
-			//VBox userPass Confirm
-			HBox userPassConfirm = new HBox(28);
-			Label passwordConfirm = new Label("Confirm:");
-			passwordConfirm.setAlignment(Pos.CENTER_LEFT);	
-			PasswordField passFieldConfirm = new PasswordField();
+			//UserPass Confirm
+			passFieldConfirm = new PasswordField();
 			passFieldConfirm.setPromptText("Enter your password again");
-			passFieldConfirm.setAlignment(Pos.CENTER_LEFT);
-			userPassConfirm.getChildren().addAll(passwordConfirm, passFieldConfirm);
-			userPassConfirm.setAlignment(Pos.CENTER_LEFT);
 			
-			Button btnSend = new Button("Send");
-			btnSend.setAlignment(Pos.BOTTOM_RIGHT);
-			btnSend.getStyleClass().add("accountBtn");			
-			
-			btnSend.setOnAction(new EventHandler<ActionEvent>() {
-		        @Override
-		        public void handle(ActionEvent t) {
-		        	//
-		        	
-						try {
-							makeAnUser(cpfField.getText(), nameField.getText(), passField.getText(),
-									sexField, bdField.getText(), emailField.getText(),
-									numberField.getText());
-						} catch (ParseException | NullStringException | UnableCpfExecption e) {
-							
-							e.printStackTrace();
-							printError(e.getMessage());
-							//Label msg = new Label(e.getMessage());
-							//msg.setTextFill(Color.RED);
-							//addStatus(msg);
-						} catch (StringIndexOutOfBoundsException  e) {
-							
-							printError("Campo muito curto");
-						}
-						
-				
-		        }
-		    });
 			
 			/*
 			 * Adding the elements to a column and a raw
@@ -240,19 +198,21 @@ public class UserEdit extends GridPane{
 			GridPane.setConstraints(email, 1, 6 );
 			GridPane.setConstraints(emailField, 2, 6 );
 			
-			//USERPASS
-			GridPane.setConstraints(password, 1, 7 );
-			GridPane.setConstraints(passField, 2, 7 );
+			//OLD USERPASS
+			GridPane.setConstraints(oldPass, 1, 7 );
+			GridPane.setConstraints(oldPassField, 2, 7 );
+			
+			//NEW USERPASS
+			GridPane.setConstraints(password, 1, 8 );
+			GridPane.setConstraints(passField, 2, 8 );
 		
 			//USERPASSCONFIRM
-			GridPane.setConstraints(passwordConfirm, 1, 8 );
-			GridPane.setConstraints(passFieldConfirm, 2, 8 );
+			GridPane.setConstraints(passwordConfirm, 1, 9 );
+			GridPane.setConstraints(passFieldConfirm, 2, 9 );
 			
-			//BUTTON SEND
-			GridPane.setConstraints(btnSend, 2, 9);
 
-			this.getChildren().addAll(name, nameField, cpf, cpfField, birthDay, bdField, sex, sexChoice,
-					number, numberField, email, emailField, password, passField, passwordConfirm, passFieldConfirm, btnSend);			
+			this.getChildren().addAll(name, nameField, cpf, cpfField, birthDay, bdField, sex, sexChoice, number, numberField,
+					email, emailField, oldPass, oldPassField, password, passField, passwordConfirm, passFieldConfirm);			
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -267,7 +227,7 @@ public class UserEdit extends GridPane{
 	}
 	
 	@SuppressWarnings("unused")
-	private static void setUser(Solicitante obj){
+	private void setUser(Solicitante obj){
 		user = obj;
 	}
 	
@@ -278,39 +238,36 @@ public class UserEdit extends GridPane{
 		this.getChildren().addAll(label);
 	}
 	
-	public void makeAnUser(String cpf, String name, String password, String sex, String date, String email, String number) throws ParseException, NullStringException, UnableCpfExecption {
-		Solicitante solicitante = null;
-		//try {
-			solicitante = new Solicitante(cpf, name, password, sex, date, email, number);
-			sendNewAccount(solicitante);
-			Label m = new Label("Enviado");
-			addStatus(m);
-			
-	//	} catch (ParseException | NullStringException | UnableCpfExecption e) {
-		//	e.printStackTrace();
-		//	Label error = new Label(e.getMessage());
-		//	addStatus(error);
-		//}
+	public String getPassword() throws InputException{
+		/*if(passField.getText() == null && passFieldConfirm.getText() == null){
+			return oldPassField.getText();
+		}else if(passField.getText() != null && passFieldConfirm.getText() != null 
+				&& passField.getText().equals(passFieldConfirm.getText())){
+			return passField.getText();
+		}else if(passField.getText() != null && passFieldConfirm.getText() != null){
+			throw new InputException("Campo de senha incorreto.");
+		}
+		*/
+		return oldPassField.getText();
 	}
 	
-	public void sendNewAccount(Solicitante solicitante){
+	public void getFields() throws InputException{	
 		try {
-			//Save in a local repository
-			userList.adicionar(solicitante);
-			//After, save in an database
-			Database.saveStatus(userList, "DataBase/Solicitantes.txt");
-		} catch (RepositorioException e) {
+			String pass = getPassword();
+			Solicitante updateUser = new Solicitante(cpfField.getText(), nameField.getText(), pass,
+					sexField, bdField.getText(), emailField.getText(), numberField.getText());
+			updateUser.setId(user.getId());
+			System.out.println(user.getId());
+			
+			if(SolicitanteDAO.updateUser(updateUser)){
+			DialogAlert.show("Sucesso", "Alterações enviadas.");
+			}else DialogAlert.show("Falha", "Alterações não enviadas.");
+			
+		} catch ( ParseException | NullStringException | UnableCpfExecption | SQLException | InputException e) {
 			e.printStackTrace();
-			printError(e.getMessage());
+			throw new InputException(e.getMessage());
 		}
 	}
-	
-	public void printError(String error){
-		 Alert alert = new Alert(AlertType.WARNING);
-         alert.setTitle("Erro");
-         alert.setHeaderText(error);
-        // alert.setContentText("Nehuma viagem realizada.");
-         alert.showAndWait();
-	}
+
 }
  

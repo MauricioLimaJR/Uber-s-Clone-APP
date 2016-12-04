@@ -25,8 +25,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -44,7 +42,7 @@ public class MainWindow extends Application{
 	AccountWindow newAccount = new AccountWindow();
 	
 	ManageWindow adm = new ManageWindow();
-	UserWindow user = new UserWindow();
+	UserWindow user;
 	DriverWindow driver = new DriverWindow();
 	
 	public static IRepositorio<Solicitante> userList = new RepositorioSolicitante();
@@ -141,6 +139,7 @@ public class MainWindow extends Application{
 					Usuario person = doLogin(emailField.getText(), passField.getText());
 					
 					if(person.getClass() == Solicitante.class){
+						user = new UserWindow();
 						user.setUser((Solicitante) person);
 						user.start(mainStage);
 					}
@@ -198,7 +197,7 @@ public class MainWindow extends Application{
 			scene.getStylesheets().add(getClass().getResource("files/mainwindow.css").toExternalForm());
 			mainStage.setTitle("Nome do Progama");
 			
-			Image icon = new Image(getClass().getResource("title.png").toExternalForm());
+			Image icon = new Image(getClass().getResource("files/icon.png").toExternalForm());
 			mainStage.getIcons().add(icon);  
 			mainStage.setScene(scene);
 			mainStage.setResizable(false);

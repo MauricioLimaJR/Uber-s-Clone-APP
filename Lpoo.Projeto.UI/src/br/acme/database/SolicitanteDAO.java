@@ -153,14 +153,14 @@ public class SolicitanteDAO {
     		System.out.println("Coneção aberta");
             stmt = connection.prepareStatement(query);
         	
-			stmt.setString(1,user.getNome());
-	        stmt.setString(2,user.getCpf());
-	        stmt.setDate(3,user.getDataNascimento());
+			stmt.setString(1,user.getCpf());
+	        stmt.setString(2,user.getNome());
+	        stmt.setString(3, user.getSenha());
 	        stmt.setString(4, user.getSexo());
-	        stmt.setString(5, user.getNumeroCelular());
+	        stmt.setDate(5,user.getDataNascimento());
 	        stmt.setString(6, user.getEmail());
-	        stmt.setString(7, user.getSenha());
-	        stmt.setFloat(8, user.getId());
+	        stmt.setString(7, user.getNumeroCelular());
+	        stmt.setLong(8, user.getId());
 	        
 	        stmt.execute();
 	        

@@ -42,7 +42,7 @@ public class DriverWindow extends Application {
 			
 			/////////////////////////   Making the HEADER   /////////////////////////
 			
-			Image timg = new Image(getClass().getResource("../files/imgT.png").toString());
+			Image timg = new Image(getClass().getResource("../files/logo.png").toString());
 			ImageView titleImg = new ImageView(timg);
 			titleImg.getStyleClass().add("titleImg");
 			
@@ -156,7 +156,7 @@ public class DriverWindow extends Application {
 			bodyHolder.setId("mainContent");
 			
 			Scene scene = new Scene(bodyHolder,900,540);
-			scene.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("../files/mainwindow.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
