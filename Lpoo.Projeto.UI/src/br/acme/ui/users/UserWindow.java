@@ -1,16 +1,23 @@
 package br.acme.ui.users;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import br.acme.database.BeDriver;
+import br.acme.database.MotoristaDAO;
 import br.acme.database.SolicitanteDAO;
+import br.acme.database.TravelDAO;
 import br.acme.exception.DialogWindow;
 import br.acme.exception.InputException;
 import br.acme.exception.RepositorioException;
+import br.acme.exception.UserInterfaceException;
 import br.acme.storage.Repositorio;
 import br.acme.ui.MainWindow;
+import br.acme.ui.elements.DriverList;
+import br.acme.ui.elements.Travel;
 import br.acme.ui.elements.TravelList;
 import br.acme.ui.elements.UserEdit;
+import br.acme.users.Motorista;
 import br.acme.users.Solicitante;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -22,6 +29,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,12 +41,15 @@ public class UserWindow extends Application {
 	
 	private Solicitante user;
 	UserEdit edit;
+	Travel travel;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			
 			edit = new UserEdit(user);
+			DriverList.initTable();
+			
 			//For put all elements
 			//BorderPane elements = new BorderPane();
 			//Hold the three main elements
@@ -111,9 +122,84 @@ public class UserWindow extends Application {
 			//Vertical Box to put all buttons of menu
 			VBox menuNav = new VBox();
 			
+			/*
+			 * BUttons to do a Travel :: START
+			 */
+			HBox travelButtons = new HBox();
+			
+			Button cancelTravel = new Button("Cancelar viagem.");
+			cancelTravel.getStyleClass().add("btnMenuNav");
+			cancelTravel.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent arg0) {
+					Boolean confirm = DialogWindow.ConfirmDialog("Confirmação", "Quer cancelar a viagem?");
+					if(confirm){
+						clearView(workSpace);
+					}
+					
+				}
+			});
+			
+			Button startTravel = new Button("Pedir viagem");
+			startTravel.getStyleClass().add("btnMenuNav");
+			startTravel.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent arg0) {
+					try {
+						travel.startTravel();
+					} catch (SQLException e) {
+						e.printStackTrace();
+						DialogWindow.show(e.getMessage());
+					}
+					
+				}
+			});
+			
+			
+			Button choiceDriver = new Button("Chamar motorista");
+			choiceDriver.getStyleClass().add("btnMenuNav");
+			choiceDriver.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent arg0) {
+					try {
+						Motorista driver = getDriver(DriverList.getTable());
+						travel.setDriver(driver);
+						travelButtons.getChildren().remove(cancelTravel);
+						travelButtons.getChildren().addAll(startTravel, cancelTravel);
+						
+					} catch (UserInterfaceException | SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+			
 			Button doTravel = new Button("Take a run");
 			doTravel.getStyleClass().add("btnMenuNav");
-			//Add function while clicking 
+
+			doTravel.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent arg0) {
+					ArrayList<Motorista> drivers;
+					try {
+						drivers = MotoristaDAO.readDrivers();
+						DriverList.startTable(drivers);
+						
+						travel = new Travel(user);
+						clearView(workSpace);
+						travelButtons.getChildren().addAll(choiceDriver, cancelTravel);
+						workSpace.getChildren().addAll(DriverList.getTable(), travel, travelButtons);
+						
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
 			
 			Button showTravels = new Button("Show travels");
 			showTravels.getStyleClass().add("btnMenuNav");
@@ -122,16 +208,14 @@ public class UserWindow extends Application {
 				
 				@Override
 				public void handle(ActionEvent event) {
-					try {
-						loadView(TravelList.startTable(Repositorio.rpViagens.buscarPorId(user.getId())), workSpace);
+				
+					try{
+						clearView(workSpace);
+						loadView(new Label(TravelDAO.readTravel(user.getId()).toString()), workSpace);
 					} 
-					catch (RepositorioException e) {
+					catch ( SQLException e) {
+						DialogWindow.show("Erro", "Nenhuma viagem realizada.");
 						e.printStackTrace();
-						 Alert alert = new Alert(AlertType.WARNING);
-				         alert.setTitle("Repositório vazio");
-				         alert.setHeaderText(e.getMessage());
-				         alert.setContentText("Nehuma viagem realizada.");
-				         alert.showAndWait();
 					}
 				}
 			});
@@ -144,7 +228,7 @@ public class UserWindow extends Application {
 				@Override
 				public void handle(ActionEvent event) {
 					try {
-						Boolean choose = DialogWindow.ConfirmDialog("Confirmação", "Que se tornar motorista?");
+						Boolean choose = DialogWindow.ConfirmDialog("Confirmação", "Quer se tornar motorista?");
 						if(choose) BeDriver.insertUser(user);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
@@ -288,5 +372,19 @@ public class UserWindow extends Application {
 	public void loadView(Node view, VBox content){
 		clearView(content);
 		content.getChildren().addAll(view);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private Motorista getDriver(TableView table) throws UserInterfaceException, SQLException {
+	    int selectedIndex = table.getSelectionModel().getSelectedIndex();
+	    if (selectedIndex >= 0) {
+	    	Boolean choice = DialogWindow.ConfirmDialog("Confimação", "Escolher este motorista?");
+			if(choice){
+		    	Motorista driver = (Motorista) table.getItems().get(selectedIndex);
+		    	return driver;
+			}
+		}
+	    
+	    throw new UserInterfaceException("Nenhuma pessoa selecionada");
 	}
 }

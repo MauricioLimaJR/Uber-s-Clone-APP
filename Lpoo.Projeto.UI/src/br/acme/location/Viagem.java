@@ -16,6 +16,40 @@ public class Viagem implements Serializable{
 	private long motoristaID;
 	private Lugar origem;
 	private Lugar destino;
+	private String source;
+	private String destiny;
+	public long getClienteID() {
+		return clienteID;
+	}
+
+	public void setClienteID(long clienteID) {
+		this.clienteID = clienteID;
+	}
+
+	public long getMotoristaID() {
+		return motoristaID;
+	}
+
+	public void setMotoristaID(long motoristaID) {
+		this.motoristaID = motoristaID;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public String getDestiny() {
+		return destiny;
+	}
+
+	public void setDestiny(String destiny) {
+		this.destiny = destiny;
+	}
+
 	private double valorViagem;
 	private String formaPagamento;
 	
@@ -27,6 +61,18 @@ public class Viagem implements Serializable{
 		this.destino = destino;
 		this.valorViagem = valorViagem;
 		this.formaPagamento = formaPagamento;
+	}
+	
+	public Viagem(long idCliente, long idMotorista, Lugar origem, Lugar destino, double valorViagem,
+			String formaPagamento) {
+		this.clienteID = idCliente;
+		this.motoristaID = idMotorista;
+		this.origem = origem;
+		this.destino = destino;
+		this.valorViagem = valorViagem;
+		this.formaPagamento = formaPagamento;
+		this.source = origem.getEndereco();
+		this.destiny = destino.getEndereco();
 	}
 
 	public long getId() {
@@ -45,11 +91,11 @@ public class Viagem implements Serializable{
 		this.clienteID = cliente.getId();
 	}
 
-	public long getMotorista() {
+	public long getMotoristaId() {
 		return motoristaID;
 	}
 
-	public void setMotorista(Motorista motorista) {
+	public void setMotoristaId(Motorista motorista) {
 		this.motoristaID = motorista.getId();
 	}
 

@@ -7,12 +7,11 @@ import java.util.ArrayList;
 import br.acme.database.BeDriver;
 import br.acme.database.MotoristaDAO;
 import br.acme.database.SolicitanteDAO;
+import br.acme.database.TravelDAO;
 import br.acme.exception.DialogWindow;
 import br.acme.exception.NullStringException;
-import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
 import br.acme.exception.UserInterfaceException;
-import br.acme.storage.Repositorio;
 import br.acme.ui.MainWindow;
 import br.acme.ui.elements.DriverList;
 import br.acme.ui.elements.TravelList;
@@ -27,11 +26,9 @@ import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -132,15 +129,12 @@ public class ManageWindow extends Application {
 				@Override
 				public void handle(ActionEvent event) {
 					try {
-						loadView(TravelList.startTable(Repositorio.rpViagens.buscarPorId(adm.getId())), workSpace);
+						clearView(workSpace);
+						loadView(TravelList.startTable(TravelDAO.readTravels()), workSpace);
 					} 
-					catch (RepositorioException e) {
+					catch ( SQLException e) {
+						DialogWindow.show("Erro", "Nenhuma viagem realizada.");
 						e.printStackTrace();
-						 Alert alert = new Alert(AlertType.WARNING);
-				         alert.setTitle("Repositório vazio");
-				         alert.setHeaderText(e.getMessage());
-				         alert.setContentText("Nehuma viagem realizada.");
-				         alert.showAndWait();
 					}
 				}
 			});
@@ -407,7 +401,7 @@ public class ManageWindow extends Application {
 	    int selectedIndex = table.getSelectionModel().getSelectedIndex();
 	    
 	    if (selectedIndex >= 0) {
-	    	Boolean choice = DialogWindow.ConfirmDialog("Confimação", "Você quer realmente sair?");
+	    	Boolean choice = DialogWindow.ConfirmDialog("Confimação", "Deletar usuário?");
 			if(choice){	
 		    	Solicitante user = (Solicitante) table.getItems().get(selectedIndex);
 		    	table.getItems().remove(selectedIndex);
@@ -423,7 +417,7 @@ public class ManageWindow extends Application {
 	private void deleteDriver(TableView table) throws UserInterfaceException, SQLException {
 	    int selectedIndex = table.getSelectionModel().getSelectedIndex();
 	    if (selectedIndex >= 0) {
-	    	Boolean choice = DialogWindow.ConfirmDialog("Confimação", "Você quer realmente sair?");
+	    	Boolean choice = DialogWindow.ConfirmDialog("Confimação", "Deletar motorista?");
 			if(choice){
 		    	Motorista driver = (Motorista) table.getItems().get(selectedIndex);
 		    	table.getItems().remove(selectedIndex);

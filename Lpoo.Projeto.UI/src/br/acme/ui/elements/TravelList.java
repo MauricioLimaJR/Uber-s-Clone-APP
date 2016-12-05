@@ -22,44 +22,45 @@ public class TravelList extends VBox {
     public TravelList(Solicitante person){
 		this.person = person;
 	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static VBox startTable(ArrayList<Viagem> list){
-		
-	try{
-		
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public static void initTable(){
+    	
         TableColumn id = new TableColumn<>("ID");
-        TableColumn user = new TableColumn<>("Cliente");
-        TableColumn driver = new TableColumn<>("Motorista");
+        TableColumn user = new TableColumn<>("ID Cliente");
+        TableColumn driver = new TableColumn<>("ID Motorista");
         TableColumn from = new TableColumn<>("Origem");
         TableColumn to = new TableColumn<>("Destino");
         TableColumn value = new TableColumn<>("Valor");
         TableColumn pay = new TableColumn<>("Pagamento");
-
+        
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        user.setCellValueFactory(new PropertyValueFactory<>("cliente"));
-        driver.setCellValueFactory(new PropertyValueFactory<>("motorista"));
-        from.setCellValueFactory(new PropertyValueFactory<>("origem"));
-        to.setCellValueFactory(new PropertyValueFactory<>("destino"));
+        user.setCellValueFactory(new PropertyValueFactory<>("clienteID"));
+        driver.setCellValueFactory(new PropertyValueFactory<>("motoristaID"));
+        from.setCellValueFactory(new PropertyValueFactory<>("source"));
+        to.setCellValueFactory(new PropertyValueFactory<>("destiny"));
         value.setCellValueFactory(new PropertyValueFactory<>("valorViagem"));
         pay.setCellValueFactory(new PropertyValueFactory<>("formaPagamento"));
 
         
         personTable.getColumns().addAll(id,user,driver,from,to,value,pay);
         		
+    }
+	
+	@SuppressWarnings({ "unchecked" })
+	public static VBox startTable(ArrayList<Viagem> list){
+		
+	try{
+
+        
         /*
          * Load the user in DataBase
          */
 
        
-        
+        personTable.getItems().removeAll(personTable.getChildrenUnmodifiable());
         personTable.setItems(FXCollections.observableArrayList(list));
- 
-        
-        if(!userList.getChildren().isEmpty()){
-        	userList.getChildren().remove(0);
-        }
-        
+        userList.getChildren().removeAll(userList.getChildren());
         userList.getChildren().add(personTable);
         return userList;
         
