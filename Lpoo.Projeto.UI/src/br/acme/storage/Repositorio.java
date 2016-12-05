@@ -1,6 +1,5 @@
 package br.acme.storage;
 
-import br.acme.location.Viagem;
 import br.acme.users.Motorista;
 import br.acme.users.Solicitante;
 

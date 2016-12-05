@@ -3,6 +3,8 @@ package br.acme.ui.users;
 import java.sql.SQLException;
 
 import br.acme.database.BeDriver;
+import br.acme.database.SolicitanteDAO;
+import br.acme.exception.DialogWindow;
 import br.acme.exception.InputException;
 import br.acme.exception.RepositorioException;
 import br.acme.storage.Repositorio;
@@ -209,7 +211,30 @@ public class UserWindow extends Application {
 					clearView(workSpace);
 				}
 			});
-			buttons.getChildren().addAll(save,back);
+			
+			Button delete = new Button("Deletar Conta");
+			delete.getStyleClass().addAll("btnMenuNav", "btnDelete");
+			delete.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					// TODO Auto-generated method stub
+					String pass = DialogWindow.InputDialogDelete();
+					if(user.getSenha().equals(pass)){
+						try {
+							SolicitanteDAO.deleteUser(user);
+							MainWindow mainMenu = new MainWindow();
+							mainMenu.start(primaryStage);							
+						} catch (SQLException e) {
+							e.printStackTrace();
+							DialogWindow.show(e.getMessage());
+						}
+					}else DialogWindow.show("Senha incompatível.");
+					
+				}
+			});
+			
+			buttons.getChildren().addAll(save,back,delete);
 			
 			userSettings.setOnAction( new EventHandler<ActionEvent>() {
 

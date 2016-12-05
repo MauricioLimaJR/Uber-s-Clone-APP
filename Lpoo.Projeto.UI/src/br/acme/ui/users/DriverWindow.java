@@ -1,15 +1,16 @@
 package br.acme.ui.users;
 
+import java.sql.SQLException;
+
+import br.acme.database.MotoristaDAO;
+import br.acme.exception.DialogWindow;
 import br.acme.exception.InputException;
 import br.acme.exception.RepositorioException;
 import br.acme.storage.Repositorio;
 import br.acme.ui.MainWindow;
 import br.acme.ui.elements.DriverEdit;
 import br.acme.ui.elements.TravelList;
-import br.acme.ui.elements.UserEdit;
-import br.acme.ui.elements.UserList;
 import br.acme.users.Motorista;
-import br.acme.users.Solicitante;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,7 +21,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -80,7 +80,7 @@ public class DriverWindow extends Application {
 			//Add function while clicking 				
 			
 			header.getChildren().addAll(titleImg, driverName, userSettings, userLogout);
-			//header.setSpacing(0);
+			header.setSpacing(100);
 			header.setAlignment(Pos.CENTER_LEFT);
 			header.setId("header");
 			//header.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
@@ -157,7 +157,6 @@ public class DriverWindow extends Application {
 			footer.setSpacing(0);
 			footer.setAlignment(Pos.BOTTOM_CENTER);
 			footer.setId("footer");
-			//footer.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
 			
 			////////////////////////HEADER BUTTONS 
 			HBox buttons = new HBox();
@@ -185,7 +184,30 @@ public class DriverWindow extends Application {
 					clearView(workSpace);
 				}
 			});
-			buttons.getChildren().addAll(save,back);
+						
+			Button delete = new Button("Deletar Conta");
+			delete.getStyleClass().addAll("btnMenuNav", "btnDelete");
+			delete.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					// TODO Auto-generated method stub
+					String pass = DialogWindow.InputDialogDelete();
+					if(driver.getSenha().equals(pass)){
+						try {
+							MotoristaDAO.deleteDriver(driver);
+							MainWindow mainMenu = new MainWindow();
+							mainMenu.start(primaryStage);							
+						} catch (SQLException e) {
+							e.printStackTrace();
+							DialogWindow.show(e.getMessage());
+						}
+					}else DialogWindow.show("Senha incompatível.");
+					
+				}
+			});
+			
+			buttons.getChildren().addAll(save,back,delete);
 			
 			userSettings.setOnAction( new EventHandler<ActionEvent>() {
 			

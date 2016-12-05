@@ -4,13 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
 
 import br.acme.exception.NullStringException;
 import br.acme.exception.UnableCpfExecption;
 import br.acme.users.Gerente;
-import br.acme.users.Solicitante;
 
 public class GerenteDAO {
 

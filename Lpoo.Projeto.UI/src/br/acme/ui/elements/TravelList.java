@@ -1,34 +1,22 @@
 package br.acme.ui.elements;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import br.acme.location.Viagem;
-import br.acme.storage.Database;
-import br.acme.storage.IRepositorio;
-import br.acme.storage.RepositorioSolicitante;
 import br.acme.users.Solicitante;
-import br.acme.users.Usuario;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class TravelList extends VBox {
 
 	private Solicitante person;
 	public static VBox userList = new VBox();
 
-    private static TableView personTable = new TableView<>();
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings("rawtypes")
+	private static TableView personTable = new TableView<>();
 	
 	//@Override
     public TravelList(Solicitante person){

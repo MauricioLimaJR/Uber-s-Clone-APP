@@ -3,7 +3,6 @@ package br.acme.ui.elements;
 import java.util.ArrayList;
 
 import br.acme.users.Motorista;
-import br.acme.users.Solicitante;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableColumn;
@@ -50,7 +49,7 @@ public class DriverList extends VBox{
     	}	
     }
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	public static void startTable(ArrayList<Motorista> drivers){
 		
 	try{
@@ -72,7 +71,7 @@ public class DriverList extends VBox{
 		return driverList;
 	}
 	
-	@SuppressWarnings({"rawtypes" })
+	@SuppressWarnings({"unchecked" })
 	public static TableView<Motorista> getTable(){
 		return driverTable;
 	}

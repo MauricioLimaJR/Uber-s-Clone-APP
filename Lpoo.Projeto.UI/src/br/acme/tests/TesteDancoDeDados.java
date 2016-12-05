@@ -18,6 +18,7 @@ import br.acme.users.Solicitante;
 
 public class TesteDancoDeDados {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws ParseException, RepositorioException, NullStringException, UnableCpfExecption {
 		
 		IRepositorio<Motorista> listaMotoristas = new RepositorioMotorista();
@@ -82,7 +83,6 @@ public class TesteDancoDeDados {
 		//Outras operações com os objetos recuperados
 		//((Motorista) placeholde2.buscar(1)).historico();
 		System.out.println(placeholde2.buscar(1).toString());
-		System.out.println(lista2.buscar(1).getViagens());
 		//System.out.println(((Motorista) placeholde2.buscar(2)).getViagens());
 		
 	}

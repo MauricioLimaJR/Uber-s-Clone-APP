@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import application.MaskTextField;
 import br.acme.database.MotoristaDAO;
-import br.acme.exception.DialogAlert;
+import br.acme.exception.DialogWindow;
 import br.acme.exception.InputException;
 import br.acme.exception.NullStringException;
 import br.acme.exception.UnableCpfExecption;
@@ -262,8 +262,8 @@ public class DriverEdit extends GridPane{
 			updateDriver.setId(driver.getId());
 			
 			if(MotoristaDAO.updateDriver(updateDriver)){
-			DialogAlert.show("Sucesso", "Alterações enviadas.");
-			}else DialogAlert.show("Falha", "Alterações não enviadas.");
+			DialogWindow.show("Sucesso", "Alterações enviadas.");
+			}else DialogWindow.show("Falha", "Alterações não enviadas.");
 			
 		} catch ( ParseException | NullStringException | UnableCpfExecption | SQLException | InputException e) {
 			e.printStackTrace();

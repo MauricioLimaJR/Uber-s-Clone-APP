@@ -92,7 +92,7 @@ public class RepositorioSolicitante implements IRepositorio<Solicitante>, Serial
 		}
 		*/
 		
-		return this.solicitantes;
+		return solicitantes;
 	}
 
 

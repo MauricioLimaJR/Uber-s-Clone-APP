@@ -7,21 +7,11 @@ import java.util.ArrayList;
 import application.MaskTextField;
 import br.acme.database.SolicitanteDAO;
 import br.acme.exception.NullStringException;
-import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
-import br.acme.storage.Database;
-import br.acme.storage.IRepositorio;
-import br.acme.storage.IRepositorioSolicitante;
-import br.acme.storage.Repositorio;
-import br.acme.storage.RepositorioSolicitante;
-import br.acme.ui.elements.UserList;
-import br.acme.storage.Database;
 import br.acme.users.Solicitante;
-import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -33,23 +23,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
 public class AccountWindow extends GridPane{
 	
 	private ArrayList<TextField> dataOld = new ArrayList<TextField>();
-	private ArrayList<TextField> dataFields = new ArrayList<TextField>();
 	
 	String sexField = null;
 	int bdLastPos = 0;
 	int bdPos=0;
-	
-	private static IRepositorio<Solicitante> userList = new RepositorioSolicitante();
 	
 	//public void start(Stage primaryStage) throws Exception {
 	@SuppressWarnings({ "rawtypes", "unchecked" })

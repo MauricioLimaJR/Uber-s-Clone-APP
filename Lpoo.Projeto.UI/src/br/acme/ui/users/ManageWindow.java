@@ -56,6 +56,7 @@ public class ManageWindow extends Application {
 			HBox footer = new HBox();
 			
 			UserList.initTable();
+			DriverList.initTable();
 			
 			/////////////////////////   Making the HEADER   /////////////////////////
 			
@@ -251,14 +252,14 @@ public class ManageWindow extends Application {
 			 * Driver's Buttons :: START
 			 */
 			
-			Button deleteDriver = new Button("Delete User");
+			Button deleteDriver = new Button("Delete Driver");
 			deleteDriver.getStyleClass().addAll("btnMenuNav", "btnDelete");
 			deleteDriver.setOnAction(new EventHandler<ActionEvent>() {
 				
 				@Override
 				public void handle(ActionEvent event) {
 					try {
-						deleteDriver(UserList.getTable());
+						deleteDriver(DriverList.getTable());
 					} catch (UserInterfaceException | SQLException e) {
 						
 					}
@@ -314,7 +315,7 @@ public class ManageWindow extends Application {
 				}
 			});
 			
-			menuNav.getChildren().addAll(showUsers, allowDriver, clear);
+			menuNav.getChildren().addAll(allowDriver, showUsers, showDrivers, showTravels);
 			menuNav.setAlignment(Pos.TOP_CENTER);
 			menuNav.getStyleClass().add("menuNav");
 			//menuNav.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
@@ -398,6 +399,7 @@ public class ManageWindow extends Application {
 		content.getChildren().addAll(view);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private void deleteUser(TableView table) throws UserInterfaceException, SQLException {
 	    int selectedIndex = table.getSelectionModel().getSelectedIndex();
 	    if (selectedIndex >= 0) {
@@ -410,6 +412,7 @@ public class ManageWindow extends Application {
 	    }
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private void deleteDriver(TableView table) throws UserInterfaceException, SQLException {
 	    int selectedIndex = table.getSelectionModel().getSelectedIndex();
 	    if (selectedIndex >= 0) {
@@ -422,6 +425,7 @@ public class ManageWindow extends Application {
 	    }
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private void acceptDriver(TableView table) throws UserInterfaceException{
 		int selectedIndex = table.getSelectionModel().getSelectedIndex();
 		if(selectedIndex >= 0){
@@ -444,6 +448,7 @@ public class ManageWindow extends Application {
 		}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private void negateDriver(TableView table) throws UserInterfaceException{
 		int selectedIndex = table.getSelectionModel().getSelectedIndex();
 		if(selectedIndex >= 0){
