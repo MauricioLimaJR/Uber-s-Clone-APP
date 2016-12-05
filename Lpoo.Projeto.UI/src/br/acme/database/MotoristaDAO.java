@@ -153,14 +153,14 @@ public class MotoristaDAO {
     		System.out.println("Coneção aberta");
             stmt = connection.prepareStatement(query);
         	
-			stmt.setString(1,driver.getNome());
-	        stmt.setString(2,driver.getCpf());
-	        stmt.setDate(3,driver.getDataNascimento());
+            stmt.setString(1,driver.getCpf());
+	        stmt.setString(2,driver.getNome());
+	        stmt.setString(3, driver.getSenha());
 	        stmt.setString(4, driver.getSexo());
-	        stmt.setString(5, driver.getNumeroCelular());
+	        stmt.setDate(5,driver.getDataNascimento());
 	        stmt.setString(6, driver.getEmail());
-	        stmt.setString(7, driver.getSenha());
-	        stmt.setFloat(8, driver.getId());
+	        stmt.setString(7, driver.getNumeroCelular());
+	        stmt.setLong(8, driver.getId());
 	        
 	        stmt.execute();
 	        

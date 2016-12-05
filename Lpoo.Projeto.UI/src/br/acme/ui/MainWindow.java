@@ -43,7 +43,7 @@ public class MainWindow extends Application{
 	
 	ManageWindow adm = new ManageWindow();
 	UserWindow user;
-	DriverWindow driver = new DriverWindow();
+	DriverWindow driver;
 	
 	public static IRepositorio<Solicitante> userList = new RepositorioSolicitante();
 	public static IRepositorio<Motorista> driverList = new RepositorioMotorista();
@@ -144,6 +144,8 @@ public class MainWindow extends Application{
 						user.start(mainStage);
 					}
 					else if(person.getClass() == Motorista.class){
+						driver = new DriverWindow();
+						driver.setUser((Motorista) person);
 						driver.start(mainStage);
 					}
 					else if(person.getClass() == Gerente.class){

@@ -46,7 +46,7 @@ public class UserList extends VBox{
     	}	
     }
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	public static void startTable(ArrayList<Solicitante> users){
 		
 	try{
@@ -88,7 +88,7 @@ public class UserList extends VBox{
 		return userList;
 	}
 	
-	@SuppressWarnings({"rawtypes" })
+	@SuppressWarnings({"unchecked" })
 	public static TableView<Solicitante> getTable(){
 		return userTable;
 	}

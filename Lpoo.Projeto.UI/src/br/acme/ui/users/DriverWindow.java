@@ -1,7 +1,13 @@
 package br.acme.ui.users;
 
+import br.acme.exception.InputException;
 import br.acme.exception.RepositorioException;
+import br.acme.storage.Repositorio;
+import br.acme.ui.MainWindow;
+import br.acme.ui.elements.DriverEdit;
 import br.acme.ui.elements.TravelList;
+import br.acme.ui.elements.UserEdit;
+import br.acme.ui.elements.UserList;
 import br.acme.users.Motorista;
 import br.acme.users.Solicitante;
 import javafx.application.Application;
@@ -25,10 +31,13 @@ import javafx.scene.layout.VBox;
 public class DriverWindow extends Application {
 	
 	private Motorista driver;
+	DriverEdit edit;
 	
 	@Override
 	public void start(Stage primaryStage) {
-		try {
+		try {			
+			edit = new DriverEdit(driver);
+			
 			//For put all elements
 			//BorderPane elements = new BorderPane();
 			//Hold the three main elements
@@ -109,7 +118,7 @@ public class DriverWindow extends Application {
 				@Override
 				public void handle(ActionEvent event) {
 					try {
-						loadView(h, workSpace);
+						loadView(TravelList.startTable(Repositorio.rpViagens.buscarPorId(driver.getId())), workSpace);
 					} 
 					catch (RepositorioException e) {
 						e.printStackTrace();
@@ -149,6 +158,56 @@ public class DriverWindow extends Application {
 			footer.setAlignment(Pos.BOTTOM_CENTER);
 			footer.setId("footer");
 			//footer.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
+			
+			////////////////////////HEADER BUTTONS 
+			HBox buttons = new HBox();
+			Button save = new Button("Salvar");
+			save.getStyleClass().add("btnMenuNav");
+			save.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					
+					try {
+						edit.getFields();
+					} catch (InputException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			
+			Button back = new Button("Cancelar");
+			back.getStyleClass().addAll("btnMenuNav", "btnDelete");
+			back.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					clearView(workSpace);
+				}
+			});
+			buttons.getChildren().addAll(save,back);
+			
+			userSettings.setOnAction( new EventHandler<ActionEvent>() {
+			
+				@Override
+				public void handle(ActionEvent event) {
+					
+					edit.setAlignment(Pos.CENTER);
+					clearView(workSpace);
+					workSpace.getChildren().addAll(edit, buttons);
+				}
+			});
+			
+			userLogout.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					MainWindow mainMenu = new MainWindow();
+					mainMenu.setOldEmail(driver.getEmail());
+					mainMenu.start(primaryStage);
+					
+				}
+			});
 
 			/////////////////////////   Making the final settings   /////////////////////////
 					
