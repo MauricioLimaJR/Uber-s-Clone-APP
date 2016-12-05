@@ -143,10 +143,6 @@ public class UserWindow extends Application {
 				
 				@Override
 				public void handle(ActionEvent event) {
-					// TODO Auto-generated method stub
-					/*
-					 * Mostramos seus dados
-					 */
 					try {
 						BeDriver.insertUser(user);
 					} catch (SQLException e) {
