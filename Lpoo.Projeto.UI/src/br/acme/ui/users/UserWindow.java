@@ -144,7 +144,8 @@ public class UserWindow extends Application {
 				@Override
 				public void handle(ActionEvent event) {
 					try {
-						BeDriver.insertUser(user);
+						Boolean choose = DialogWindow.ConfirmDialog("Confirmação", "Que se tornar motorista?");
+						if(choose) BeDriver.insertUser(user);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -247,10 +248,12 @@ public class UserWindow extends Application {
 				
 				@Override
 				public void handle(ActionEvent event) {
-					MainWindow mainMenu = new MainWindow();
-					mainMenu.setOldEmail(user.getEmail());
-					mainMenu.start(primaryStage);
-					
+					Boolean choice = DialogWindow.ConfirmDialog("Confimação", "Você quer realmente sair?");
+					if(choice){
+						MainWindow mainMenu = new MainWindow();
+						mainMenu.setOldEmail(user.getEmail());
+						mainMenu.start(primaryStage);
+					}
 				}
 			});
 			

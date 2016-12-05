@@ -1,20 +1,33 @@
 package br.acme.ui;
 
+import java.sql.SQLException;
+
+import application.MaskTextField;
+import br.acme.database.GerenteDAO;
+import br.acme.database.MotoristaDAO;
+import br.acme.database.SolicitanteDAO;
+import br.acme.exception.RepositorioException;
+import br.acme.storage.IRepositorio;
+import br.acme.storage.RepositorioMotorista;
+import br.acme.storage.RepositorioSolicitante;
+import br.acme.ui.users.DriverWindow;
 import br.acme.ui.users.ManageWindow;
+import br.acme.ui.users.UserWindow;
+import br.acme.users.Gerente;
+import br.acme.users.Motorista;
+import br.acme.users.Solicitante;
+import br.acme.users.Usuario;
 import javafx.application.Application;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.PasswordField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -23,42 +36,65 @@ public class MainWindow extends Application{
 
 	String img = "http://4.bp.blogspot.com/-gMJxkIC8Y4E/VCS8aMvFlgI/AAAAAAAAHwA/z9RNjIET9RY/s1600/Tripda.png";
 	String img2 = "img.jpeg";
-	@SuppressWarnings("unchecked")
+	private String oldEmail = null;
+	public String loginAs;
+
+	AccountWindow newAccount = new AccountWindow();
+	
+	ManageWindow adm = new ManageWindow();
+	UserWindow user;
+	DriverWindow driver;
+	
+	public static IRepositorio<Solicitante> userList = new RepositorioSolicitante();
+	public static IRepositorio<Motorista> driverList = new RepositorioMotorista();
+	
 	public void start(Stage mainStage) {
 		try {
 			//Here, we do a vertical organization
-			VBox firstPlace = new VBox(50); 
+			VBox firstPlace = new VBox(); 
 			firstPlace.setAlignment(Pos.CENTER);
 			firstPlace.getStyleClass().add("mainBody");
 			
 			//Title of the program
-			HBox titleText = new HBox();
+			HBox title = new HBox();
+			ImageView titleImg = new ImageView(getClass().getResource("files/mape.png").toString());
+			
 			Label titleLabel = new Label("Nome do Programa"); 
-			titleLabel.setTooltip(new Tooltip("Descrição curta do programa"));
 			titleLabel.setAlignment(Pos.BOTTOM_CENTER);
-			titleText.getChildren().add(titleLabel);
-			titleText.getStyleClass().add("titleText");
-			titleText.setAlignment(Pos.TOP_CENTER);
+			title.getChildren().add(titleImg);
+			title.getStyleClass().add("title");
+			title.setAlignment(Pos.TOP_CENTER);
 			
 			//Second component in the Vbox
 			//Horizontal organization
 			HBox caixaHorizontal = new HBox(); 
-			caixaHorizontal.setSpacing(120);
+			caixaHorizontal.setSpacing(100);
 			caixaHorizontal.setAlignment(Pos.CENTER_LEFT);
 			caixaHorizontal.getStyleClass().add("horizontalBox");
 			
 			//Our left HBOX space
 			VBox leftSideVerticalBox = new VBox();
+			leftSideVerticalBox.alignmentProperty();
 			leftSideVerticalBox.setAlignment(Pos.CENTER_LEFT);
-			leftSideVerticalBox.setSpacing(9);
+			leftSideVerticalBox.setSpacing(10);
 			leftSideVerticalBox.getStyleClass().add("leftSideVerticalBox");
 			
 			//Image image = new Image(getClass().getResource("../Lpoo.Projeto.UI/extra files/images.jpg").toExternalForm());
-			ImageView imagemView = new ImageView(getClass().getResource("files/imgInit.jpg").toString());
+			ImageView imagemView = new ImageView(getClass().getResource("files/logo.png").toString());
 			imagemView.setTranslateX(80);
 			imagemView.setTranslateY(5);
 			
-			leftSideVerticalBox.getChildren().addAll(imagemView);
+			//CANCEL BUTTON
+			Button cancel = new Button("Cancel");
+			cancel.getStyleClass().add("btnMain");
+			cancel.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent t){
+					leftSideVerticalBox.getChildren().remove(0, 2);
+					leftSideVerticalBox.getChildren().add(imagemView);
+				}
+			});
+			
+			leftSideVerticalBox.getChildren().add(imagemView);
 			
 			//Our right Vbox space, with a two elements in other VBox
 			VBox rigthSideVerticalBox = new VBox(); 
@@ -67,88 +103,106 @@ public class MainWindow extends Application{
 			
 			//Elements of rightSideVerticalBox
 			
-			//////////   LoginAs Field   /////////
-			HBox loginAsField = new HBox(6);
-			Label loginAs = new Label("Login As:");
-			String[] userModel = new String[]{"select", "Gerente", "Motorista", "Solicitante"};
-			@SuppressWarnings("rawtypes")
-			ChoiceBox logarComo = new ChoiceBox(FXCollections.observableArrayList(userModel));
-			
-			logarComo.getSelectionModel().selectedIndexProperty().addListener(
-					(ObservableValue<? extends Number> ov,
-							Number oldValue, Number newValue) -> {
-								//label.setText(userModel[newValue.intValue()]);
-							}
-					);
-			logarComo.getSelectionModel().select(0);
-			logarComo.setTooltip(new Tooltip("Do login as.."));
-			
-			loginAsField.getChildren().addAll(loginAs, logarComo);
-			
+			GridPane righSideGP = new GridPane();
 
 			//////////   userEmail Field   /////////
 			
-			HBox userEmail = new HBox(28);
-			Label email = new Label("Email:");
+			Label email = new Label("Email");
 			email.setAlignment(Pos.CENTER_LEFT);
-			TextField emailField = new TextField();
+			MaskTextField emailField = new MaskTextField();
+			emailField.setMask("M!@L!.L!.L!");
+			if(oldEmail != null) emailField.setText(oldEmail);
 			emailField.setPromptText("Enter your email");
 			emailField.setAlignment(Pos.CENTER_LEFT);
-			userEmail.getChildren().addAll(email, emailField);
-			userEmail.setAlignment(Pos.CENTER_LEFT);
 			
 			//////////   userPass Field   /////////
+
+			//ERROR LABEL
+			Label error = new Label();
+			error.setAlignment(Pos.CENTER);
 			
-			HBox userPass = new HBox(5);
 			Label password = new Label("Password:");
 			password.setAlignment(Pos.CENTER_LEFT);
-			TextField passField = new TextField();
+			PasswordField passField = new PasswordField();
 			passField.setAlignment(Pos.CENTER_LEFT);
 			passField.setPromptText("Enter your password");
-			userPass.getChildren().addAll(password, passField);
-			userPass.setAlignment(Pos.CENTER_LEFT);
 			
 			Button btnSignIn = new Button("Sign in");
-			btnSignIn.setAlignment(Pos.CENTER_LEFT);
-			btnSignIn.getStyleClass().add("mainBtn");
+			btnSignIn.setAlignment(Pos.CENTER_RIGHT);
+			btnSignIn.getStyleClass().add("btnMain");
 			
 			btnSignIn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				//((Button) e.getSource()).getScene().getWindow().hide();
-				ManageWindow adm = new ManageWindow();
-				adm.start(mainStage);
+				try {
+					Usuario person = doLogin(emailField.getText(), passField.getText());
+					
+					if(person.getClass() == Solicitante.class){
+						user = new UserWindow();
+						user.setUser((Solicitante) person);
+						user.start(mainStage);
+					}
+					else if(person.getClass() == Motorista.class){
+						driver = new DriverWindow();
+						driver.setUser((Motorista) person);
+						driver.start(mainStage);
+					}
+					else if(person.getClass() == Gerente.class){
+						adm.setAmd((Gerente) person);
+						adm.start(mainStage);
+					}
+				} catch (RepositorioException e1) {
+					e1.printStackTrace();
+					error.setText(e1.toString());
+				}
 			}
 			});
 			
-			
 			Button btnSignUp = new Button("Sign up");
-			btnSignUp.setAlignment(Pos.CENTER_LEFT);
-			btnSignUp.getStyleClass().add("mainBtn");			
+			btnSignUp.setAlignment(Pos.CENTER_RIGHT);
+			btnSignUp.getStyleClass().add("btnMain");			
 			//Clear the left side to do a new account
 			btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
 
 		        @Override
 		        public void handle(ActionEvent t) {
 		        	leftSideVerticalBox.getChildren().remove(0);
-		        	leftSideVerticalBox.getChildren().add(new AccountWindow());
+		        	newAccount.setAlignment(Pos.CENTER);
+		        	leftSideVerticalBox.getChildren().addAll(newAccount, cancel);
 		        	
 		        }
 		    });
-				
 			
-			//Put elements into layouts
-			rigthSideVerticalBox.getChildren().addAll(loginAsField, userEmail, userPass, btnSignIn, btnSignUp);
+			//Put elements into layouts			
+			//EMAIL FIELD
+			GridPane.setConstraints(email, 1, 1);
+			GridPane.setConstraints(emailField, 2, 1);			
+			//USERPASS
+			GridPane.setConstraints(password, 1, 2);
+			GridPane.setConstraints(passField, 2, 2);
+			//BUTTONS
+			GridPane.setConstraints(btnSignIn, 2, 3);
+			GridPane.setConstraints(btnSignUp, 2, 4);
+			//LABEL
+			GridPane.setConstraints(error, 2, 5);
+			
+			righSideGP.getChildren().addAll(email, emailField, password,
+					passField, btnSignIn, btnSignUp);
+			
+			
+			rigthSideVerticalBox.getChildren().add(righSideGP);
 			caixaHorizontal.getChildren().addAll(leftSideVerticalBox, rigthSideVerticalBox);
-			firstPlace.getChildren().addAll(titleText, caixaHorizontal);
+			firstPlace.getChildren().addAll(title, caixaHorizontal);
 		
 			Scene scene = new Scene(firstPlace,620,400);
-			scene.getStylesheets().add(getClass().getResource("mainwindow.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("files/mainwindow.css").toExternalForm());
 			mainStage.setTitle("Nome do Progama");
 			
-			Image icon = new Image(getClass().getResource("title.png").toExternalForm());
+			Image icon = new Image(getClass().getResource("files/icon.png").toExternalForm());
 			mainStage.getIcons().add(icon);  
 			mainStage.setScene(scene);
+			mainStage.setResizable(false);
 			mainStage.show();
 			
 		} catch(Exception e) {
@@ -159,6 +213,34 @@ public class MainWindow extends Application{
 	public static void main(String[] args) {
 		launch(args);
 	}	
+	
+	public Usuario doLogin(String email, String pass) throws RepositorioException{
+		
+		try {
+			Solicitante user = SolicitanteDAO.readUser(email, pass);
+			if(user != null) return user;
+			
+			Motorista driver = MotoristaDAO.readDriver(email, pass);
+			if(driver != null) return driver;
+			
+			Gerente adm = GerenteDAO.readADM(email, pass);
+			if(adm != null) return adm;
+		
+			
+		} catch ( SQLException e) {
+		
+			e.printStackTrace();
+			
+		}
+		
+		
+	throw new RepositorioException("Usuário não existente!");
+}
+	
+	public void setOldEmail(String email){
+		oldEmail = email;
+	}
+	
 }
 
 

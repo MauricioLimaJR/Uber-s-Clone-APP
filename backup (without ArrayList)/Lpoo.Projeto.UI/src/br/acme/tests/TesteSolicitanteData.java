@@ -8,7 +8,7 @@ import br.acme.users.Solicitante;
 
 public class TesteSolicitanteData {
 	public static void main(String[] args) throws ParseException, NullStringException, UnableCpfExecption {
-		Solicitante cliente1 = new Solicitante("5555", "Doca", "boa", "masc", "10/06/1985", "teste@legal.com", 345678);
+		Solicitante cliente1 = new Solicitante("5555", "Doca", "boa", "masc", "10/06/1985", "teste@legal.com", "345678");
 		System.out.println(cliente1.getDataNascimento());
 		
 	}

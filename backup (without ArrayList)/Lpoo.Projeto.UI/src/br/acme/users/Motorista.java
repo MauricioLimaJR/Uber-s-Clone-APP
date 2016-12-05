@@ -1,6 +1,7 @@
 package br.acme.users;
 
 import java.io.Serializable;
+import java.text.ParseException;
 
 import br.acme.exception.NullStringException;
 import br.acme.exception.RepositorioException;
@@ -8,9 +9,8 @@ import br.acme.exception.UnableCpfExecption;
 import br.acme.location.Lugar;
 import br.acme.location.Viagem;
 import br.acme.storage.IRepositorio;
-//import br.acme.storage.RepositorioViagem;
 
-public class Motorista extends Usuario implements Serializable{
+public class Motorista extends Solicitante implements Serializable{
 
 	/**
 	 * 
@@ -18,29 +18,24 @@ public class Motorista extends Usuario implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Boolean disponivel=true;
-	private String email;
-    
-	private Viagem[] viagensFeitas = new Viagem[100];
+  
    
 	//TESTAR NO LUGAR DO VETOR DE VIAGENSFEITAS
 	//private IRepositorioViagem viagensFeitas = new RepositorioViagem();
 	
-    public Motorista(String cpf, String nome, String senha, String sexo, String email) throws NullStringException, UnableCpfExecption {
-		super(cpf, nome, senha, sexo);
-		setEmail(email);
+	
+    public Motorista(Solicitante oldUser) throws NullStringException, UnableCpfExecption, ParseException{
+		
+    	super(oldUser.getCpf(), oldUser.getNome(), oldUser.getSenha(), oldUser.getSexo(),
+				oldUser.getDataNascimentoString(), oldUser.getEmail(), oldUser.getNumeroCelular());
+	}
+    
+    public Motorista(long id, String cpf, String nome, String senha, String sexo, java.sql.Date data, String email, String numeroCelular) throws ParseException, NullStringException, UnableCpfExecption {
+		
+    	super(id, cpf, nome, senha, sexo, data, email, numeroCelular);
 	}
     
     ///////////// GETTERS AND SETTERS /////////////
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) throws NullStringException {
-		if(email==null||email.equals(""))throw new NullStringException("Email"); 
-		else this.email = email;
-
-	}
 
 	public Boolean getDisponivel() {
 		return disponivel;
@@ -49,26 +44,11 @@ public class Motorista extends Usuario implements Serializable{
 	public void setDisponivel(Boolean disponivel) {
 		this.disponivel = disponivel;
 	}
-
-	public Viagem[] getViagens() {
-		return viagensFeitas;
-	}
-
-	public void setViagensFeitas(Viagem[] nova){
-		this.viagensFeitas = nova;
-	}
 		
 	/////////////  METHODS  /////////////
 	
 
-	public void adicionarViagemFeita(Viagem ultima) {
-		for(int i=0; i < viagensFeitas.length; i++){
-                    if(viagensFeitas[i] == null){
-                        viagensFeitas[i] = ultima;
-                        break;
-                    }
-                }
-                
+	public void adicionarViagemFeita(Viagem ultima) throws RepositorioException {
 		//this.viagensFeitas.adicionar(ultima);
 	}
 	
@@ -77,7 +57,7 @@ public class Motorista extends Usuario implements Serializable{
 			Viagem viagem = new Viagem(cliente, atual, origem, destino, pagamento, formaPagamento);
 			setDisponivel(false);
 			lugares.adicionar(viagem);
-			cliente.adicionarViagemFeita(viagem);
+			//cliente.adicionarViagemFeita(viagem);
 			atual.adicionarViagemFeita(viagem);
 			System.out.println("Viagem requerida com sucesso!");
 			return true;
@@ -85,14 +65,8 @@ public class Motorista extends Usuario implements Serializable{
 		return false;
 	}
 	
-	public void historico(){
+	public void historico() throws RepositorioException{
 		System.out.println(this.getNome()+" fez:");
-		for(int i=0; i < viagensFeitas.length; i++){
-                    if(viagensFeitas[i] != null){
-                    	System.out.println("Viagem de id: " + viagensFeitas[i].getId() + " / De: "+viagensFeitas[i].getOrigem().getEndereco()+" - Para: "+viagensFeitas[i].getDestino().getEndereco()+".");
-                    }
-                }
-	
 		//this.viagensFeitas.buscarTodos();
 	}
 	

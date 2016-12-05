@@ -16,10 +16,6 @@
     -fx-max-height: 300px;
 }
 
-.leftSideVerticalBox{
-	-fx-padding: 5, 5, 5, 100;
-}
-
 /* ////////   HEADER   //////// */
 
 #header{

@@ -70,7 +70,7 @@ public class Database{
 		//@PrintString
 		
 		try {
-			lista =  (Tipo) input.readObject();
+			lista =   (Tipo) input.readObject();
 			System.out.println("Objeto lido com sucesso");
 		} 
 		catch (ClassNotFoundException e) {

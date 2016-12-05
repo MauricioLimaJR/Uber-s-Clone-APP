@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import br.acme.database.BeDriver;
 import br.acme.database.MotoristaDAO;
 import br.acme.database.SolicitanteDAO;
+import br.acme.exception.DialogWindow;
 import br.acme.exception.NullStringException;
 import br.acme.exception.RepositorioException;
 import br.acme.exception.UnableCpfExecption;
@@ -359,10 +360,12 @@ public class ManageWindow extends Application {
 				
 				@Override
 				public void handle(ActionEvent event) {
-					MainWindow mainMenu = new MainWindow();
-					mainMenu.setOldEmail(adm.getEmail());
-					mainMenu.start(primaryStage);
-					
+					Boolean choice = DialogWindow.ConfirmDialog("Confimação", "Você quer realmente sair?");
+					if(choice){
+						MainWindow mainMenu = new MainWindow();
+						mainMenu.setOldEmail(adm.getEmail());
+						mainMenu.start(primaryStage);
+					}
 				}
 			});
 			
@@ -402,10 +405,14 @@ public class ManageWindow extends Application {
 	@SuppressWarnings("rawtypes")
 	private void deleteUser(TableView table) throws UserInterfaceException, SQLException {
 	    int selectedIndex = table.getSelectionModel().getSelectedIndex();
+	    
 	    if (selectedIndex >= 0) {
-	    	Solicitante user = (Solicitante) table.getItems().get(selectedIndex);
-	    	table.getItems().remove(selectedIndex);
-	    	SolicitanteDAO.deleteUser(user);
+	    	Boolean choice = DialogWindow.ConfirmDialog("Confimação", "Você quer realmente sair?");
+			if(choice){	
+		    	Solicitante user = (Solicitante) table.getItems().get(selectedIndex);
+		    	table.getItems().remove(selectedIndex);
+		    	SolicitanteDAO.deleteUser(user);
+			}
 	    } 
 	    else {
 	    	throw new UserInterfaceException("Nenhuma pessoa selecionada");
@@ -416,10 +423,13 @@ public class ManageWindow extends Application {
 	private void deleteDriver(TableView table) throws UserInterfaceException, SQLException {
 	    int selectedIndex = table.getSelectionModel().getSelectedIndex();
 	    if (selectedIndex >= 0) {
-	    	Motorista driver = (Motorista) table.getItems().get(selectedIndex);
-	    	table.getItems().remove(selectedIndex);
-	    	MotoristaDAO.deleteDriver(driver);
-	    } 
+	    	Boolean choice = DialogWindow.ConfirmDialog("Confimação", "Você quer realmente sair?");
+			if(choice){
+		    	Motorista driver = (Motorista) table.getItems().get(selectedIndex);
+		    	table.getItems().remove(selectedIndex);
+		    	MotoristaDAO.deleteDriver(driver);
+			}
+		} 
 	    else {
 	    	throw new UserInterfaceException("Nenhuma pessoa selecionada");
 	    }

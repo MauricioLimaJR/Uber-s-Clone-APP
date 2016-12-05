@@ -9,9 +9,9 @@ import br.acme.users.Solicitante;
 public class RepositorioSolicitante implements IRepositorio<Solicitante>, Serializable{
 
 	private long nextId=0;
-	private ArrayList<Solicitante> solicitantes = new ArrayList<Solicitante>();
+	private static ArrayList<Solicitante> solicitantes = new ArrayList<Solicitante>();
 	
-	public void adicionar(Solicitante obj) throws RepositorioException{
+	public  void adicionar(Solicitante obj) throws RepositorioException{
 		if(!verificarExistencia(obj)){
 			obj.setId(++nextId);
 			solicitantes.add(obj);
@@ -23,15 +23,16 @@ public class RepositorioSolicitante implements IRepositorio<Solicitante>, Serial
 	}
 	
 	
-		public Boolean verificarExistencia(Solicitante obj) throws RepositorioException {
-			String objCpf = obj.getCpf();
-			for(Solicitante user : solicitantes){
-				if(user.getCpf().equals(objCpf)){
-					throw new RepositorioException("Usuário já cadastrado.");
-				}
+	public Boolean verificarExistencia(Solicitante obj) throws RepositorioException {
+		String objCpf = obj.getCpf();
+		String objEmail = obj.getEmail();
+		for(Solicitante user : solicitantes){
+			if(user.getCpf().equals(objCpf) || user.getEmail().equals(objEmail)){
+				throw new RepositorioException("Usuário já cadastrado.");
 			}
-			return false;
 		}
+		return false;
+	}
 		
 	public Boolean remover(Solicitante obj) throws RepositorioException{
 		//@PrintString
@@ -91,7 +92,7 @@ public class RepositorioSolicitante implements IRepositorio<Solicitante>, Serial
 		}
 		*/
 		
-		return this.solicitantes;
+		return solicitantes;
 	}
 
 

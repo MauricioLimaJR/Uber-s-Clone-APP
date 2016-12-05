@@ -3,6 +3,7 @@ package br.acme.users;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import br.acme.exception.NullStringException;
@@ -12,7 +13,6 @@ import br.acme.location.Lugar;
 import br.acme.location.Viagem;
 import br.acme.storage.IRepositorio;
 import br.acme.storage.RepositorioMotorista;
-import br.acme.storage.RepositorioViagem;
 
 public class Solicitante extends Usuario {
 
@@ -25,30 +25,45 @@ public class Solicitante extends Usuario {
 	private String email;
 	private long idCarona;
     private Lugar[] lugaresFavoritos = new Lugar[50];
-	private int numeroCelular;
+	private String numeroCelular;
 	private double saldo=0.0;
-	private IRepositorio<Viagem> viagensFeitas = new RepositorioViagem();
+
 	
 
-	public Solicitante(String cpf, String nome, String senha, String sexo, String data, String email, int numeroCelular) throws ParseException, NullStringException, UnableCpfExecption {
+	public Solicitante(String cpf, String nome, String senha, String sexo, String data, String email, String numeroCelular) throws ParseException, NullStringException, UnableCpfExecption {
 		super(cpf, nome, senha, sexo);
 		setDataNascimento(data);
 		setEmail(email);
 		setNumeroCelular(numeroCelular);
 	}
+	public Solicitante(long id, String cpf, String nome, String senha, String sexo, java.sql.Date data, String email, String numeroCelular) throws ParseException, NullStringException, UnableCpfExecption {
+		super(cpf, nome, senha, sexo);
+		setDataNascimento(data);
+		setEmail(email);
+		setNumeroCelular(numeroCelular);
+		setId(id);
+	}
 	
 	///////////// GETTERS AND SETTERS /////////////
 	
-	public String getDataNascimento() {
+	public java.sql.Date getDataNascimento() {
+		java.sql.Date dataSql = new java.sql.Date(dataNascimento.getTime());
+		return dataSql;
+	}
+	
+	public String getDataNascimentoString(){
 		SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
-		
-		//System.out.println(dataFormata.format(this.dataNascimento));
 		return dataFormatada.format(this.dataNascimento);
 	}
 
-	public void setDataNascimento(String dataNascimento) throws ParseException {		
+	public void setDataNascimento(String dataNascimento) throws ParseException {	
 		DateFormat formatoData = DateFormat.getDateInstance();
 		Date data = formatoData.parse(dataNascimento);
+		this.dataNascimento = data;
+	}
+	
+	public void setDataNascimento(java.sql.Date dataNascimento) throws ParseException {
+		Date data = dataNascimento;
 		this.dataNascimento = data;
 	}
 	
@@ -62,12 +77,12 @@ public class Solicitante extends Usuario {
 
 	}	
 
-	public int getNumeroCelular() {
+	public String getNumeroCelular() {
 		return numeroCelular;
 	}
 
-	public void setNumeroCelular(int numeroCelular) {
-		this.numeroCelular = numeroCelular;
+	public void setNumeroCelular(String numeroCelular2) {
+		this.numeroCelular = numeroCelular2;
 	}
 	
 
@@ -87,13 +102,7 @@ public class Solicitante extends Usuario {
 		saldo += valor;
 	}
 	
-	public IRepositorio<Viagem> getViagens() {
-		return viagensFeitas;
-	}
-
-	public void setViagemFeita(IRepositorio<Viagem> nova) {
-		viagensFeitas = nova;
-	}
+	
 	
 	/////////////  METHODS  /////////////
 	
@@ -106,9 +115,6 @@ public class Solicitante extends Usuario {
                 }
 	}
 	
-	public void adicionarViagemFeita(Viagem ultima) throws RepositorioException {
-		this.viagensFeitas.adicionar(ultima);
-	}
 	
 	public void setSaldo(double saldo) {
 		this.saldo = saldo;
@@ -116,9 +122,9 @@ public class Solicitante extends Usuario {
 
 	public void solicitarCarona(IRepositorio<Motorista> motoristas, IRepositorio<Viagem> lugares, Lugar origem, Lugar destino, Double pagamento, String formaPagamento) throws RepositorioException{
 		Boolean status = true;
-		Motorista[] relacaoMotoristas = motoristas.buscarTodos();
-		for(int i=0; i < motoristas.getQuantiaArray(); i++){
-			if(relacaoMotoristas[i].responderPedido(lugares, this, relacaoMotoristas[i], origem, destino, pagamento, formaPagamento)){				
+		ArrayList<Motorista> relacaoMotoristas = motoristas.buscarTodos();
+		for(Motorista driver : relacaoMotoristas){
+			if(driver.responderPedido(lugares, this, driver, origem, destino, pagamento, formaPagamento)){				
 				
 				status = false;
 				break;
@@ -135,8 +141,7 @@ public class Solicitante extends Usuario {
 	}
 	
 	public void historico() throws RepositorioException{
-		System.out.println(this.getNome()+" fez:");
-		this.viagensFeitas.buscarTodos();
+		
 	}
 	
 	public String toString(){

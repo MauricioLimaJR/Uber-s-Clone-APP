@@ -224,10 +224,13 @@ public class DriverWindow extends Application {
 				
 				@Override
 				public void handle(ActionEvent event) {
+
+					Boolean choice = DialogWindow.ConfirmDialog("Confimação", "Você quer realmente sair?");
+					if(choice){
 					MainWindow mainMenu = new MainWindow();
 					mainMenu.setOldEmail(driver.getEmail());
 					mainMenu.start(primaryStage);
-					
+					}
 				}
 			});
 

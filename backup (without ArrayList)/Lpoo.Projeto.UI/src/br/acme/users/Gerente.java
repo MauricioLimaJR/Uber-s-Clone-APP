@@ -14,6 +14,16 @@ public class Gerente extends Usuario {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	private String email;
+	
 	//Geramos um id para o gerente com um atributo "static"
 	private static long idGerente=0;
 	
