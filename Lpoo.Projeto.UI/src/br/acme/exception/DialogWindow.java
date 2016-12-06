@@ -40,7 +40,7 @@ public class DialogWindow {
 		
 		alert.setTitle(title);
 		alert.setContentText(content);	
-		alert.getButtonTypes().addAll(no,yes);
+		alert.getButtonTypes().setAll(no,yes);
 		alert.showAndWait().ifPresent( btn -> {
 				if(btn == yes) bool=true;
 				else bool=false;

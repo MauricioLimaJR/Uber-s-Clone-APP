@@ -55,6 +55,7 @@ public class ManageWindow extends Application {
 			
 			UserList.initTable();
 			DriverList.initTable();
+			TravelList.initTable();
 			
 			/////////////////////////   Making the HEADER   /////////////////////////
 			
@@ -133,8 +134,8 @@ public class ManageWindow extends Application {
 						loadView(TravelList.startTable(TravelDAO.readTravels()), workSpace);
 					} 
 					catch ( SQLException e) {
-						DialogWindow.show("Erro", "Nenhuma viagem realizada.");
 						e.printStackTrace();
+						DialogWindow.show("Erro", "Nenhuma viagem realizada.");
 					}
 				}
 			});
@@ -284,20 +285,6 @@ public class ManageWindow extends Application {
 			/*
 			 * Driver's Buttons :: END
 			 */
-			
-			Button travels = new Button("See Travels");
-			travels.getStyleClass().add("btnMenuNav");
-			
-			travels.setOnAction(new EventHandler<ActionEvent>() {
-				
-				@Override
-				public void handle(ActionEvent event) {
-					/*
-					 * See all travels?
-					 */
-				}
-				
-			});
 			
 			Button clear = new Button("Clear");
 			clear.getStyleClass().add("btnMenuNav");

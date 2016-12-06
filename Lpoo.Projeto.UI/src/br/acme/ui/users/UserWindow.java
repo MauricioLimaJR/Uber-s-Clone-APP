@@ -3,15 +3,14 @@ package br.acme.ui.users;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 import br.acme.database.BeDriver;
 import br.acme.database.MotoristaDAO;
 import br.acme.database.SolicitanteDAO;
 import br.acme.database.TravelDAO;
 import br.acme.exception.DialogWindow;
 import br.acme.exception.InputException;
-import br.acme.exception.RepositorioException;
 import br.acme.exception.UserInterfaceException;
-import br.acme.storage.Repositorio;
 import br.acme.ui.MainWindow;
 import br.acme.ui.elements.DriverList;
 import br.acme.ui.elements.Travel;
@@ -26,11 +25,9 @@ import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -49,6 +46,7 @@ public class UserWindow extends Application {
 			
 			edit = new UserEdit(user);
 			DriverList.initTable();
+			TravelList.initTable();
 			
 			//For put all elements
 			//BorderPane elements = new BorderPane();
@@ -149,6 +147,8 @@ public class UserWindow extends Application {
 				public void handle(ActionEvent arg0) {
 					try {
 						travel.startTravel();
+						DialogWindow.show("Sucesso", "Viagem realizada.");
+						clearView(workSpace);
 					} catch (SQLException e) {
 						e.printStackTrace();
 						DialogWindow.show(e.getMessage());
@@ -191,6 +191,7 @@ public class UserWindow extends Application {
 						
 						travel = new Travel(user);
 						clearView(workSpace);
+						travelButtons.getChildren().removeAll(travelButtons.getChildrenUnmodifiable());
 						travelButtons.getChildren().addAll(choiceDriver, cancelTravel);
 						workSpace.getChildren().addAll(DriverList.getTable(), travel, travelButtons);
 						
@@ -211,7 +212,7 @@ public class UserWindow extends Application {
 				
 					try{
 						clearView(workSpace);
-						loadView(new Label(TravelDAO.readTravel(user.getId()).toString()), workSpace);
+						loadView(TravelList.startTable(TravelDAO.readTravel(user.getId())), workSpace);
 					} 
 					catch ( SQLException e) {
 						DialogWindow.show("Erro", "Nenhuma viagem realizada.");
@@ -228,8 +229,14 @@ public class UserWindow extends Application {
 				@Override
 				public void handle(ActionEvent event) {
 					try {
-						Boolean choose = DialogWindow.ConfirmDialog("Confirmação", "Quer se tornar motorista?");
-						if(choose) BeDriver.insertUser(user);
+						Solicitante verify = MotoristaDAO.readDriver(user.getEmail(), user.getSenha());
+						if(verify != null){
+							DialogWindow.show("Pedido já enviado.");
+							clearView(workSpace);
+						}else{
+							Boolean choose = DialogWindow.ConfirmDialog("Confirmação", "Quer se tornar motorista?");
+							if(choose) BeDriver.insertUser(user);
+						}
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

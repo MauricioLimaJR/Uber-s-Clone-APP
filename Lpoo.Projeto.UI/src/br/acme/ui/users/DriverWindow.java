@@ -3,10 +3,9 @@ package br.acme.ui.users;
 import java.sql.SQLException;
 
 import br.acme.database.MotoristaDAO;
+import br.acme.database.TravelDAO;
 import br.acme.exception.DialogWindow;
 import br.acme.exception.InputException;
-import br.acme.exception.RepositorioException;
-import br.acme.storage.Repositorio;
 import br.acme.ui.MainWindow;
 import br.acme.ui.elements.DriverEdit;
 import br.acme.ui.elements.TravelList;
@@ -18,10 +17,8 @@ import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -37,6 +34,7 @@ public class DriverWindow extends Application {
 	public void start(Stage primaryStage) {
 		try {			
 			edit = new DriverEdit(driver);
+			TravelList.initTable();
 			
 			//For put all elements
 			//BorderPane elements = new BorderPane();
@@ -118,15 +116,12 @@ public class DriverWindow extends Application {
 				@Override
 				public void handle(ActionEvent event) {
 					try {
-						loadView(TravelList.startTable(Repositorio.rpViagens.buscarPorId(driver.getId())), workSpace);
+						clearView(workSpace);
+						loadView(TravelList.startTable(TravelDAO.readTravel(driver.getId())), workSpace);;
 					} 
-					catch (RepositorioException e) {
+					catch (SQLException e) {
 						e.printStackTrace();
-						 Alert alert = new Alert(AlertType.WARNING);
-				         alert.setTitle("Repositório vazio");
-				         alert.setHeaderText(e.getMessage());
-				         alert.setContentText("Nehuma viagem realizada.");
-				         alert.showAndWait();
+						DialogWindow.show("Erro", "Nehuma viagem realizada.");
 					}
 				}
 			});

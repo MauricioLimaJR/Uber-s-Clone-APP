@@ -50,9 +50,9 @@ public class TravelDAO {
 	}
 	}
 	
-	public static Viagem readTravel(long id) throws SQLException {
+	public static ArrayList<Viagem> readTravel(long id) throws SQLException {
 		String query = "select * from travels where UserID=? OR DriverID=?";
-		Viagem travel = null;
+		ArrayList<Viagem> travels = new ArrayList<Viagem>();
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		
@@ -71,7 +71,7 @@ public class TravelDAO {
 			if(data.next()){ 
 				Lugar source = new Lugar(data.getString("sourceIDF"),data.getString("sourceAD"));
 				Lugar destiny = new Lugar(data.getString("destinyIDF"), data.getString("destinyAD"));
-				travel = new Viagem(
+				Viagem travel = new Viagem(
 						data.getLong("UserID"),
 						data.getLong("DriverID"),
 						source,
@@ -79,6 +79,7 @@ public class TravelDAO {
 						data.getDouble("value"),
 						data.getString("payForm")
 						);
+				travels.add(travel);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -90,7 +91,7 @@ public class TravelDAO {
 	       	System.out.println("Coneção encerrada");
 		}
        	
-       	return travel;
+       	return travels;
 	}
 	
 	public static ArrayList<Viagem> readTravels() throws SQLException{
