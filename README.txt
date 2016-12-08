@@ -6,58 +6,75 @@ HOW TO USE:
 
 Requesitos:
 
-1. Eclipse IDE (ou outra IDE compatÌvel);
+1. Eclipse IDE (ou outra IDE compat√≠vel);
 2. JDK e JVM (mais recente);
 3. JavaFX plugin;
 4. MySQL Server (Workbench, Xampp, Wampp, etc);
+5. Conector mySQL-JAVA;
 
 Montando ambiente de trabalho:
 
 1. Instalar o Eclipse, bem como os produtos Java;
 2. Para instalar o JavaFX plugin:
-   a. Acessar o Eclipse MarketPlace, no bot„o Help,
+   a. Acessar o Eclipse MarketPlace, no bot√£o Help,
    b. Pesquisar por "javafx",
-   c. instalar ˙ltima vers„o ou ver 2.4.
+   c. instalar √∫ltima vers√£o ou ver 2.4.
 3. Instalar algum criador de servidor mySQL:
-a. Escolher algum programa compatÌvel,
+   a. Escolher algum programa compat√≠vel,
 
-3.Obs> Os passos seguintes s„o para recriar um 
-	banco de dados idÍntico ao ja configurado;
+3. Instalar MySQL Server e Conector
+   a. Seguir este tutorial:
+	http://www.devmedia.com.br/criando-uma-conexao-java-mysql-server/16753
+	ou
+   b . Baixar e instalar o mysql server:
+        http://dev.mysql.com/downloads/mysql/
+   c. Baixar o conector:
+   	(escolha o driver de conex√£o para Java, o Connector/J. )
+   	http://dev.mysql.com/downloads/connector/
+   d. Para adiciona-la no bibiblioteca do projeto:
+   	Extrair o arquivo
+	Acessar o projeto no eclipse
+	clicar com o bot√£o direito em propriedades
+	Acessar as biblitecas na nova janela
+	Adicionar o arquivo baixado
+
+4.Obs> Os passos seguintes s√£o para recriar um 
+	banco de dados id√™ntico ao ja configurado;
    b. Instalar e criar uma Database chamada "local",
    c. Criar as tabelas de acordo com os arquivos
       contidos na pasta "database files".
 
-3.Obs> Os passos seguintes s„o para configurar um 
+4.Obs> Os passos seguintes s√£o para configurar um 
 	novo bando de dados;
    b. criar um novo banco de dados ou usar um ja criado:
    c. Acessar o pacote "package br.acme.database"
    d. Abrir a classe "ConnectionMaker.java";
-   e. Alterar o par‚metro da linha 14:
+   e. Alterar o par√¢metro da linha 14:
    "jdbc:mysql://localhost/local", "root", "4321"
    onde:
    "jdbc:mysql://(campo1)/(campo2)", "(campo3)", "(campo4)"
-   (campo1) = endereÁo do banco de dados (localhost geralmente)
+   (campo1) = endere√ßo do banco de dados (localhost geralmente)
    (campo2) = nome do banco de dados
-   (campo3) = nome do usu·rio do banco de dados
-   (campo4) = senha do usu·rio do banco de dados
-   f. salvar alteraÁıes;
+   (campo3) = nome do usu√°rio do banco de dados
+   (campo4) = senha do usu√°rio do banco de dados
+   f. salvar altera√ß√µes;
 
 Executando o Projeto
 
-1. ApÛs realizar as configuraÁıes, para rodar o projeto:
+1. Ap√≥s realizar as configura√ß√µes, para rodar o projeto:
    a. Acessar o pacote "package br.acme.ui";
    b. Abrir a classe "MainWindow.java";
-   c. Executar o cÛdigo como uma aplicaÁao java;
+   c. Executar o c√≥digo como uma aplica√ßao java;
 
-OBS:: Existe um ˙nico gerente para este sistema
+OBS:: Existe um √∫nico gerente para este sistema
 	para acessar sua conta:
 	email gerente = adm@gmail.com
 	senha gerente = admin
 
-OBS:: Todos os dados deste programa s„o fictÌceis,
-	com excess„o dos cpfs utilizados, pois s„o
-	aplicados a validaÁıes reais. Assim, È li-
-	vre utilizar qualquer endereÁo de email pa-
+OBS:: Todos os dados deste programa s√£o fict√≠ceis,
+	com excess√£o dos cpfs utilizados, pois s√£o
+	aplicados a valida√ß√µes reais. Assim, √© li-
+	vre utilizar qualquer endere√ßo de email pa-
 	ra cadastros.
 	Pesquisar no Google : "gerador de cpf" para
-	adquirir cpf que sejam v·lidos.
+	adquirir cpf que sejam v√°lidos.
