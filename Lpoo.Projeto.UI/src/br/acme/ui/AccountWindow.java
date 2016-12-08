@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import application.MaskTextField;
 import br.acme.database.SolicitanteDAO;
+import br.acme.exception.DialogWindow;
 import br.acme.exception.NullStringException;
 import br.acme.exception.UnableCpfExecption;
 import br.acme.users.Solicitante;
@@ -261,8 +262,9 @@ public class AccountWindow extends GridPane{
 		//try {
 			solicitante = new Solicitante(cpf, name, password, sex, date, email, number);
 			sendNewAccount(solicitante);
-			Label m = new Label("Enviado");
-			addStatus(m);
+			DialogWindow.show("Sucesso", "Cadastro enviado.");
+			//Label m = new Label("Enviado");
+			//addStatus(m);
 			
 	//	} catch (ParseException | NullStringException | UnableCpfExecption e) {
 		//	e.printStackTrace();
